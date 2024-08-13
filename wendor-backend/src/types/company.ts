@@ -1,0 +1,19 @@
+import { Optional } from "sequelize";
+import Company from "../models/company";
+
+export interface ICompanyRepository {
+    findById(id: string): Promise<Company | null>;
+    findByName(company_name: string): Promise<Company | null>;
+    getAllCompanies(): Promise<Company[]>;
+    create(company: CompanyCreationAttributes): Promise<Company>;
+    update(id: string, company: CompanyCreationAttributes): Promise<Company>;
+    delete(id: string): Promise<void>;
+}
+
+export interface CompanyAttributes {
+    id: string;
+    company_name: string;
+    createdAt: Date;
+}
+
+export interface CompanyCreationAttributes extends Optional<CompanyAttributes, "id" | "createdAt"> { }

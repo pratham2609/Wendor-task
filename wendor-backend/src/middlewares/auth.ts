@@ -1,0 +1,34 @@
+// Import the required modules
+import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+import catchAsyncErrors from "./catchAsyncError";
+import ErrorHandler from "../utils/errorHandler";
+import User from "../models/user";
+
+interface DecodedToken {
+    id: string;
+    email: string;
+}
+interface AuthenticatedRequest extends Request {
+    user?: User | null;
+}
+
+// Middleware to check if the user is authenticated
+export const isAuthenticatedUser = catchAsyncErrors(async (req: AuthenticatedRequest, _: Response, next: NextFunction) => {
+    if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer")
+    ) {
+        const token = req.headers.authorization.split("Bearer ")[0];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+        req.user = await User.findByPk(decoded.id);
+
+        if (!req.user) {
+            return next(new ErrorHandler("User not found", 404));
+        }
+
+        next();
+    } else {
+        return next(new ErrorHandler("Login first to access this resource", 401));
+    }
+});
