@@ -4,7 +4,7 @@ import ErrorHandler from "../utils/errorHandler";
 
 export class UserRepository implements IUserRepository {
     async findById(id: string): Promise<User | null> {
-        return await User.findByPk(id);
+        return await User.findOne({ where: { id } });
     }
 
     async findByEmail(email: string): Promise<User | null> {

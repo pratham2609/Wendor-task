@@ -1,12 +1,14 @@
-import { Optional } from "sequelize";
+import { Optional, Transaction } from "sequelize";
 import Inventory from "../models/inventory";
 
 export interface IInventoryRepository {
-    findByProduct(productId: string): Promise<Inventory[]>;
-    findProductByBatch(productId: string, batchNo: string): Promise<Inventory[]>;
-    getAllInventories(): Promise<Inventory[]>;
+    findByProductId(productId: string): Promise<Inventory[]>;
+    getProductBatchesForTx(query: object): Promise<Inventory[]>;
+    findProductByBatch(productId: string, batchNo: string): Promise<Inventory | null>;
+    getAllInventories(): Promise<InventoryResponse[]>;
+    getProductDetails(productId: string): Promise<InventoryResponse>;
     create(inventoryData: InventoryCreationAttributes): Promise<Inventory>;
-    update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<Inventory | null>;
+    update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<void>;
     delete(id: string): Promise<void>;
 }
 
@@ -19,3 +21,12 @@ export interface InventoryAttributes {
 }
 
 export interface InventoryCreationAttributes extends Optional<InventoryAttributes, "id"> { }
+
+export interface InventoryResponse {
+    id: string;
+    productId: string;
+    totalQuantity: number;
+    productName: string;
+    productPrice: number;
+    companyName?: string;
+}

@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/database";
-import Product from "./product";
 import { InventoryAttributes, InventoryCreationAttributes } from "../types/inventory";
 
 class Inventory extends Model<InventoryAttributes, InventoryCreationAttributes> {

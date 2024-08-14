@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { limiter } from "./middlewares/rateLimiter";
 import routes from "./routes/index.routes";
 import bodyParser from 'body-parser';
+import { sequelize } from "./config/database";
 
 const app: Express = express();
 
@@ -26,6 +27,7 @@ app.get("/", (_: Request, res: Response) => {
     });
 });
 
+sequelize.sync();
 // Routes
 app.use("/api/v1", routes);
 

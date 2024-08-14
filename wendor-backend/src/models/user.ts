@@ -5,6 +5,7 @@ import validator from "validator";
 import ErrorHandler from "../utils/errorHandler.js";
 import { UserAttributes, UserCreationAttributes, UserRoles } from "../types/user.js";
 import bcryptjs from "bcryptjs";
+import { Sale } from "./sale.js";
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
     public id!: string;
@@ -14,13 +15,10 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
     public password!: string;
     public role!: UserRoles
 
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-
     // Generate JWT token for the user
     public getJwtToken(): string {
         const expiresIn = process.env.JWT_EXPIRES_TIME || '7d'; // Default to '7d' if not set
-        return jwt.sign({ id: this.id }, process.env.JWT_SECRET!, {
+        return jwt.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET!, {
             expiresIn,
         });
     }
@@ -49,11 +47,11 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
     }
 }
 
-// Initialize the User model with attributes
 User.init(
     {
         id: {
             type: DataTypes.UUID,
+            allowNull: false,
             defaultValue: DataTypes.UUIDV4, // Automatically generate UUID
             primaryKey: true,
         },
@@ -110,5 +108,11 @@ User.init(
         },
     }
 );
+
+Sale.belongsTo(User, {
+    as: 'user',
+    foreignKey: 'userId',
+    targetKey: 'id',
+})
 
 export default User;

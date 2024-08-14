@@ -2,6 +2,7 @@ import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
 import { CategoryEnum, ProductAttributes, ProductCreationAttributes } from "../types/product";
 import Inventory from "./inventory.js";
+import { Sale, SaleProduct } from "./sale.js";
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> {
     public id!: string;
@@ -10,6 +11,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
     public mrp!: number;
     public category!: CategoryEnum;
     public companyId!: string;  // Foreign Key
+
 }
 
 Product.init(
@@ -53,6 +55,11 @@ Product.init(
     }
 );
 
-Product.hasMany(Inventory, { as: 'inventories', foreignKey: 'productId' });
+Inventory.belongsTo(Product, {
+    as: 'product',
+    foreignKey: 'productId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+});
 
 export default Product;

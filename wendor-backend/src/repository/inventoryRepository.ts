@@ -1,53 +1,166 @@
+import { sequelize } from "../config/database";
 import Inventory from "../models/inventory";
 import Product from "../models/product";
 import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes } from "../types/inventory";
 import ErrorHandler from "../utils/errorHandler";
+import Company from "../models/company";
 
 class InventoryRepository implements IInventoryRepository {
 
-    async findById(id: string): Promise<Inventory | null> {
-        return await Inventory.findByPk(id);
-    }
-
-    async findByProduct(productId: string): Promise<Inventory[]> {
+    async findByProductId(productId: string): Promise<Inventory[]> {
         return await Inventory.findAll({
             where: { productId },
-            include: [{
-                model: Product,
-                attributes: ['name', 'price'],
-            }]
+            attributes: [
+                'id',
+                'productId',
+                'quantity',
+                'batchNo',
+                [sequelize.col('product.name'), 'productName'],
+                [sequelize.col('product.price'), 'productPrice'],
+                [sequelize.col('product.company.company_name'), 'companyName'],
+            ],
+            include: [
+                {
+                    model: Product,
+                    as: 'product',
+                    attributes: [],
+                    include: [
+                        {
+                            model: Company,
+                            attributes: [],
+                            as: 'company',
+                        },
+                    ],
+                }
+            ],
         });
     }
 
-    async findProductByBatch(productId: string, batchNo: string): Promise<Inventory[]> {
-        return await Inventory.findAll({
+    async getProductBatchesForTx(query: object): Promise<Inventory[]> {
+        try {
+            return await Inventory.findAll(query);
+        } catch (error) {
+            throw new Error('Error finding inventory items: ' + (error as Error).message);
+        }
+    }
+
+    async findProductByBatch(productId: string, batchNo: string): Promise<Inventory | null> {
+        return await Inventory.findOne({
             where: { productId, batchNo },
-            include: [{
-                model: Product,
-                attributes: ['name', 'price'],
-            }]
+            attributes: [
+                'id',
+                'productId',
+                'quantity',
+                'batchNo',
+                [sequelize.col('product.name'), 'productName'],
+                [sequelize.col('product.price'), 'productPrice'],
+                [sequelize.col('product.company.company_name'), 'companyName'],
+            ],
+            include: [
+                {
+                    model: Product,
+                    as: 'product',
+                    attributes: [],
+                    include: [
+                        {
+                            model: Company,
+                            attributes: [],
+                            as: 'company',
+                        },
+                    ],
+                }
+            ],
         });
     }
 
-    async getAllInventories(): Promise<Inventory[]> {
-        return await Inventory.findAll({
-            include: [{
-                model: Product,
-                attributes: ['name', 'price'],
-            }]
+    async getAllInventories(): Promise<any[]> {
+        const inventories = await Inventory.findAll({
+            attributes: [
+                'productId',
+                [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
+                [sequelize.col('product.name'), 'productName'],
+                [sequelize.col('product.price'), 'productPrice'],
+                [sequelize.col('product.company.company_name'), 'companyName'],
+            ],
+            include: [
+                {
+                    model: Product,
+                    as: 'product',
+                    attributes: [],
+                    include: [
+                        {
+                            model: Company,
+                            attributes: [],
+                            as: 'company',
+                        },
+                    ],
+                }
+            ],
+            group: ['productId', 'product.id', 'product.name', 'product.price', 'product.company.id', 'product.company.company_name'],
+            having: sequelize.literal('SUM(quantity) > 0'),
         });
+        return inventories;
+    }
+
+    async getProductDetails(productId: string): Promise<any> {
+        const inventories = await Inventory.findAll({
+            where: { productId },
+            attributes: [
+                [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
+                [sequelize.col('product.name'), 'productName'],
+                [sequelize.col('product.price'), 'productPrice'],
+            ],
+            include: [
+                {
+                    model: Product,
+                    as: 'product',
+                    attributes: [],
+                }
+            ],
+            group: ['productId', 'product.id', 'product.name', 'product.price'],
+        });
+        return inventories[0].dataValues;
+    }
+
+    async getProductInInventory(productId: string): Promise<Inventory | null> {
+        const inventories = await Inventory.findOne({
+            where: { productId },
+            attributes: [
+                'productId',
+                [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
+                [sequelize.col('product.name'), 'productName'],
+                [sequelize.col('product.price'), 'productPrice'],
+                [sequelize.col('product.company.company_name'), 'companyName'],
+            ],
+            include: [
+                {
+                    model: Product,
+                    as: 'product',
+                    attributes: [],
+                    include: [
+                        {
+                            model: Company,
+                            attributes: [],
+                            as: 'company',
+                        },
+                    ],
+                }
+            ],
+            group: ['productId', 'product.id', 'product.name', 'product.price', 'product.company.id', 'product.company.company_name'],
+        });
+        return inventories;
     }
 
     async create(inventoryData: InventoryCreationAttributes): Promise<Inventory> {
         return await Inventory.create(inventoryData);
     }
 
-    async update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<Inventory | null> {
+    async update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<void> {
         const existingInventory = await Inventory.findByPk(id);
         if (!existingInventory) {
             throw new ErrorHandler('Inventory not found', 401);
         }
-        return await existingInventory.update(inventoryData);
+        await existingInventory.update(inventoryData);
     }
 
     async delete(id: string): Promise<void> {

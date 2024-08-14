@@ -29,6 +29,9 @@ Company.init(
     }
 );
 
-Company.hasMany(Product, { as: 'products', foreignKey: 'companyId' });
+Product.belongsTo(Company, {
+    as: 'company',
+    foreignKey: 'companyId',
+})
 
 export default Company;

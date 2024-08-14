@@ -27,6 +27,11 @@ export class ProductController {
         res.status(200).json({ success: true, data: products });
     });
 
+    static getProductsList = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+        const products = await productService.getAllProducts();
+        res.status(200).json({ success: true, data: products });
+    });
+
     static createProduct = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
         const product = await productService.createProduct(req.body);
         res.status(201).json({ success: true, data: product });
