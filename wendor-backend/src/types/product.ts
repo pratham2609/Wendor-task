@@ -2,20 +2,20 @@ import { Optional } from "sequelize";
 import Product from "../models/product";
 
 export enum CategoryEnum {
-    SNACKS = 'SNACKS',
-    BEVERAGES = 'BEVERAGES',
-    HEALTHY_OPTIONS = 'HEALTHY_OPTIONS',
-    MEALS_AND_SANDWICHES = 'MEALS_AND_SANDWICHES',
-    DAIRY_PRODUCTS = 'DAIRY_PRODUCTS',
-    BAKED_GOODS = 'BAKED_GOODS',
-    FROZEN_TREATS = 'FROZEN_TREATS',
-    NON_FOOD_ITEMS = 'NON_FOOD_ITEMS',
-}
+    SNACKS = 'Snacks',
+    BEVERAGES = 'Beverages',
+    HEALTHY_OPTIONS = 'Healthy',
+    SANDWICHES = 'Sandiwches',
+    DAIRY = 'Dairy',
+    BAKED = 'Baked',
+    FROZEN = 'Frozen',
+    Medicines = 'Medicines'
+};
 
 export interface IProductRepository {
     findById(id: string): Promise<Product | null>;
     findByCategory(category: string): Promise<Product[]>;
-    findByCompany(companyName: string): Promise<Product[]>;
+    findByCompany(companyId: string): Promise<Product[]>;
     getAllProducts(): Promise<Product[]>;
     create(product: ProductCreationAttributes): Promise<Product>;
     update(id: string, product: Partial<Product>): Promise<Product>;
@@ -28,8 +28,7 @@ export interface ProductAttributes {
     price: number;
     display_image_url: string;
     category: CategoryEnum;
-    createdAt: Date;
     companyId: string;
 }
 
-export interface ProductCreationAttributes extends Optional<ProductAttributes, "id" | "createdAt"> { }
+export interface ProductCreationAttributes extends Optional<ProductAttributes, "id"> { }

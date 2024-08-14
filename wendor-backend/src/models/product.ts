@@ -1,17 +1,15 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
-import { CategoryEnum } from "../types/product";
-import Company from "./company";
+import { CategoryEnum, ProductAttributes, ProductCreationAttributes } from "../types/product";
+import Inventory from "./inventory.js";
 
-class Product extends Model {
+class Product extends Model<ProductAttributes, ProductCreationAttributes> {
     public id!: string;
     public name!: string;
     public image!: string;
     public mrp!: number;
     public category!: CategoryEnum;
     public companyId!: string;  // Foreign Key
-
-    public readonly createdAt!: Date;
 }
 
 Product.init(
@@ -25,11 +23,12 @@ Product.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        image: {
+        display_image_url: {
             type: DataTypes.STRING,
             allowNull: true,
+            defaultValue: "",
         },
-        mrp: {
+        price: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
@@ -40,15 +39,10 @@ Product.init(
         companyId: {
             type: DataTypes.UUID,
             references: {
-                model: 'companies',  // refers to the table name
+                model: 'companies',
                 key: 'id',
             },
             allowNull: false,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
         },
     },
     {
@@ -59,6 +53,6 @@ Product.init(
     }
 );
 
-Product.belongsTo(Company, { as: 'company', foreignKey: 'companyId' });
+Product.hasMany(Inventory, { as: 'inventories', foreignKey: 'productId' });
 
 export default Product;

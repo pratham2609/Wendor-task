@@ -6,7 +6,6 @@ import { CompanyAttributes, CompanyCreationAttributes } from "../types/company.j
 class Company extends Model<CompanyAttributes, CompanyCreationAttributes> {
     public id!: string;
     public company_name!: string;
-    public createdAt!: Date;
 }
 
 Company.init(
@@ -18,12 +17,8 @@ Company.init(
         },
         company_name: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: false,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
         },
     },
     {

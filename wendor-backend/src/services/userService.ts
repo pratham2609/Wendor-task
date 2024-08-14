@@ -1,6 +1,7 @@
 import User from "../models/user";
 import { IUserRepository, UserCreationAttributes } from "../types/user";
 import ErrorHandler from "../utils/errorHandler.js";
+import { removePassword } from "../utils/app.utils"
 
 export class UserService {
     private userRepository: IUserRepository;
@@ -9,31 +10,31 @@ export class UserService {
         this.userRepository = userRepository;
     }
 
-    async getUserById(id: string): Promise<User | null> {
+    async getUserById(id: string): Promise<Partial<User> | null> {
         try {
             const user = await this.userRepository.findById(id);
             if (!user) {
                 throw new ErrorHandler("User not found", 404);
             }
-            return user;
+            return removePassword(user);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || "Error fetching user by ID", 500);
         }
     }
 
-    async getUserByEmail(email: string): Promise<User | null> {
+    async getUserByEmail(email: string): Promise<Partial<User> | null> {
         try {
             const user = await this.userRepository.findByEmail(email);
             if (!user) {
-                throw new ErrorHandler("User not found", 404);
+                return null;
             }
-            return user;
+            return removePassword(user);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || "Error fetching user by email", 500);
         }
     }
 
-    async createUser(userData: UserCreationAttributes): Promise<{ user: User, token: string }> {
+    async createUser(userData: UserCreationAttributes): Promise<{ user: Partial<User>, token: string }> {
         try {
             const existingUser = await this.getUserByEmail(userData.email);
             if (existingUser) {
@@ -41,20 +42,23 @@ export class UserService {
             }
 
             const user = await this.userRepository.create(userData);
+            if (!user) {
+                throw new ErrorHandler("Error creating user", 500);
+            }
             const token = user.getJwtToken();
-            return { user, token };
+            return { user: removePassword(user), token }
         } catch (error) {
             throw new ErrorHandler((error as Error).message || "Error creating user", 500);
         }
     }
 
-    async updateUser(id: string, userData: Partial<User>): Promise<User | null> {
+    async updateUser(id: string, userData: Partial<User>): Promise<Partial<User> | null> {
         try {
             const updatedUser = await this.userRepository.update(id, userData);
             if (!updatedUser) {
                 throw new ErrorHandler("User not found", 404);
             }
-            return updatedUser;
+            return removePassword(updatedUser);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || "Error updating user", 500);
         }
@@ -68,14 +72,14 @@ export class UserService {
         }
     }
 
-    async loginUser(email: string, password: string): Promise<{ user: User, token: string }> {
+    async loginUser(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {
         try {
-            const user = await this.userRepository.authenticateUser(email, password);
+            const user = await this.userRepository.verifyAuth(email, password);
             if (!user) {
                 throw new ErrorHandler("Invalid email or password", 401);
             }
             const token = user.getJwtToken();
-            return { user, token };
+            return { user: removePassword(user), token };
         } catch (error) {
             throw new ErrorHandler((error as Error).message || "Error during user authentication", 500);
         }

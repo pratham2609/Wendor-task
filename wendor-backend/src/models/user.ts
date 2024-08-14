@@ -3,16 +3,16 @@ import { sequelize } from "../config/database.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import ErrorHandler from "../utils/errorHandler.js";
-import { UserAttributes, UserCreationAttributes } from "../types/user.js";
+import { UserAttributes, UserCreationAttributes, UserRoles } from "../types/user.js";
 import bcryptjs from "bcryptjs";
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
     public id!: string;
     public fullName!: string;
-    public petName!: string;
     public avatar!: string;
     public email!: string;
     public password!: string;
+    public role!: UserRoles
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -65,14 +65,6 @@ User.init(
                 len: [2, 100],
             },
         },
-        petName: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: "",
-            validate: {
-                len: [2, 100],
-            },
-        },
         avatar: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -97,28 +89,17 @@ User.init(
                 len: [6, 100], // Password must be at least 6 characters long
             },
         },
-        isEmailVerified: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false, // Default value is false
+        role: {
+            type: DataTypes.ENUM("user", "admin"),
             allowNull: false,
-        },
+            defaultValue: "user",
+        }
     },
     {
         sequelize,
         modelName: "User",
-        tableName: "Users", // Explicitly specify table name
+        tableName: "users",
         timestamps: true,
-        indexes: [
-            // Create an index on the `email` column
-            {
-                unique: true,
-                fields: ['email'],
-            },
-            // Create a composite index
-            {
-                fields: ['isEmailVerified', 'createdAt'],
-            },
-        ],
         hooks: {
             // Hash the password before saving the user
             beforeSave: async (user: User) => {

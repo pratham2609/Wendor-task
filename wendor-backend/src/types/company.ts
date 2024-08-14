@@ -13,7 +13,6 @@ export interface ICompanyRepository {
 export interface CompanyAttributes {
     id: string;
     company_name: string;
-    createdAt: Date;
 }
 
-export interface CompanyCreationAttributes extends Optional<CompanyAttributes, "id" | "createdAt"> { }
+export interface CompanyCreationAttributes extends Optional<CompanyAttributes, "id"> { }

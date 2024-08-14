@@ -1,9 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { UserService } from "../services/userService";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 import { UserRepository } from "../repository/userRepository";
 
-// Instantiate the UserService with a UserRepository instance
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 
@@ -28,7 +27,7 @@ export class UserController {
         res.status(200).json({ success: true, message: "User deleted" });
     });
 
-    static authenticateUser = catchAsyncError(async (req: Request, res: Response) => {
+    static verifyAuth = catchAsyncError(async (req: Request, res: Response) => {
         const { email, password } = req.body;
         const { user, token } = await userService.loginUser(email, password);
         res.status(200).json({ success: true, token, user });

@@ -1,16 +1,17 @@
 import express from "express";
 import { UserController } from "../controllers/user.controller";
+import { verifyAuth } from "../middlewares/auth";
 
 const router = express.Router();
 
 // Route to create a new user
 router.post("/register", UserController.createUser);
 
-router.get("/:id", UserController.getUserById)
-    .put("/:id", UserController.updateUser)
-    .delete("/:id", UserController.deleteUser);
+router.route("/:id").get(verifyAuth, UserController.getUserById)
+    .put(verifyAuth, UserController.updateUser)
+    .delete(verifyAuth, UserController.deleteUser);
 
 // Route to authenticate a user (login)
-router.post("/login", UserController.authenticateUser);
+router.post("/login", UserController.verifyAuth);
 
 export default router;

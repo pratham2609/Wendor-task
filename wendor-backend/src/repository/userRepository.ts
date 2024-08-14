@@ -18,7 +18,7 @@ export class UserRepository implements IUserRepository {
     async update(id: string, user: Partial<User>): Promise<User | null> {
         const existingUser = await User.findByPk(id);
         if (!existingUser) {
-            throw new Error('Product not found');
+            throw new ErrorHandler('User not found', 401);
         }
         return await existingUser.update(user);
     }
@@ -27,7 +27,7 @@ export class UserRepository implements IUserRepository {
         await User.destroy({ where: { id } });
     }
 
-    async authenticateUser(email: string, password: string): Promise<User | null> {
+    async verifyAuth(email: string, password: string): Promise<User | null> {
         const user = await this.findByEmail(email);
         if (!user) {
             throw new ErrorHandler("Invalid User", 401);

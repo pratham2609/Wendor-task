@@ -12,8 +12,8 @@ class ProductRepository implements IProductRepository {
         return await Product.findAll({ where: { category } });
     }
 
-    async findByCompany(companyName: string): Promise<Product[]> {
-        return await Product.findAll({ where: { copmany_name: companyName } });
+    async findByCompany(companyId: string): Promise<Product[]> {
+        return await Product.findAll({ where: { companyId } });
     }
 
     async getAllProducts(): Promise<Product[]> {

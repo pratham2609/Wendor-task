@@ -18,7 +18,7 @@ export class ProductController {
     });
 
     static findByCompany = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-        const products = await productService.findByCompany(req.params.companyName);
+        const products = await productService.findByCompany(req.params.companyId);
         res.status(200).json({ success: true, data: products });
     });
 
