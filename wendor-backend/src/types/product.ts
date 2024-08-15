@@ -14,9 +14,9 @@ export enum CategoryEnum {
 
 export interface IProductRepository {
     findById(id: string): Promise<Product | null>;
-    findByCategory(category: string): Promise<Product[]>;
-    findByCompany(companyId: string): Promise<Product[]>;
-    getAllProducts(): Promise<Product[]>;
+    findByCategory(category: string, page?:number, pageSize?: number): Promise<ProductsResponse>;
+    findByCompany(companyId: string, page?:number, pageSize?: number): Promise<ProductsResponse>;
+    getAllProducts(page?:number, pageSize?: number): Promise<ProductsResponse>;
     create(product: ProductCreationAttributes): Promise<Product>;
     update(id: string, product: Partial<Product>): Promise<Product>;
     delete(id: string): Promise<void>;
@@ -32,3 +32,8 @@ export interface ProductAttributes {
 }
 
 export interface ProductCreationAttributes extends Optional<ProductAttributes, "id"> { }
+
+export interface ProductsResponse {
+    products: Product[];
+    totalCount: number;
+}

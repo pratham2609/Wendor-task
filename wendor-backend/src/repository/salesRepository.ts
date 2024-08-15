@@ -1,8 +1,8 @@
-import { ISalesRepository, ISaleProductRepository, SaleCreationAttributes, SaleProductCreationAttributes } from '../types/sale';
+import { ISalesRepository, ISaleProductRepository, SaleCreationAttributes, SaleProductCreationAttributes, SalesResponse } from '../types/sale';
 import { Sale, SaleProduct } from '../models/sale';
 import Product from '../models/product';
-import Inventory from '../models/inventory';
 import { Transaction } from 'sequelize';
+import { sequelize } from '../config/database';
 
 class SalesRepository implements ISalesRepository {
     async findById(id: string): Promise<Sale | null> {
@@ -17,56 +17,45 @@ class SalesRepository implements ISalesRepository {
         }
     }
 
-    getProductWiseSales(productId: string): Promise<Sale[]> {
-        return Sale.findAll({
+    async getAllSales(page?: number, pageSize?: number): Promise<SalesResponse> {
+        const offset = page && pageSize ? (page - 1) * pageSize : undefined;
+        const limit = pageSize;
+
+        const { count, rows } = await Sale.findAndCountAll({
+            attributes: [
+                'id',
+                'totalPrice',
+                'createdAt',
+            ],
             include: [
                 {
                     model: SaleProduct,
-                    as: 'saleProducts',
-                    where: { productId },
+                    as: 'products',
                     include: [
                         {
                             model: Product,
                             as: 'product',
+                            attributes: ['name', 'price'],
                         },
-                        {
-                            model: Inventory,
-                            as: 'inventory',
-                        }
                     ],
                 },
             ],
+            limit,
+            offset,
         });
+        return { totalCount: count, sales: rows };
     }
 
-    async getAllSales(): Promise<Sale[]> {
-        return await Sale.findAll({
-            include: [
-                {
-                    model: SaleProduct,
-                    as: 'saleProducts',
-                    include: [
-                        {
-                            model: Product,
-                            as: 'product',
-                        },
-                        {
-                            model: Inventory,
-                            as: 'inventory',
-                        }
-                    ],
-                },
-            ],
-        });
-    }
+    async getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse> {
+        const offset = page && pageSize ? (page - 1) * pageSize : undefined;
+        const limit = pageSize;
 
-    async getUserSales(userId: string): Promise<Sale[]> {
-        return await Sale.findAll({
+        const { count, rows } = await Sale.findAndCountAll({
             where: { userId },
             include: [
                 {
                     model: SaleProduct,
-                    as: 'saleProducts',
+                    as: 'products',
                     include: [
                         {
                             model: Product,
@@ -75,8 +64,13 @@ class SalesRepository implements ISalesRepository {
                     ],
                 },
             ],
+            limit,
+            offset,
         });
+
+        return { totalCount: count, sales: rows };
     }
+
 }
 
 class SaleProductRepository implements ISaleProductRepository {

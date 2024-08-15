@@ -5,9 +5,8 @@ import { Sale, SaleProduct } from "../models/sale";
 export interface ISalesRepository {
     findById(id: string): Promise<Sale | null>;
     create(saleData: SaleCreationAttributes, transaction?: Transaction): Promise<Sale>;
-    getAllSales(): Promise<Sale[]>;
-    getUserSales(userId: string): Promise<Sale[]>;
-    getProductWiseSales(productId: string): Promise<Sale[]>;
+    getAllSales(page?: number, pageSize?: number): Promise<SalesResponse>;
+    getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse>;
 }
 
 export interface ISaleProductRepository {
@@ -28,10 +27,15 @@ export interface SaleProductAttributes {
     productId: string;
     quantity: number;
 }
-export interface SaleProductCreationAttributes extends Optional<SaleProductAttributes, 'id' | 'saleId'> { }
+export interface SaleProductCreationAttributes extends Optional<SaleProductAttributes, 'id'> { }
 
 
 export interface SaleProductRequest {
     productId: string;
     quantity: number;
+}
+
+export interface SalesResponse {
+    sales: Sale[];
+    totalCount: number;
 }

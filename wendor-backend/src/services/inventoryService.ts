@@ -1,5 +1,5 @@
 import Inventory from "../models/inventory";
-import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes, InventoryResponse } from "../types/inventory";
+import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes, InventoryModified, InventoryResponse } from "../types/inventory";
 import ErrorHandler from "../utils/errorHandler";
 
 class InventoryService {
@@ -17,7 +17,7 @@ class InventoryService {
         }
     }
 
-    async getProductDetails(productId: string): Promise<InventoryResponse> {
+    async getProductDetails(productId: string): Promise<InventoryModified> {
         try {
             return await this.inventoryRepository.getProductDetails(productId);
         } catch (error) {
@@ -33,7 +33,7 @@ class InventoryService {
         }
     }
 
-    async getAllInventories(): Promise<InventoryResponse[]> {
+    async getAllInventories(): Promise<InventoryResponse> {
         try {
             return await this.inventoryRepository.getAllInventories();
         } catch (error) {

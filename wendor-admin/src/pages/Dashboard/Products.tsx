@@ -22,7 +22,7 @@ export default function Products() {
   const [reload, setReload] = React.useState(false);
   const [productRes, setProductRes] = React.useState<ProductRes>({
     products: [],
-    totalProducts: 0,
+    totalCount: 0,
   });
   const [filter, setFilter] = React.useState({
     page: 1,
@@ -39,7 +39,7 @@ export default function Products() {
       .then((res) => {
         setProductRes({
           products: res.data.data.map((product: Product, index: number) => ({ ...product, sno: index + 1 })),
-          totalProducts: res.data.totalProducts,
+          totalCount: res.data.totalCount,
         });
         setLoading(false);
       })
@@ -113,7 +113,7 @@ export default function Products() {
         id={"sno"}
         page={filter.page}
         setPage={setPage}
-        totalCount={productRes?.totalProducts}
+        totalCount={productRes?.totalCount}
         isLoading={loading}
         data={productRes.products ?? []}
         renderCell={renderCell}

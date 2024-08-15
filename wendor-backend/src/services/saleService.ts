@@ -1,4 +1,4 @@
-import { ISaleProductRepository, ISalesRepository, SaleProductCreationAttributes, SaleProductRequest } from '../types/sale';
+import { ISaleProductRepository, ISalesRepository, SaleProductCreationAttributes, SaleProductRequest, SalesResponse } from '../types/sale';
 import { Sale, SaleProduct } from '../models/sale';
 import ErrorHandler from '../utils/errorHandler';
 import { IInventoryRepository } from '../types/inventory';
@@ -30,12 +30,12 @@ class SalesService {
 
     async createSale(userId: string, saleProducts: SaleProductRequest[]): Promise<Sale> {
         const transaction = await sequelize.transaction();
-    
+
         try {
             // Step 1: Calculate total price and check if the total available quantity is sufficient
             let totalPrice = 0;
             const productQuantities: { [productId: string]: number } = {};
-    
+
             for (const saleProduct of saleProducts) {
                 const productDetails = await this.inventoryService.getProductDetails(saleProduct.productId);
                 if (!productDetails) {
@@ -51,26 +51,26 @@ class SalesService {
                 if (productDetails.productPrice == null) {
                     throw new ErrorHandler(`Invalid price for product ${productDetails.productName}`, 400);
                 }
-    
+
                 totalPrice += productDetails.productPrice * saleProduct.quantity;
                 productQuantities[saleProduct.productId] = (productQuantities[saleProduct.productId] || 0) + saleProduct.quantity;
             }
-    
+
             // Check if totalPrice was calculated
             if (totalPrice <= 0) {
                 throw new ErrorHandler('Total price calculation error.', 500);
             }
-    
+
             // Step 2: Create the sale record
             const sale = await this.salesRepository.create({
                 userId,
                 totalPrice,
             }, transaction);
-    
+
             // Step 3: Deduct inventory and create sale products
             for (const [productId, totalQuantity] of Object.entries(productQuantities)) {
                 let remainingQuantity = totalQuantity;
-    
+
                 // Fetch all batches for the product, ordered by batch number
                 const inventoryBatches = await this.inventoryRepository.getProductBatchesForTx({
                     where: { productId },
@@ -78,19 +78,19 @@ class SalesService {
                     lock: transaction.LOCK.UPDATE, // Lock the rows to prevent concurrent modifications
                     transaction,
                 });
-    
+
                 for (const inventoryItem of inventoryBatches) {
                     if (remainingQuantity <= 0) break;
-    
+
                     const quantityToDeduct = Math.min(remainingQuantity, inventoryItem.quantity);
-    
+
                     // Deduct the quantity from the batch
                     inventoryItem.quantity -= quantityToDeduct;
                     remainingQuantity -= quantityToDeduct;
-    
+
                     await inventoryItem.save({ transaction });
                 }
-    
+
                 // If there are still remaining quantities after processing all batches, throw an error
                 if (remainingQuantity > 0) {
                     throw new ErrorHandler(
@@ -98,7 +98,7 @@ class SalesService {
                         500
                     );
                 }
-    
+
                 // Create a SaleProduct record only if the entire quantity has been successfully allocated
                 await this.saleProductRepository.create({
                     saleId: sale.id,
@@ -106,39 +106,31 @@ class SalesService {
                     quantity: totalQuantity,
                 }, transaction);
             }
-    
+
             // Commit the transaction
             await transaction.commit();
-    
+
             return sale;
-    
+
         } catch (error) {
             // Rollback the transaction in case of error
             await transaction.rollback();
             console.log(error);
             throw new ErrorHandler((error as Error).message || 'Error creating sale', 500);
         }
-    }    
-
-    async getProductWiseSales(productId: string): Promise<Sale[]> {
-        try {
-            return await this.salesRepository.getProductWiseSales(productId);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error fetching product-wise sales', 500);
-        }
     }
 
-    async getAllSales(): Promise<Sale[]> {
+    async getAllSales(page?: number, pageSize?: number): Promise<SalesResponse> {
         try {
-            return await this.salesRepository.getAllSales();
+            return await this.salesRepository.getAllSales(page, pageSize);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || 'Error fetching all sales', 500);
         }
     }
 
-    async getUserSales(userId: string): Promise<Sale[]> {
+    async getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse> {
         try {
-            return await this.salesRepository.getUserSales(userId);
+            return await this.salesRepository.getUserSales(userId, page, pageSize);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || 'Error fetching user sales', 500);
         }

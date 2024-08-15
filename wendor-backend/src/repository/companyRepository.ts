@@ -1,4 +1,4 @@
-import { ICompanyRepository, CompanyCreationAttributes } from "../types/company";
+import { ICompanyRepository, CompanyCreationAttributes, CompanyResponse } from "../types/company";
 import Company from "../models/company";
 
 class CompanyRepository implements ICompanyRepository {
@@ -11,8 +11,17 @@ class CompanyRepository implements ICompanyRepository {
         return await Company.findOne({ where: { company_name } });
     }
 
-    async getAllCompanies(): Promise<Company[]> {
-        return await Company.findAll();
+    async getAllCompanies(page?: number, pageSize?: number): Promise<CompanyResponse> {
+        const offset = page && pageSize ? (page - 1) * pageSize : undefined;
+        const limit = pageSize;
+        const { count, rows } = await Company.findAndCountAll({
+            limit,
+            offset
+        });
+        return {
+            totalCount: count,
+            companies: rows
+        }
     }
 
     async create(company: CompanyCreationAttributes): Promise<Company> {

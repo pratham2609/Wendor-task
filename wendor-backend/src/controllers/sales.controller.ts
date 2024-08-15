@@ -22,18 +22,17 @@ class SalesController {
         res.status(201).json({ success: true, data: sale });
     }
 
-    static async getProductWiseSales(req: Request, res: Response) {
-        const sales = await salesService.getProductWiseSales(req.params.productId);
-        res.json({ success: true, data: sales });
-    }
-
     static async getAllSales(req: Request, res: Response) {
-        const sales = await salesService.getAllSales();
+        const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : undefined;
+        const sales = await salesService.getAllSales(page, pageSize);
         res.json({ success: true, data: sales });
     }
 
-    static async getUserSales(req: Request, res: Response) {
-        const sales = await salesService.getUserSales(req.params.userId);
+    static async getUserSales(req: AuthenticatedRequest, res: Response) {
+        const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : undefined;
+        const sales = await salesService.getUserSales(req.user?.id!, page, pageSize);
         res.json({ success: true, data: sales });
     }
 }

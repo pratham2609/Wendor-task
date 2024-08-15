@@ -9,12 +9,10 @@ const router = express.Router();
 router.route("/").get(verifyAuth, SalesController.getUserSales)
 router.post("/create", verifyAuth, SalesController.createSale);
 // Route to get user sale by sale ID
-router.get('/:id', verifyAuth, SalesController.getSaleById);
+router.get('/sale/:id', verifyAuth, SalesController.getSaleById);
 
 
 // -- Admin routes --
-// Route to get product wise sales by admin
-router.get('/product/:productId', verifyAuth, verifyAdmin, SalesController.getProductWiseSales);
 
 // Route to get all sales by admin
 router.get('/all', verifyAuth, verifyAdmin, SalesController.getAllSales);

@@ -79,6 +79,23 @@ SaleProduct.init(
     }
 );
 
-Product.belongsToMany(Sale, { through: SaleProduct, as: 'sales', foreignKey: 'productId' });
+// Product.belongsToMany(Sale, { through: SaleProduct, as: 'sales', foreignKey: 'productId' });
+// Sale.belongsToMany(Product, { through: SaleProduct, as: 'products', foreignKey: 'saleId' });
+
+
+Sale.belongsTo(SaleProduct, {
+    as: 'products',
+    foreignKey: 'saleId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+});
+
+
+SaleProduct.belongsTo(Product, {
+    as: 'product',
+    foreignKey: 'productId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+});
 
 export { Sale, SaleProduct };

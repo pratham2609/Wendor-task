@@ -1,6 +1,8 @@
-import { IProductRepository } from "../types/product";
+import { IProductRepository, ProductsResponse } from "../types/product";
 import Product from "../models/product";
 import { ProductCreationAttributes } from "../types/product";
+import Company from "../models/company";
+import { sequelize } from "../config/database";
 
 class ProductRepository implements IProductRepository {
 
@@ -8,16 +10,58 @@ class ProductRepository implements IProductRepository {
         return await Product.findByPk(id);
     }
 
-    async findByCategory(category: string): Promise<Product[]> {
-        return await Product.findAll({ where: { category } });
+    async findByCategory(category: string, page?: number, pageSize?: number): Promise<ProductsResponse> {
+        const offset = page && pageSize ? (page - 1) * pageSize : undefined;
+        const limit = pageSize;
+
+        const { count, rows } = await Product.findAndCountAll({
+            where: { category },
+            limit,
+            offset,
+        });
+
+        return { totalCount: count, products: rows };
     }
 
-    async findByCompany(companyId: string): Promise<Product[]> {
-        return await Product.findAll({ where: { companyId } });
+    async findByCompany(companyId: string, page?: number, pageSize?: number): Promise<ProductsResponse> {
+        const offset = page && pageSize ? (page - 1) * pageSize : undefined;
+        const limit = pageSize;
+
+        const { count, rows } = await Product.findAndCountAll({
+            where: { companyId },
+            limit,
+            offset,
+        });
+
+        return { totalCount: count, products: rows };
     }
 
-    async getAllProducts(): Promise<Product[]> {
-        return await Product.findAll();
+    async getAllProducts(page?: number, pageSize?: number): Promise<ProductsResponse> {
+        const offset = page && pageSize ? (page - 1) * pageSize : undefined;
+        const limit = pageSize;
+
+        const { count, rows } = await Product.findAndCountAll({
+            attributes: [
+                'id',
+                'name',
+                'price',
+                'category',
+                'display_image_url',
+                'createdAt',
+                [sequelize.col('company.company_name'), 'companyName'],
+            ],
+            limit,
+            offset,
+            include: [
+                {
+                    model: Company,
+                    as: 'company',
+                    attributes: [],
+                }
+            ],
+        });
+
+        return { totalCount: count, products: rows };
     }
 
     async create(product: ProductCreationAttributes): Promise<Product> {

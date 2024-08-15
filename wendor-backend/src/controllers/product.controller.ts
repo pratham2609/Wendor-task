@@ -13,23 +13,22 @@ export class ProductController {
     });
 
     static findByCategory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-        const products = await productService.findByCategory(req.params.category);
-        res.status(200).json({ success: true, data: products });
+        const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : undefined;
+        const response = await productService.findByCategory(req.params.category, page, pageSize);
+        res.status(200).json({ success: true, data: response });
     });
 
     static findByCompany = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-        const products = await productService.findByCompany(req.params.companyId);
-        res.status(200).json({ success: true, data: products });
+        const response = await productService.findByCompany(req.params.companyId);
+        res.status(200).json({ success: true, data: response });
     });
 
     static getAllProducts = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-        const products = await productService.getAllProducts();
-        res.status(200).json({ success: true, data: products });
-    });
-
-    static getProductsList = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-        const products = await productService.getAllProducts();
-        res.status(200).json({ success: true, data: products });
+        const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : undefined;
+        const response = await productService.getAllProducts(page, pageSize);
+        res.status(200).json({ success: true, data: response });
     });
 
     static createProduct = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {

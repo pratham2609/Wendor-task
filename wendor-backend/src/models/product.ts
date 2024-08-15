@@ -62,4 +62,5 @@ Inventory.belongsTo(Product, {
     onDelete: 'CASCADE',
 });
 
+
 export default Product;

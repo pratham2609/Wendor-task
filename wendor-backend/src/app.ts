@@ -18,7 +18,8 @@ app.use(express.json({ limit: "50kb" }))
         })
     ).use(limiter)
     .use(helmet())
-    .use(bodyParser.urlencoded({ extended: true }));
+    .use(bodyParser.urlencoded({ extended: true }))
+    .use(handleError);
 
 // Welcome API
 app.get("/", (_: Request, res: Response) => {
@@ -28,12 +29,10 @@ app.get("/", (_: Request, res: Response) => {
     });
 });
 
-sequelize.sync();
+// sequelize.sync();
 // Routes
 app.use("/api/v1", routes);
 
-// Middleware for error handling
-app.use(handleError);
 
 // 404 error
 app.use((_req, res) => {

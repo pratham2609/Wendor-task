@@ -1,7 +1,7 @@
 import Product from "../models/product";
 import CompanyRepository from "../repository/companyRepository";
 import { ICompanyRepository } from "../types/company";
-import { IProductRepository, ProductCreationAttributes } from "../types/product";
+import { IProductRepository, ProductCreationAttributes, ProductsResponse } from "../types/product";
 import ErrorHandler from "../utils/errorHandler.js";
 
 interface ProductCreationRequest extends ProductCreationAttributes {
@@ -28,25 +28,25 @@ export class ProductService {
         }
     }
 
-    async findByCategory(category: string): Promise<Product[]> {
+    async findByCategory(category: string, page?:number, pageSize?: number): Promise<ProductsResponse> {
         try {
-            return await this.productRepository.findByCategory(category);
+            return await this.productRepository.findByCategory(category, page, pageSize);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || 'Error finding products by category', 500);
         }
     }
 
-    async findByCompany(companyName: string): Promise<Product[]> {
+    async findByCompany(companyName: string, page?:number, pageSize?: number): Promise<ProductsResponse> {
         try {
-            return await this.productRepository.findByCompany(companyName);
+            return await this.productRepository.findByCompany(companyName, page, pageSize);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || 'Error finding products by company name', 500);
         }
     }
 
-    async getAllProducts(): Promise<Product[]> {
+    async getAllProducts(page?:number, pageSize?: number): Promise<ProductsResponse> {
         try {
-            return await this.productRepository.getAllProducts();
+            return await this.productRepository.getAllProducts(page, pageSize);
         } catch (error) {
             throw new ErrorHandler((error as Error).message || 'Error retrieving products', 500);
         }

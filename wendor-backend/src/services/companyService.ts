@@ -1,4 +1,4 @@
-import { ICompanyRepository, CompanyCreationAttributes } from "../types/company";
+import { ICompanyRepository, CompanyCreationAttributes, CompanyResponse } from "../types/company";
 import Company from "../models/company";
 import ErrorHandler from "../utils/errorHandler";
 
@@ -9,7 +9,7 @@ class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    async getAllCompanies(): Promise<Company[]> {
+    async getAllCompanies(): Promise<CompanyResponse> {
         try {
             return await this.companyRepository.getAllCompanies();
         } catch (error) {

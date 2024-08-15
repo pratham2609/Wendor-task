@@ -1,7 +1,7 @@
 import { sequelize } from "../config/database";
 import Inventory from "../models/inventory";
 import Product from "../models/product";
-import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes } from "../types/inventory";
+import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes, InventoryModified, InventoryResponse } from "../types/inventory";
 import ErrorHandler from "../utils/errorHandler";
 import Company from "../models/company";
 
@@ -73,8 +73,10 @@ class InventoryRepository implements IInventoryRepository {
         });
     }
 
-    async getAllInventories(): Promise<any[]> {
-        const inventories = await Inventory.findAll({
+    async getAllInventories(page?: number, pageSize?: number): Promise<InventoryResponse> {
+        const offset = page && pageSize ? (page - 1) * pageSize : undefined;
+        const limit = pageSize;
+        const inventory = await Inventory.findAll({
             attributes: [
                 'productId',
                 [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
@@ -98,8 +100,17 @@ class InventoryRepository implements IInventoryRepository {
             ],
             group: ['productId', 'product.id', 'product.name', 'product.price', 'product.company.id', 'product.company.company_name'],
             having: sequelize.literal('SUM(quantity) > 0'),
+            limit,
+            offset,
         });
-        return inventories;
+        const count = await Inventory.count({
+            distinct: true,
+            col: 'productId',
+        });
+        return {
+            totalCount: inventory.length == 0 ? 0 : count,
+            inventory
+        };
     }
 
     async getProductDetails(productId: string): Promise<any> {
