@@ -9,7 +9,7 @@ const router = express.Router();
 
 // Use Routes
 router.use("/user", userRoutes);
-router.use("/product", productRoutes);
+router.use("/products", productRoutes);
 router.use("/company", companyRoutes);
 router.use("/inventory", inventoryRoutes);
 router.use("/sales", salesRoutes);

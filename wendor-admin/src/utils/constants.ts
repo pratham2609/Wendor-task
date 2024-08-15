@@ -3,6 +3,8 @@ import { MdDashboard } from "react-icons/md";
 import { IconType } from "react-icons";
 import { BsInboxesFill, BsBoxes } from "react-icons/bs";
 import { HiOfficeBuilding } from "react-icons/hi";
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+
 
 
 interface DashboardNavItems {
@@ -26,6 +28,11 @@ export const dashboardNavs: DashboardNavItems[] = [
         name: 'inventory',
         url: '/inventory',
         icon: BsInboxesFill
+    },
+    {
+        name: 'sales',
+        url: '/sales',
+        icon: MdOutlineAccountBalanceWallet
     },
     {
         name: 'companies',
