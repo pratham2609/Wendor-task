@@ -49,7 +49,7 @@ export default function Companies() {
     document.title = "Wendor | Companies"
   }, []);
 
-  const renderCell = React.useCallback((company: string, columnKey: string) => {
+  const renderCell = React.useCallback((company: Company, columnKey: string) => {
     const cellValue = company[columnKey];
     switch (columnKey) {
       case "sno":

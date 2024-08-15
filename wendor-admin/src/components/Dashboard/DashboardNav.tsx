@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { dashboardNavs } from "../../utils/constants";
 
 export default function DashboardNav() {
-    // @ts-expect-error context error
     const { handleLogout } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate()

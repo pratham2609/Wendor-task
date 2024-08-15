@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { Key } from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon } from "../../components/Icons";
@@ -52,7 +52,7 @@ export default function Inventory() {
     document.title = "Wendor | Inventory"
   }, []);
 
-  const renderCell = React.useCallback((inventory: string, columnKey: string) => {
+  const renderCell = React.useCallback((inventory: InventoryItem, columnKey: string) => {
     const cellValue = inventory[columnKey];
     switch (columnKey) {
       case "sno":

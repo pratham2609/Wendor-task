@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { Key } from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon } from "../../components/Icons";
@@ -51,7 +51,7 @@ export default function Products() {
     document.title = "Wendor | Products"
   }, []);
 
-  const renderCell = React.useCallback((product: string, columnKey: string) => {
+  const renderCell = React.useCallback((product: Product, columnKey: string) => {
     const cellValue = product[columnKey];
     switch (columnKey) {
       case "sno":

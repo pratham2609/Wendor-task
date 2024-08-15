@@ -11,18 +11,19 @@ import {
 import React from "react";
 import { TableColums } from "../../../types/Table";
 
-interface TableContainerProps {
-    data: any[];
+// Make the TableContainerProps interface generic
+interface TableContainerProps<T> {
+    data: T[];
     page?: number;
     setPage: (page: number) => void;
     isLoading?: boolean;
     columns: TableColums[];
     id: string;
-    renderCell: (item: any, columnKey: string) => JSX.Element;
+    renderCell: (item: T, columnKey: keyof T | string) => JSX.Element;
     totalCount?: number;
 }
 
-export default function TableContainer({ data, page = 1, setPage, isLoading = false, columns, id, renderCell, totalCount = 0 }: TableContainerProps) {
+export default function TableContainer<T>({ data, page = 1, setPage, isLoading = false, columns, id, renderCell, totalCount = 0 }: TableContainerProps<T>) {
     const rowsPerPage = 14;
 
     const pages = React.useMemo(() => {
@@ -73,9 +74,13 @@ export default function TableContainer({ data, page = 1, setPage, isLoading = fa
                 loadingState={loadingState}
                 emptyContent={"No data to display."}
             >
-                {(item) => (
-                    <TableRow key={item[id]}>
-                        {(columnKey) => <TableCell className="dm_sans">{renderCell(item, columnKey)}</TableCell>}
+                {(item: T) => (
+                    <TableRow key={item[id] as unknown as string}>
+                        {(columnKey: string) => (
+                            <TableCell className="dm_sans">
+                                {renderCell(item, columnKey)}
+                            </TableCell>
+                        )}
                     </TableRow>
                 )}
             </TableBody>
