@@ -1,6 +1,5 @@
-import React from 'react'
 
-export default function w() {
+export default function Settings() {
   return (
     <div>w</div>
   )

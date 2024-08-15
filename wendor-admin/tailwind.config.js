@@ -10,15 +10,11 @@ export default {
         'login-page': "url('/wendor.jpg')",
       },
       colors: {
-        mainYellow: "#FFAA3B",
-        pink: "#D2416E",
+        blue: "#1A55E3",
+        pink: "#FE9496",
         teal: "#0DB1AD",
-        grey: "#D0D0D0",
-        purple: "#7042C9",
-        blue: "#197BD2",
-        lightGrey: "#D9D9D9",
-        lightBlack: "#1E1E1E",
-        secondaryBlack: "#3A3A3A"
+        lightBlue: "#4BCBEB",
+        purple: "#9E58FF"
       }
     },
   },

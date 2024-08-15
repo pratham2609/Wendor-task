@@ -14,4 +14,7 @@ router.post("/register", UserController.createUser);
 // Route to authenticate a user (login)
 router.post("/login", UserController.verifyAuth);
 
+// Route to authenticate an admin
+router.post("/admin", UserController.verifyAdminAuth);
+
 export default router;

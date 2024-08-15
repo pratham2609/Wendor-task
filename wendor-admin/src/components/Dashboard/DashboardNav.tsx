@@ -1,41 +1,13 @@
-import { MdDashboard, MdLogout } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 import { AuthContext } from '../../context/AuthContext'
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { IoPerson, IoSettingsOutline } from "react-icons/io5";
-import { LuStethoscope } from "react-icons/lu";
-import { RiArrowGoBackLine } from "react-icons/ri";
 import toast from "react-hot-toast";
+import { dashboardNavs } from "../../utils/constants";
 
 export default function DashboardNav() {
+    // @ts-expect-error context error
     const { handleLogout } = useContext(AuthContext);
-    const dashboardNavs = [
-        {
-            name: 'dashboard',
-            url: '/dashboard',
-            icon: <MdDashboard />
-        },
-        {
-            name: 'products',
-            url: '/products',
-            icon: <IoPerson />
-        },
-        {
-            name: 'inventory',
-            url: '/inventory',
-            icon: <LuStethoscope />
-        },
-        {
-            name: 'companies',
-            url: '/orders',
-            icon: <RiArrowGoBackLine />
-        },
-        {
-            name: 'settings',
-            url: '/settings/general_analytics',
-            icon: <IoSettingsOutline />
-        },
-    ]
     const location = useLocation();
     const navigate = useNavigate()
     return (
@@ -47,9 +19,11 @@ export default function DashboardNav() {
                         <ul className='w-full flex flex-col items-center gap-2'>
                             {
                                 dashboardNavs.map((nav, i) => (
-                                    <li key={i} className={'xl:rounded-[20px] rounded-2xl font-semibold 2xl:text-xl xl:text-base md:text-sm text-xs w-full 2xl:pl-8 xl:pl-6 px-5 xl:py-4 lg:py-3 py-2  ' + (nav.url == location.pathname || (location.pathname.includes("settings") && nav.url.includes("settings")) ? "bg-mainYellow text-white" : " bg-transparent text-black")}>
+                                    <li key={i} className={'xl:rounded-[20px] rounded-2xl font-semibold 2xl:text-xl xl:text-base md:text-sm text-xs w-full 2xl:pl-8 xl:pl-6 px-5 xl:py-4 lg:py-3 py-2  '
+                                        + (nav.url == location.pathname || (location.pathname.includes("settings") && nav.url.includes("settings")) ?
+                                            "bg-pink text-white" : " bg-transparent text-black")}>
                                         <a href={nav.url} className='flex items-center justify-start w-full gap-4'>
-                                            {nav.icon}
+                                            <nav.icon />
                                             <span className='capitalize'>{nav.name}</span>
                                         </a>
                                     </li>
@@ -63,8 +37,7 @@ export default function DashboardNav() {
                         handleLogout();
                         toast.success("Logged out seccessfully!");
                         navigate(`/login`);
-                    }} className='w-full text-[#E74C3C] text-xl hover:bg-secondaryBlack 
-                    hover:bg-opacity-15 transition duration-200 ease-linear py-3 rounded-[20px] flex justify-center items-center gap-4'>Logout <MdLogout /></button>
+                    }} className='w-full text-white text-xl hover:bg-opacity-100 bg-opacity-80 bg-[#E74C3C] transition duration-200 ease-linear py-3 rounded-lg flex justify-center items-center gap-4'>Logout <MdLogout /></button>
                 </div>
             </div>
         </div>

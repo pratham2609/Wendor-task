@@ -7,8 +7,8 @@ export class UserRepository implements IUserRepository {
         return await User.findOne({ where: { id } });
     }
 
-    async findByEmail(email: string): Promise<User | null> {
-        return await User.findOne({ where: { email } });
+    async findByEmail(email: string, role?: string): Promise<User | null> {
+        return await User.findOne({ where: { email, role } });
     }
 
     async create(user: UserCreationAttributes): Promise<User> {
@@ -28,7 +28,7 @@ export class UserRepository implements IUserRepository {
     }
 
     async verifyAuth(email: string, password: string): Promise<User | null> {
-        const user = await this.findByEmail(email);
+        const user = await this.findByEmail(email, 'user');
         if (!user) {
             throw new ErrorHandler("Invalid User", 401);
         }
@@ -38,6 +38,19 @@ export class UserRepository implements IUserRepository {
             throw new ErrorHandler("Invalid password", 401);
         }
 
+        return user;
+    }
+
+    async verifyAdminAuth(email: string, password: string): Promise<User | null> {
+        const user = await this.findByEmail(email, "admin");
+        if (!user) {
+            throw new ErrorHandler("Invalid User", 401);
+        }
+
+        const isPasswordValid = await user.validatePassword(password);
+        if (!isPasswordValid) {
+            throw new ErrorHandler("Invalid password", 401);
+        }
         return user;
     }
 }

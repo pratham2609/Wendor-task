@@ -40,7 +40,7 @@ const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) =
             type: "loginUser",
             payload: user,
         });
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("admin", JSON.stringify(user));
     };
 
     const resetUser = () => {

@@ -54,7 +54,7 @@ const RouterLinks = createBrowserRouter(
                     }
                 />
                 <Route
-                    path="/settings/:tab"
+                    path="/settings"
                     element={
                         <Suspense fallback={<Loader />}>{<Settings />}</Suspense>
                     }

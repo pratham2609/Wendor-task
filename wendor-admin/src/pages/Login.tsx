@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import Input from "../components/Input";
 import { axiosInstance } from "../utils/axiosInstance";
 import { useAuthContext } from "../context/AuthContext";
@@ -6,7 +7,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-    const { handleLogin } = useAuthContext();
+    const { handleLogin, user } = useAuthContext();
     const navigate = useNavigate();
     const [formData, setFormData] = useState<{ email: string, password: string }>({
         email: "",
@@ -23,9 +24,10 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const res = await axiosInstance.post("/user/login", {
+            const res = await axiosInstance.post("/user/admin", {
                 email: formData.email,
-                password: formData.password
+                password: formData.password,
+                role: "admin"
             });
             if (res.data.success) {
                 handleLogin({ user: res.data?.user, token: res.data?.token })
@@ -36,7 +38,12 @@ export default function Login() {
             console.log(error);
             toast.error((error as Error).message)
         }
-    }
+    };
+
+    useEffect(() => {
+        document.title = "ClickMate | Login"
+        if (user?.id !== "") navigate("/dashboard");
+    }, [])
     return (
         <main className="w-screen h-screen poppins">
             <div className="h-full w-full flex items-center justify-center bg-login-page bg-no-repeat relative bg-cover">

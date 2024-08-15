@@ -29,8 +29,14 @@ export class UserController {
     });
 
     static verifyAuth = catchAsyncError(async (req: Request, res: Response) => {
-        const { email, password } = req.body;
+        const { email, password, role } = req.body;
         const { user, token } = await userService.loginUser(email, password);
+        res.status(200).json({ success: true, token, user });
+    });
+
+    static verifyAdminAuth = catchAsyncError(async (req: Request, res: Response) => {
+        const { email, password, role } = req.body;
+        const { user, token } = await userService.loginAdmin(email, password);
         res.status(200).json({ success: true, token, user });
     });
 }

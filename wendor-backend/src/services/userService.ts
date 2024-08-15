@@ -24,7 +24,7 @@ export class UserService {
 
     async getUserByEmail(email: string): Promise<Partial<User> | null> {
         try {
-            const user = await this.userRepository.findByEmail(email);
+            const user = await this.userRepository.findByEmail(email, "user");
             if (!user) {
                 return null;
             }
@@ -75,6 +75,19 @@ export class UserService {
     async loginUser(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {
         try {
             const user = await this.userRepository.verifyAuth(email, password);
+            if (!user) {
+                throw new ErrorHandler("Invalid email or password", 401);
+            }
+            const token = user.getJwtToken();
+            return { user: removePassword(user), token };
+        } catch (error) {
+            throw new ErrorHandler((error as Error).message || "Error during user authentication", 500);
+        }
+    }
+
+    async loginAdmin(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {
+        try {
+            const user = await this.userRepository.verifyAdminAuth(email, password);
             if (!user) {
                 throw new ErrorHandler("Invalid email or password", 401);
             }
