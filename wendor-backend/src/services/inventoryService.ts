@@ -41,6 +41,14 @@ class InventoryService {
         }
     }
 
+    async getSingleProductQuantity(productId: string): Promise<number> {
+        try {
+            return await this.inventoryRepository.getProductQuantity(productId);
+        } catch (error) {
+            throw new ErrorHandler((error as Error).message || 'Error retrieving product quantity', 500);
+        }
+    }
+
     async addInventory(inventoryData: InventoryCreationAttributes): Promise<Inventory> {
         try {
             // const check if the same batch is there then update the quantity 

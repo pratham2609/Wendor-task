@@ -7,6 +7,7 @@ export interface IInventoryRepository {
     findProductByBatch(productId: string, batchNo: string): Promise<Inventory | null>;
     getAllInventories(page?: number, pageSize?: number): Promise<InventoryResponse>;
     getProductDetails(productId: string): Promise<InventoryModified>;
+    getProductQuantity(productId: string): Promise<number>;
     create(inventoryData: InventoryCreationAttributes): Promise<Inventory>;
     update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<void>;
     delete(id: string): Promise<void>;

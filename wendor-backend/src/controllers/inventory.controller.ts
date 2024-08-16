@@ -31,6 +31,12 @@ export class InventoryController {
         res.status(200).json({ success: true, data: inventories });
     });
 
+    // Get single product quantity
+    static getSinleProductQuantity = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+        const quantity = await inventoryService.getSingleProductQuantity(req.params.productId);
+        res.status(200).json({ success: true, data: quantity });
+    });
+
     // Create new inventory
     static createInventory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
         const inventory = await inventoryService.addInventory(req.body);

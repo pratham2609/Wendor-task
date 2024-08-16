@@ -8,6 +8,7 @@ class Sale extends Model<SaleAttributes, SaleCreationAttributes> {
     public id!: string;
     public userId!: string;
     public totalPrice!: number;
+    public createdAt!: Date;
 }
 
 Sale.init(
@@ -79,23 +80,24 @@ SaleProduct.init(
     }
 );
 
-// Product.belongsToMany(Sale, { through: SaleProduct, as: 'sales', foreignKey: 'productId' });
-// Sale.belongsToMany(Product, { through: SaleProduct, as: 'products', foreignKey: 'saleId' });
 
+Sale.hasMany(SaleProduct, { foreignKey: 'saleId', as: 'saleProducts' });
+SaleProduct.belongsTo(Sale, { foreignKey: 'saleId' });
+SaleProduct.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
+Product.hasMany(SaleProduct, { foreignKey: 'productId', as: 'saleProducts' });
 
-Sale.belongsTo(SaleProduct, {
-    as: 'products',
-    foreignKey: 'saleId',
-    targetKey: 'id',
-    onDelete: 'CASCADE',
-});
+// Sale.belongsTo(SaleProduct, {
+//     as: 'products',
+//     foreignKey: 'saleId',
+//     targetKey: 'id',
+//     onDelete: 'CASCADE',
+// });
 
-
-SaleProduct.belongsTo(Product, {
-    as: 'product',
-    foreignKey: 'productId',
-    targetKey: 'id',
-    onDelete: 'CASCADE',
-});
+// SaleProduct.belongsTo(Product, {
+//     as: 'product',
+//     foreignKey: 'productId',
+//     targetKey: 'id',
+//     onDelete: 'CASCADE',
+// });
 
 export { Sale, SaleProduct };

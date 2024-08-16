@@ -35,7 +35,14 @@ export interface SaleProductRequest {
     quantity: number;
 }
 
+export interface SingleSaleResponse {
+    id: string;
+    totalPrice: number;
+    createdAt: Date;
+    products: SaleProductRequest[];
+}
+
 export interface SalesResponse {
-    sales: Sale[];
+    sales: SingleSaleResponse[];
     totalCount: number;
 }

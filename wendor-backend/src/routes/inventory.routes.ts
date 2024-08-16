@@ -6,10 +6,11 @@ const router = express.Router();
 
 
 // -- Common routes --
+
 // Route to get all products in inventory
 router.get("/", InventoryController.getAllProductsInInventory)
 router.get("/product/one/:productId", InventoryController.getProductDetails);
-
+router.get('/product/one/quantity/:productId', verifyAuth, InventoryController.getSinleProductQuantity);
 
 // -- Admin Routes --
 

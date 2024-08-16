@@ -162,6 +162,17 @@ class InventoryRepository implements IInventoryRepository {
         return inventories;
     }
 
+    async getProductQuantity(productId: string): Promise<number> {
+        const inventories = await Inventory.findAll({
+            where: { productId },
+            attributes: [
+                [sequelize.fn('SUM', sequelize.col('quantity')), 'quantity'],
+            ],
+            group: ['productId'],
+        });
+        return inventories.length > 0 ? inventories[0].quantity : 0;
+    }
+
     async create(inventoryData: InventoryCreationAttributes): Promise<Inventory> {
         return await Inventory.create(inventoryData);
     }
