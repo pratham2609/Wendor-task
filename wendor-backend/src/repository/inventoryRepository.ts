@@ -7,8 +7,16 @@ import { ApiError } from "../middlewares/ApiError";
 
 class InventoryRepository implements IInventoryRepository {
 
+    async findByInventoryId(inventoryId: string): Promise<Inventory> {
+        const inventory = await Inventory.findByPk(inventoryId);
+        if (!inventory) {
+            throw new ApiError(404, 'Inventory not found');
+        }
+        return inventory;
+    }
+
     async findByProductId(productId: string): Promise<Inventory[]> {
-        return await Inventory.findAll({
+        const inventory = await Inventory.findAll({
             where: { productId },
             attributes: [
                 'id',
@@ -17,6 +25,7 @@ class InventoryRepository implements IInventoryRepository {
                 'batchNo',
                 [sequelize.col('product.name'), 'productName'],
                 [sequelize.col('product.price'), 'productPrice'],
+                [sequelize.col('product.display_image_url'), 'display_image_url'],
                 [sequelize.col('product.company.company_name'), 'companyName'],
             ],
             include: [
@@ -33,7 +42,9 @@ class InventoryRepository implements IInventoryRepository {
                     ],
                 }
             ],
+            order: [['quantity', 'DESC']]
         });
+        return inventory;
     }
 
     async getProductBatchesForTx(query: object): Promise<Inventory[]> {
@@ -141,6 +152,7 @@ class InventoryRepository implements IInventoryRepository {
                 [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
                 [sequelize.col('product.name'), 'productName'],
                 [sequelize.col('product.price'), 'productPrice'],
+                [sequelize.col('product.display_image_url'), 'display_image_url'],
                 [sequelize.col('product.company.company_name'), 'companyName'],
             ],
             include: [
@@ -185,13 +197,16 @@ class InventoryRepository implements IInventoryRepository {
         await existingInventory.update(inventoryData);
     }
 
-    async delete(id: string): Promise<void> {
-        const inventory = await Inventory.findByPk(id);
-        if (inventory) {
-            await inventory.destroy();
-        } else {
+    async deleteAllProductInventory(id: string): Promise<void> {
+        await Inventory.destroy({ where: { productId: id } });
+    }
+
+    async deleteProductBatchInventory(inventoryId: string): Promise<void> {
+        const inventory = await Inventory.findByPk(inventoryId);
+        if (!inventory) {
             throw new ApiError(404, 'Inventory not found');
         }
+        await inventory.destroy();
     }
 }
 

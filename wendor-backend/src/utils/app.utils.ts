@@ -8,7 +8,8 @@ export const Categories = {
     DAIRY: 'Dairy',
     BAKED: 'Baked',
     FROZEN: 'Frozen',
-    Medicines: 'Medicines'
+    MEDICINES: 'Medicines',
+    DAILY_USE: 'Daily use'
 };
 
 export const removePassword = (user: User): Partial<User> => {

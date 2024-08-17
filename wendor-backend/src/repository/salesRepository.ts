@@ -33,7 +33,7 @@ class SalesRepository implements ISalesRepository {
                         {
                             model: Product,
                             as: 'product',
-                            attributes: ['name'] // Include only the product name
+                            attributes: ['name', 'price']
                         }
                     ]
                 }
@@ -41,18 +41,19 @@ class SalesRepository implements ISalesRepository {
             limit,
             offset,
         });
-
-
-        const sales = rows.map(sale => ({
-            id: sale.id,
-            totalPrice: sale.totalPrice,
-            createdAt: sale.createdAt,
-            // @ts-ignore
-            products: sale.saleProducts.map(saleProduct => ({
-                name: saleProduct.product.name,
-                quantity: saleProduct.quantity,
-            }))
-        }));
+        const sales = rows.map(sale => {
+            return {
+                id: sale.id,
+                totalPrice: sale.totalPrice,
+                createdAt: sale.createdAt,
+                // @ts-ignore
+                products: sale.saleProducts.map(saleProduct => ({
+                    name: saleProduct.product.name,
+                    quantity: saleProduct.quantity,
+                    price: saleProduct.product.price
+                }))
+            };
+        });
         return { totalCount: count, sales: sales };
     }
 

@@ -32,7 +32,24 @@ export class ProductController {
     });
 
     static createProduct = catchAsyncError(async (req: Request, res: Response) => {
-        const product = await productService.createProduct(req.body);
+        const {
+            name,
+            price,
+            category,
+            barcodeNo,
+            companyId,
+            image_url,
+            company_name
+        } = req.body;
+        const product = await productService.createProduct({
+            name,
+            price,
+            category,
+            barcodeNo,
+            companyId,
+            display_image_url: req.fileUrl ?? image_url,
+            company_name
+        });
         res.status(201).json({ success: true, data: product });
     });
 
@@ -44,5 +61,10 @@ export class ProductController {
     static deleteProduct = catchAsyncError(async (req: Request, res: Response) => {
         await productService.deleteProduct(req.params.id);
         res.status(200).json({ success: true, message: "Product deleted" });
+    });
+
+    static findByBarcode = catchAsyncError(async (req: Request, res: Response) => {
+        const product = await productService.findByBarcode(req.params.barcodeNo);
+        res.status(200).json({ success: true, data: product });
     });
 }

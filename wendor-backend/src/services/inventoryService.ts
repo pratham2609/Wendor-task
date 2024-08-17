@@ -51,25 +51,34 @@ class InventoryService {
         }
     }
 
-    async updateInventory(productId: string, batchNo: string, inventoryData: Partial<InventoryAttributes>): Promise<void> {
+    async updateInventory(inventoryId: string, inventoryData: Partial<InventoryAttributes>): Promise<void> {
         try {
-            const existingInventory = await this.inventoryRepository.findProductByBatch(productId, batchNo);
+            const existingInventory = await this.inventoryRepository.findByInventoryId(inventoryId);
             if (!existingInventory) {
                 throw new ApiError(404, 'Inventory not found');
             }
-            await this.inventoryRepository.update(existingInventory.id, inventoryData);
+            await this.inventoryRepository.update(inventoryId, inventoryData);
         } catch (error) {
             throw new ApiError(500, (error as Error).message || 'Error updating inventory');
         }
     }
 
-    async deleteInventory(id: string): Promise<void> {
+    async deleteInventoryBatch(inventoryId: string): Promise<void> {
         try {
-            await this.inventoryRepository.delete(id);
+            await this.inventoryRepository.deleteProductBatchInventory(inventoryId);
         } catch (error) {
             throw new ApiError(500, (error as Error).message || 'Error deleting inventory');
         }
     }
+
+    async deleteProductInventory(productId: string): Promise<void> {
+        try {
+            await this.inventoryRepository.deleteAllProductInventory(productId);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error deleting inventory');
+        }
+    }
+
 }
 
 export default InventoryService;

@@ -1,9 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { UserService } from "../services/userService";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 import { UserRepository } from "../repository/userRepository";
-import { AuthenticatedRequest } from "../middlewares/auth";
-import { ApiError } from "../middlewares/ApiError";
 
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
@@ -14,17 +12,17 @@ export class UserController {
         res.status(201).json({ success: true, token, data: user });
     });
 
-    static getUser = catchAsyncError(async (req: AuthenticatedRequest, res: Response) => {
+    static getUser = catchAsyncError(async (req: Request, res: Response) => {
         const user = await userService.getUserById(req.user?.id!);
         res.status(200).json({ success: true, data: user });
     })
 
-    static updateUser = catchAsyncError(async (req: AuthenticatedRequest, res: Response) => {
+    static updateUser = catchAsyncError(async (req: Request, res: Response) => {
         const user = await userService.updateUser(req.user?.id!, req.body);
         res.status(200).json({ success: true, data: user });
     });
 
-    static deleteUser = catchAsyncError(async (req: AuthenticatedRequest, res: Response) => {
+    static deleteUser = catchAsyncError(async (req: Request, res: Response) => {
         await userService.deleteUser(req.user?.id!);
         res.status(200).json({ success: true, message: "User deleted" });
     });

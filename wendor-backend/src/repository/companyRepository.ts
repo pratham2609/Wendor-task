@@ -17,7 +17,8 @@ class CompanyRepository implements ICompanyRepository {
         const limit = pageSize;
         const { count, rows } = await Company.findAndCountAll({
             limit,
-            offset
+            offset,
+            order: ['createdAt']
         });
         return {
             totalCount: count,
@@ -26,6 +27,10 @@ class CompanyRepository implements ICompanyRepository {
     }
 
     async create(company_name: string): Promise<Company> {
+        const company = await this.findByName(company_name);
+        if (company) {
+            throw new ApiError(400, 'Company already exists');
+        }
         return await Company.create({ company_name });
     }
 

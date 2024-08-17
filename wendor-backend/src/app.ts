@@ -28,7 +28,7 @@ app.get("/", (_: Request, res: Response) => {
     });
 });
 
-// sequelize.sync();
+sequelize.sync();
 // Routes
 app.use("/api/v1", routes);
 

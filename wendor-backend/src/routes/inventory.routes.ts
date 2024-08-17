@@ -12,17 +12,21 @@ router.get("/", InventoryController.getAllProductsInInventory)
 router.get("/product/one/:productId", InventoryController.getProductDetails);
 router.get('/product/one/quantity/:productId', verifyAuth, InventoryController.getSinleProductQuantity);
 
+
 // -- Admin Routes --
 
 // Route to create inventory
 router.post("/add", verifyAuth, verifyAdmin, InventoryController.createInventory);
 
 // Route to get inventory by product ID and batch number
-router.get('/product/:productId', verifyAuth, verifyAdmin, InventoryController.getInventoryByProduct);
-router.get('/product/:productId/:batchNo', verifyAuth, verifyAdmin, InventoryController.getInventoryByProductAndBatch);
+router.route('/product/:productId').get(verifyAuth, verifyAdmin, InventoryController.getInventoryByProduct)
+    .delete(verifyAuth, verifyAdmin, InventoryController.deleteProductInventory);
+
+    router.get("/product/:productId/:batchNo", verifyAuth, verifyAdmin, InventoryController.getInventoryByProductAndBatch)
 
 // Route to update and delete inventory
-router.route("/product/:productId/:batchNo").put(verifyAuth, verifyAdmin, InventoryController.updateInventory)
-    .delete(verifyAuth, verifyAdmin, InventoryController.deleteInventory);
+
+router.route("/product/batch/:inventoryId").delete(verifyAuth, verifyAdmin, InventoryController.deleteProductBatchInventory)
+    .put(verifyAuth, verifyAdmin, InventoryController.updateInventory)
 
 export default router;

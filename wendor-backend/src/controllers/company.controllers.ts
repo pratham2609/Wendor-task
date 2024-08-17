@@ -13,8 +13,9 @@ export class CompanyController {
     });
 
     static createCompany = catchAsyncError(async (req: Request, res: Response) => {
-        const company = await companyService.createCompany(req.body);
-        res.status(201).json({ success: true, data: company });
+        const { company_name } = req.body;
+        const company = await companyService.createCompany(company_name);
+        res.status(200).json({ success: true, data: company });
     });
 
     static updateCompany = catchAsyncError(async (req: Request, res: Response) => {
@@ -23,7 +24,8 @@ export class CompanyController {
     });
 
     static deleteCompany = catchAsyncError(async (req: Request, res: Response) => {
-        await companyService.deleteCompany(req.params.id);
+        const { id } = req.params;
+        await companyService.deleteCompany(id);
         res.status(200).json({ success: true, message: "Company deleted" });
     });
 }

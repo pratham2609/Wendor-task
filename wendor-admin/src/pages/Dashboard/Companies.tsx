@@ -2,34 +2,49 @@
 import React from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
-import { DeleteIcon, EditIcon } from "../../components/Icons";
+import { DeleteIcon } from "../../components/Icons";
 import ReloadBtn from "../../components/Dashboard/ReloadBtn";
 import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { Company, CompanyRes } from "../../types/Companies";
 import { TableColums } from "../../types/Table";
+import CompanyOperationsModal from "../../components/Modals/CompanyOperationsModal";
+import toast from "react-hot-toast";
 
 export default function Companies() {
   const columns: TableColums[] = [
     { name: "SNo.", uid: "sno" },
     { name: "Name", uid: "company_name" },
+    { name: "Created On", uid: "createdAt" },
     { name: "Actions", uid: "actions" },
   ];
-  const [isActionModalOpen, setActionModal] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [reload, setReload] = React.useState(false);
   const [companyRes, setCompanyRes] = React.useState<CompanyRes>({
     companies: [],
     totalCount: 0,
   });
+
   const [filter, setFilter] = React.useState({
     page: 1,
-    limit: 14,
-  })
+    limit: 16,
+  });
+
   const setPage = (val: number) => {
     setFilter({ ...filter, page: val });
   }
   const update = () => setReload(!reload);
+
+  const deleteCompany = async (id: string) => {
+    try {
+      await axiosInstance.delete(`/company/${id}`);
+      toast.success("Company deleted successfully");
+      return update();
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.response.data);
+    }
+  }
   React.useEffect(() => {
     setLoading(true);
     axiosInstance
@@ -64,16 +79,20 @@ export default function Companies() {
             <p className="text-bold text-sm capitalize">{cellValue}</p>
           </div>
         );
+      case "createdAt":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-sm capitalize">{new Date(cellValue).toLocaleDateString()}</p>
+          </div>
+        );
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
             <Tooltip content="Edit company">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
+              <CompanyOperationsModal update={update} company={company} type="edit" />
             </Tooltip>
             <Tooltip color="danger" content="Delete company">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <span onClick={() => deleteCompany(company.id)} className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon />
               </span>
             </Tooltip>
@@ -84,7 +103,7 @@ export default function Companies() {
     }
   }, []);
   return (
-    <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-10 items-center'>
+    <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-5 items-center'>
       <div className='flex items-center w-full justify-between'>
         <h2 className='urbanist font-medium text-4xl'>
           Companies
@@ -93,6 +112,9 @@ export default function Companies() {
           <ReloadBtn action={update} />
           <SearchBar />
         </div>
+      </div>
+      <div className="w-full flex justify-end">
+        <CompanyOperationsModal update={update} />
       </div>
       <TableContainer
         columns={columns}

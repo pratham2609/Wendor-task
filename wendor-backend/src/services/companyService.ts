@@ -14,10 +14,6 @@ class CompanyService {
     }
 
     async createCompany(company_name: string): Promise<Company> {
-        const company = await this.companyRepository.findByName(company_name);
-        if (company) {
-            throw new ApiError(400, 'Company already exists');
-        }
         return this.companyRepository.create(company_name);
     }
 
@@ -29,8 +25,8 @@ class CompanyService {
         return updatedCompany;
     }
 
-    deleteCompany(id: string): Promise<void> {
-        return this.companyRepository.delete(id);
+    async deleteCompany(id: string): Promise<void> {
+        await this.companyRepository.delete(id);
     }
 }
 

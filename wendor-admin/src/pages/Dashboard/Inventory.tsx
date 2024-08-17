@@ -8,6 +8,9 @@ import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { InventoryItem, InventoryRes } from "../../types/Inventory";
 import { TableColums } from "../../types/Table";
+import AddInventoryModal from "../../components/Modals/AddInventoryModal";
+import SeeProductInventoryModal from "../../components/Modals/SeeProductInventoryModal";
+import toast from "react-hot-toast";
 
 export default function Inventory() {
   const columns: TableColums[] = [
@@ -18,12 +21,15 @@ export default function Inventory() {
     { name: "Company", uid: "companyName" },
     { name: "Actions", uid: "actions" },
   ];
-  const [isActionModalOpen, setActionModal] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [reload, setReload] = React.useState(false);
   const [inventoryRes, setInventoryRes] = React.useState<InventoryRes>({
     inventory: [],
     totalCount: 0,
+  });
+
+  const [inventoryModalOpen, setInventoryModalOpen] = React.useState<{ isOpen: boolean, id: string | null }>({
+    isOpen: false, id: null
   });
   const [filter, setFilter] = React.useState({
     page: 1,
@@ -32,6 +38,18 @@ export default function Inventory() {
   const setPage = (val: number) => {
     setFilter({ ...filter, page: val });
   }
+
+  const deleteProductInventory = async (id: string) => {
+    try {
+      await axiosInstance.delete(`/inventory/product/${id}`);
+      update();
+      toast.success("Product Inventory Deleted!");
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.response.data);
+    }
+  }
+
   const update = () => setReload(!reload);
   React.useEffect(() => {
     setLoading(true);
@@ -46,7 +64,7 @@ export default function Inventory() {
       })
       .catch((error) => console.log(error.message))
       .finally(() => setLoading(false));
-  }, [reload, filter.page]);
+  }, [reload, filter.page, inventoryModalOpen.isOpen]);
 
   React.useEffect(() => {
     document.title = "Wendor | Inventory"
@@ -89,14 +107,14 @@ export default function Inventory() {
         return (
           <div className="relative flex items-center gap-2">
             <Tooltip content="Edit inventory">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <button className="focus:outline-none" onClick={() => setInventoryModalOpen({ isOpen: true, id: inventory.productId })}>
                 <EditIcon />
-              </span>
+              </button>
             </Tooltip>
             <Tooltip color="danger" content="Delete inventory">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <button onClick={() => deleteProductInventory(inventory.productId)} className="text-lg text-danger active:opacity-50">
                 <DeleteIcon />
-              </span>
+              </button>
             </Tooltip>
           </div>
         );
@@ -105,26 +123,33 @@ export default function Inventory() {
     }
   }, []);
   return (
-    <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-10 items-center'>
-      <div className='flex items-center w-full justify-between'>
-        <h2 className='urbanist font-medium text-4xl'>
-          Inventory
-        </h2>
-        <div className="flex items-center gap-4 h-full">
-          <ReloadBtn action={update} />
-          <SearchBar />
+    <>
+      <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-5 items-center'>
+        <div className='flex items-center w-full justify-between'>
+          <h2 className='urbanist font-medium text-4xl'>
+            Inventory
+          </h2>
+          <div className="flex items-center gap-4 h-full">
+            <ReloadBtn action={update} />
+            <SearchBar />
+          </div>
         </div>
-      </div>
-      <TableContainer
-        columns={columns}
-        id={"sno"}
-        page={filter.page}
-        setPage={setPage}
-        totalCount={inventoryRes?.totalCount}
-        isLoading={loading}
-        data={inventoryRes.inventory ?? []}
-        renderCell={renderCell}
-      />
-    </section>
+        <div className="w-full flex justify-end">
+          <AddInventoryModal />
+        </div>
+        <TableContainer
+          columns={columns}
+          id={"sno"}
+          page={filter.page}
+          setPage={setPage}
+          totalCount={inventoryRes?.totalCount}
+          isLoading={loading}
+          data={inventoryRes.inventory ?? []}
+          renderCell={renderCell}
+        />
+      </section>
+      {inventoryModalOpen.isOpen && <SeeProductInventoryModal isOpen={inventoryModalOpen.isOpen} setIsOpen={(val) => setInventoryModalOpen({ ...inventoryModalOpen, isOpen: val })}
+        id={inventoryModalOpen.id} />}
+    </>
   )
 }

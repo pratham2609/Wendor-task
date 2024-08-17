@@ -8,16 +8,21 @@ import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { Product, ProductRes } from "../../types/Product";
 import { TableColums } from "../../types/Table";
+import AddProductsModal from "../../components/Modals/AddProductsModal";
+import EditProductModal from "../../components/Modals/EditProductModal";
+import toast from "react-hot-toast";
 
 export default function Products() {
   const columns: TableColums[] = [
     { name: "SNo.", uid: "sno" },
     { name: "Name", uid: "name" },
+    { name: "Image", uid: "image" },
+    { name: "Barcode No.", uid: "barcodeNo" },
     { name: "Category", uid: "category" },
     { name: "Price", uid: "price" },
     { name: "Actions", uid: "actions" },
   ];
-  const [isActionModalOpen, setActionModal] = React.useState(false);
+
   const [loading, setLoading] = React.useState(false);
   const [reload, setReload] = React.useState(false);
   const [productRes, setProductRes] = React.useState<ProductRes>({
@@ -27,7 +32,11 @@ export default function Products() {
   const [filter, setFilter] = React.useState({
     page: 1,
     limit: 14,
-  })
+  });
+
+  const [editProductModalOpen, setEditProductModalOpen] = React.useState<{ isOpen: boolean, id: string | null }>({
+    isOpen: false, id: null
+  });
   const setPage = (val: number) => {
     setFilter({ ...filter, page: val });
   }
@@ -37,7 +46,6 @@ export default function Products() {
     axiosInstance
       .get(`/products?page=${filter.page}&limit=${filter.limit}`)
       .then((res) => {
-        console.log(res)
         setProductRes({
           products: res.data.data.products.map((product: Product, index: number) => ({ ...product, sno: index + 1 })),
           totalCount: res.data.totalCount,
@@ -47,6 +55,17 @@ export default function Products() {
       .catch((error) => console.log(error.message))
       .finally(() => setLoading(false));
   }, [reload, filter.page]);
+
+  const deleteProduct = async (id: string) => {
+    try {
+      await axiosInstance.delete("/products/" + id);
+      toast.success("Product deleted successfully");
+      return update();
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.response.data);
+    }
+  };
 
   React.useEffect(() => {
     document.title = "Wendor | Products"
@@ -73,6 +92,18 @@ export default function Products() {
             <p className="text-bold text-sm">{cellValue}</p>
           </div>
         );
+      case "barcodeNo":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-sm">{cellValue}</p>
+          </div>
+        );
+      case "image":
+        return (
+          <div className="w-10 h-10 overflow-auto">
+            <img src={product.display_image_url} className="w-full h-full object-cover aspect-square" alt={`${product.name} image`} />
+          </div>
+        );
       case "price":
         return (
           <div className="flex flex-col">
@@ -83,14 +114,14 @@ export default function Products() {
         return (
           <div className="relative flex items-center gap-2">
             <Tooltip content="Edit product">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <button className="focus:outline-none" onClick={() => setEditProductModalOpen({ isOpen: true, id: product.id })}>
                 <EditIcon />
-              </span>
+              </button>
             </Tooltip>
             <Tooltip color="danger" content="Delete product">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <button onClick={() => deleteProduct(product.id)} className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon />
-              </span>
+              </button>
             </Tooltip>
           </div>
         );
@@ -99,26 +130,33 @@ export default function Products() {
     }
   }, []);
   return (
-    <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-10 items-center'>
-      <div className='flex items-center w-full justify-between'>
-        <h2 className='urbanist font-medium text-4xl'>
-          Products
-        </h2>
-        <div className="flex items-center gap-4 h-full">
-          <ReloadBtn action={update} />
-          <SearchBar />
+    <>
+      <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-5 items-center'>
+        <div className='flex items-center w-full justify-between'>
+          <h2 className='urbanist font-medium text-4xl'>
+            Products
+          </h2>
+          <div className="flex items-center gap-4 h-full">
+            <ReloadBtn action={update} />
+            <SearchBar />
+          </div>
         </div>
-      </div>
-      <TableContainer
-        columns={columns}
-        id={"sno"}
-        page={filter.page}
-        setPage={setPage}
-        totalCount={productRes?.totalCount}
-        isLoading={loading}
-        data={productRes.products ?? []}
-        renderCell={renderCell}
-      />
-    </section>
+        <div className="w-full flex justify-end">
+          <AddProductsModal />
+        </div>
+        <TableContainer
+          columns={columns}
+          id={"sno"}
+          page={filter.page}
+          setPage={setPage}
+          totalCount={productRes?.totalCount}
+          isLoading={loading}
+          data={productRes.products ?? []}
+          renderCell={renderCell}
+        />
+      </section>
+      {editProductModalOpen.isOpen && <EditProductModal isOpen={editProductModalOpen.isOpen} setIsOpen={(val) => setEditProductModalOpen({ ...editProductModalOpen, isOpen: val })}
+        id={editProductModalOpen.id} />}
+    </>
   )
 }

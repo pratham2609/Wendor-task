@@ -1,6 +1,6 @@
 export interface Company {
-    Id: string;
-    companyName: string;
+    id: string;
+    company_name: string;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -28,7 +28,7 @@ Company.init(
         timestamps: true,
     }
 );
-
+Company.hasMany(Product, { foreignKey: 'companyId' });
 Product.belongsTo(Company, {
     as: 'company',
     foreignKey: 'companyId',

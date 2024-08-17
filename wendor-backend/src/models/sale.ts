@@ -86,18 +86,4 @@ SaleProduct.belongsTo(Sale, { foreignKey: 'saleId' });
 SaleProduct.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
 Product.hasMany(SaleProduct, { foreignKey: 'productId', as: 'saleProducts' });
 
-// Sale.belongsTo(SaleProduct, {
-//     as: 'products',
-//     foreignKey: 'saleId',
-//     targetKey: 'id',
-//     onDelete: 'CASCADE',
-// });
-
-// SaleProduct.belongsTo(Product, {
-//     as: 'product',
-//     foreignKey: 'productId',
-//     targetKey: 'id',
-//     onDelete: 'CASCADE',
-// });
-
 export { Sale, SaleProduct };

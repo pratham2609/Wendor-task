@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 import InventoryRepository from "../repository/inventoryRepository.js";
 import InventoryService from "../services/inventoryService.js";
+import { ApiError } from "../middlewares/ApiError.js";
 
 
 const inventoryRepository = new InventoryRepository();
@@ -9,7 +10,11 @@ const inventoryService = new InventoryService(inventoryRepository);
 export class InventoryController {
     // Get inventory by product ID
     static getInventoryByProduct = catchAsyncError(async (req: Request, res: Response) => {
-        const inventories = await inventoryService.findByProductId(req.params.productId);
+        const { productId } = req.params;
+        if (!productId) {
+            throw new ApiError(404, "Product id not found");
+        }
+        const inventories = await inventoryService.findByProductId(productId);
         res.status(200).json({ success: true, data: inventories });
     });
 
@@ -45,13 +50,19 @@ export class InventoryController {
 
     // Update existing inventory
     static updateInventory = catchAsyncError(async (req: Request, res: Response) => {
-        await inventoryService.updateInventory(req.params.productId, req.params.batchNo, req.body);
+        await inventoryService.updateInventory(req.params.inventoryId, req.body);
         res.status(200).json({ success: true, message: "Updated Successfully" });
     });
 
-    // Delete inventory
-    static deleteInventory = catchAsyncError(async (req: Request, res: Response) => {
-        await inventoryService.deleteInventory(req.params.id);
+    // Delete Product inventory
+    static deleteProductInventory = catchAsyncError(async (req: Request, res: Response) => {
+        await inventoryService.deleteProductInventory(req.params.productId);
+        res.status(200).json({ success: true, message: 'Inventory deleted' });
+    });
+
+    // Delete Product inventory
+    static deleteProductBatchInventory = catchAsyncError(async (req: Request, res: Response) => {
+        await inventoryService.deleteInventoryBatch(req.params.inventoryId);
         res.status(200).json({ success: true, message: 'Inventory deleted' });
     });
 }

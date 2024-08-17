@@ -10,12 +10,9 @@ interface DecodedToken {
     id: string;
     email: string;
 }
-export interface AuthenticatedRequest extends Request {
-    user?: User | null;
-}
 
 // Middleware to check if the user is authenticated
-export const verifyAuth = catchAsyncErrors(async (req: AuthenticatedRequest, _: Response, next: NextFunction) => {
+export const verifyAuth = catchAsyncErrors(async (req: Request, _: Response, next: NextFunction) => {
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith("Bearer")
@@ -36,7 +33,7 @@ export const verifyAuth = catchAsyncErrors(async (req: AuthenticatedRequest, _: 
 
 
 // Middleware to authorize roles
-export const verifyAdmin = (req: AuthenticatedRequest, _: Response, next: NextFunction) => {
+export const verifyAdmin = (req: Request, _: Response, next: NextFunction) => {
     if (req.user!.role !== UserRoles.ADMIN) {
         return next(new ApiError(401, "Admin access required"));
     }

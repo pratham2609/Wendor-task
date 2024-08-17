@@ -2,6 +2,7 @@ import { Optional } from "sequelize";
 import Inventory from "../models/inventory";
 
 export interface IInventoryRepository {
+    findByInventoryId(inventoryId: string): Promise<Inventory>;
     findByProductId(productId: string): Promise<Inventory[]>;
     getProductBatchesForTx(query: object): Promise<Inventory[]>;
     findProductByBatch(productId: string, batchNo: string): Promise<Inventory | null>;
@@ -10,7 +11,8 @@ export interface IInventoryRepository {
     getProductQuantity(productId: string): Promise<number>;
     create(inventoryData: InventoryCreationAttributes): Promise<Inventory>;
     update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<void>;
-    delete(id: string): Promise<void>;
+    deleteAllProductInventory(id: string): Promise<void>;
+    deleteProductBatchInventory(inventoryId: string): Promise<void>;
 }
 
 export interface InventoryAttributes {

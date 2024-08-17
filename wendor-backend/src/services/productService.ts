@@ -5,7 +5,7 @@ import { ICompanyRepository } from "../types/company";
 import { IProductRepository, ProductCreationAttributes, ProductsResponse } from "../types/product";
 
 interface ProductCreationRequest extends ProductCreationAttributes {
-    companyName: string;
+    company_name: string;
 }
 
 export class ProductService {
@@ -43,10 +43,10 @@ export class ProductService {
 
     async createProduct(productData: ProductCreationRequest): Promise<Product> {
         try {
-            let company = await this.companyRepository.findByName(productData.companyName);
+            let company = await this.companyRepository.findByName(productData.company_name);
             if (!company) {
                 try {
-                    company = await this.companyRepository.create(productData.companyName);
+                    company = await this.companyRepository.create(productData.company_name);
                 } catch (error) {
                     throw new ApiError(500, (error as Error).message || 'Error creating company');
                 }
@@ -72,6 +72,14 @@ export class ProductService {
 
     async deleteProduct(id: string): Promise<void> {
         await this.productRepository.delete(id);
+    }
+
+    async findByBarcode(barcodeNo: string): Promise<Product> {
+        const product = await this.productRepository.findByBarcode(barcodeNo);
+        if (!product) {
+            throw new ApiError(404, 'Product not found');
+        }
+        return product;
     }
 }
 

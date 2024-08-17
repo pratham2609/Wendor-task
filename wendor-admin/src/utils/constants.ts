@@ -45,3 +45,15 @@ export const dashboardNavs: DashboardNavItems[] = [
         icon: IoSettingsOutline
     },
 ]
+
+export const Categories = [
+    'Snacks',
+    'Beverages',
+    'Healthy',
+    'Sandiwches',
+    'Dairy',
+    'Baked',
+    'Frozen',
+    'Medicines',
+    'Daily use'
+];

@@ -32,6 +32,7 @@ export interface SaleProductCreationAttributes extends Optional<SaleProductAttri
 
 export interface SaleProductRequest {
     productId: string;
+    price?: string;
     quantity: number;
 }
 
