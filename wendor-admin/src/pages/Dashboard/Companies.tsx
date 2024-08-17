@@ -36,7 +36,7 @@ export default function Companies() {
       .get(`/company?page=${filter.page}&limit=${filter.limit}`)
       .then((res) => {
         setCompanyRes({
-          companies: res.data.data.map((item: Company, index: number) => ({ ...item, sno: index + 1 })),
+          companies: res.data.data.companies.map((item: Company, index: number) => ({ ...item, sno: index + 1 })),
           totalCount: res.data.totalCount,
         });
         setLoading(false);

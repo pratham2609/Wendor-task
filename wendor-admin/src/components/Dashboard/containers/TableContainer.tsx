@@ -24,7 +24,7 @@ interface TableContainerProps<T> {
 }
 
 export default function TableContainer<T>({ data, page = 1, setPage, isLoading = false, columns, id, renderCell, totalCount = 0 }: TableContainerProps<T>) {
-    const rowsPerPage = 14;
+    const rowsPerPage = 16;
 
     const pages = React.useMemo(() => {
         return totalCount > rowsPerPage ? Math.ceil(totalCount / rowsPerPage) : 0;

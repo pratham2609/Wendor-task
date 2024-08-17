@@ -1,5 +1,6 @@
 import { ICompanyRepository, CompanyCreationAttributes, CompanyResponse } from "../types/company";
 import Company from "../models/company";
+import { ApiError } from "../middlewares/ApiError";
 
 class CompanyRepository implements ICompanyRepository {
 
@@ -24,14 +25,14 @@ class CompanyRepository implements ICompanyRepository {
         }
     }
 
-    async create(company: CompanyCreationAttributes): Promise<Company> {
-        return await Company.create(company);
+    async create(company_name: string): Promise<Company> {
+        return await Company.create({ company_name });
     }
 
     async update(id: string, company: CompanyCreationAttributes): Promise<Company> {
         const existingCompany = await Company.findByPk(id);
         if (!existingCompany) {
-            throw new Error('Company not found');
+            throw new ApiError(404, 'Company not found');
         }
         return await existingCompany.update(company);
     }
@@ -41,7 +42,7 @@ class CompanyRepository implements ICompanyRepository {
         if (company) {
             await company.destroy();
         } else {
-            throw new Error('Company not found');
+            throw new ApiError(404, 'Company not found');
         }
     }
 }

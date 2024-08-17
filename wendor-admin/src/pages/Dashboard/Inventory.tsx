@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Key } from "react";
+import React from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon } from "../../components/Icons";
@@ -39,7 +39,7 @@ export default function Inventory() {
       .get(`/inventory?page=${filter.page}&limit=${filter.limit}`)
       .then((res) => {
         setInventoryRes({
-          inventory: res.data.data.map((item: InventoryItem, index: number) => ({ ...item, sno: index + 1 })),
+          inventory: res.data.data.inventory.map((item: InventoryItem, index: number) => ({ ...item, sno: index + 1 })),
           totalCount: res.data.totalCount,
         });
         setLoading(false);

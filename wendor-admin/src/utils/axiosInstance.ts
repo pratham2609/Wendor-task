@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const baseURL = "http://localhost:8080/api/v1";
-// export const baseURL = "https://clickmate-server-2-0.onrender.com/api";
 
 export const axiosInstance = axios.create({
     baseURL: baseURL,

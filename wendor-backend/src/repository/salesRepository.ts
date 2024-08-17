@@ -2,7 +2,6 @@ import { ISalesRepository, ISaleProductRepository, SaleCreationAttributes, SaleP
 import { Sale, SaleProduct } from '../models/sale';
 import Product from '../models/product';
 import { Transaction } from 'sequelize';
-import { sequelize } from '../config/database';
 
 class SalesRepository implements ISalesRepository {
     async findById(id: string): Promise<Sale | null> {

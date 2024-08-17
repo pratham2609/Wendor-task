@@ -1,8 +1,8 @@
+import { ApiError } from "../middlewares/ApiError";
 import Product from "../models/product";
 import CompanyRepository from "../repository/companyRepository";
 import { ICompanyRepository } from "../types/company";
 import { IProductRepository, ProductCreationAttributes, ProductsResponse } from "../types/product";
-import ErrorHandler from "../utils/errorHandler.js";
 
 interface ProductCreationRequest extends ProductCreationAttributes {
     companyName: string;
@@ -10,7 +10,8 @@ interface ProductCreationRequest extends ProductCreationAttributes {
 
 export class ProductService {
     private productRepository: IProductRepository;
-    private readonly companyRepository: ICompanyRepository;;
+    private readonly companyRepository: ICompanyRepository;
+
     constructor(productRepository: IProductRepository) {
         this.productRepository = productRepository;
         this.companyRepository = new CompanyRepository();
@@ -20,36 +21,24 @@ export class ProductService {
         try {
             const product = await this.productRepository.findById(id);
             if (!product) {
-                throw new ErrorHandler('Product not found', 400);
+                throw new ApiError(404, 'Product not found');
             }
             return product;
         } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error finding product by ID', 500);
+            throw new ApiError(500, (error as Error).message || 'Error finding product by ID');
         }
     }
 
-    async findByCategory(category: string, page?:number, pageSize?: number): Promise<ProductsResponse> {
-        try {
-            return await this.productRepository.findByCategory(category, page, pageSize);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error finding products by category', 500);
-        }
+    async findByCategory(category: string, page?: number, pageSize?: number): Promise<ProductsResponse> {
+        return await this.productRepository.findByCategory(category, page, pageSize);
     }
 
-    async findByCompany(companyName: string, page?:number, pageSize?: number): Promise<ProductsResponse> {
-        try {
-            return await this.productRepository.findByCompany(companyName, page, pageSize);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error finding products by company name', 500);
-        }
+    async findByCompany(companyName: string, page?: number, pageSize?: number): Promise<ProductsResponse> {
+        return await this.productRepository.findByCompany(companyName, page, pageSize);
     }
 
-    async getAllProducts(page?:number, pageSize?: number): Promise<ProductsResponse> {
-        try {
-            return await this.productRepository.getAllProducts(page, pageSize);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error retrieving products', 500);
-        }
+    async getAllProducts(page?: number, pageSize?: number): Promise<ProductsResponse> {
+        return await this.productRepository.getAllProducts(page, pageSize);
     }
 
     async createProduct(productData: ProductCreationRequest): Promise<Product> {
@@ -57,15 +46,15 @@ export class ProductService {
             let company = await this.companyRepository.findByName(productData.companyName);
             if (!company) {
                 try {
-                    company = await this.companyRepository.create({ company_name: productData.companyName })
+                    company = await this.companyRepository.create(productData.companyName);
                 } catch (error) {
-                    throw new ErrorHandler((error as Error).message || 'Error creating company', 500);
+                    throw new ApiError(500, (error as Error).message || 'Error creating company');
                 }
             }
             productData.companyId = company.id;
             return await this.productRepository.create(productData);
         } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error creating product', 500);
+            throw new ApiError(500, (error as Error).message || 'Error creating product');
         }
     }
 
@@ -73,19 +62,17 @@ export class ProductService {
         try {
             const updatedProduct = await this.productRepository.update(id, productData);
             if (!updatedProduct) {
-                throw new ErrorHandler('Product not found', 400);
+                throw new ApiError(404, 'Product not found');
             }
             return updatedProduct;
         } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error updating product', 500);
+            throw new ApiError(500, (error as Error).message || 'Error updating product');
         }
     }
 
     async deleteProduct(id: string): Promise<void> {
-        try {
-            await this.productRepository.delete(id);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error deleting product', 500);
-        }
+        await this.productRepository.delete(id);
     }
 }
+
+export default ProductService;

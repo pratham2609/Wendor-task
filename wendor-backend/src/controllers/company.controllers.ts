@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import CompanyService from "../services/companyService";
 import CompanyRepository from "../repository/companyRepository";
 import catchAsyncError from "../middlewares/catchAsyncError";
@@ -7,22 +7,22 @@ const companyRepository = new CompanyRepository();
 const companyService = new CompanyService(companyRepository);
 
 export class CompanyController {
-    static getAllCompanies = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    static getAllCompanies = catchAsyncError(async (req: Request, res: Response) => {
         const companies = await companyService.getAllCompanies();
         res.status(200).json({ success: true, data: companies });
     });
 
-    static createCompany = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    static createCompany = catchAsyncError(async (req: Request, res: Response) => {
         const company = await companyService.createCompany(req.body);
         res.status(201).json({ success: true, data: company });
     });
 
-    static updateCompany = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    static updateCompany = catchAsyncError(async (req: Request, res: Response) => {
         const updatedCompany = await companyService.updateCompany(req.params.id, req.body);
         res.status(200).json({ success: true, data: updatedCompany });
     });
 
-    static deleteCompany = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    static deleteCompany = catchAsyncError(async (req: Request, res: Response) => {
         await companyService.deleteCompany(req.params.id);
         res.status(200).json({ success: true, message: "Company deleted" });
     });

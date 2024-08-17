@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import ErrorHandler from '../utils/errorHandler';
 import { SalesService } from '../services/saleService';
 import { SalesRepository } from '../repository/salesRepository';
 import { AuthenticatedRequest } from '../middlewares/auth';
@@ -9,11 +8,8 @@ const salesService = new SalesService(salesRepository);
 
 class SalesController {
 
-    static async getSaleById(req: Request, res: Response, next: NextFunction) {
+    static async getSaleById(req: Request, res: Response) {
         const sale = await salesService.findSaleById(req.params.id);
-        if (!sale) {
-            return next(new ErrorHandler('Sale not found', 404));
-        }
         res.json({ success: true, data: sale });
     }
 

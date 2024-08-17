@@ -5,7 +5,7 @@ export interface ICompanyRepository {
     findById(id: string): Promise<Company | null>;
     findByName(company_name: string): Promise<Company | null>;
     getAllCompanies(): Promise<CompanyResponse>;
-    create(company: CompanyCreationAttributes): Promise<Company>;
+    create(company_name: string): Promise<Company>;
     update(id: string, company: CompanyCreationAttributes): Promise<Company>;
     delete(id: string): Promise<void>;
 }

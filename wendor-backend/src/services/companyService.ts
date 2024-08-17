@@ -1,6 +1,6 @@
 import { ICompanyRepository, CompanyCreationAttributes, CompanyResponse } from "../types/company";
 import Company from "../models/company";
-import ErrorHandler from "../utils/errorHandler";
+import { ApiError } from "../middlewares/ApiError";
 
 class CompanyService {
     private companyRepository: ICompanyRepository;
@@ -10,39 +10,27 @@ class CompanyService {
     }
 
     async getAllCompanies(): Promise<CompanyResponse> {
-        try {
-            return await this.companyRepository.getAllCompanies();
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error retrieving companies', 500);
-        }
+        return this.companyRepository.getAllCompanies();
     }
 
-    async createCompany(companyData: CompanyCreationAttributes): Promise<Company> {
-        try {
-            return await this.companyRepository.create(companyData);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error creating company', 500);
+    async createCompany(company_name: string): Promise<Company> {
+        const company = await this.companyRepository.findByName(company_name);
+        if (company) {
+            throw new ApiError(400, 'Company already exists');
         }
+        return this.companyRepository.create(company_name);
     }
 
     async updateCompany(id: string, companyData: CompanyCreationAttributes): Promise<Company> {
-        try {
-            const updatedCompany = await this.companyRepository.update(id, companyData);
-            if (!updatedCompany) {
-                throw new ErrorHandler('Company not found', 404);
-            }
-            return updatedCompany;
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error updating company', 500);
+        const updatedCompany = await this.companyRepository.update(id, companyData);
+        if (!updatedCompany) {
+            throw new ApiError(404, 'Company not found');
         }
+        return updatedCompany;
     }
 
-    async deleteCompany(id: string): Promise<void> {
-        try {
-            await this.companyRepository.delete(id);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error deleting company', 500);
-        }
+    deleteCompany(id: string): Promise<void> {
+        return this.companyRepository.delete(id);
     }
 }
 

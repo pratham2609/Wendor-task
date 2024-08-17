@@ -14,7 +14,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             try {
                 const res = await axiosInstance.get('/user')
                 if (res.data?.user) {
-                    updateUser(res.data?.user);
+                    updateUser(res.data?.data);
                 }
             } catch (error) {
                 console.log(error)

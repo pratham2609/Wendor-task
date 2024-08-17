@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/userService";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 import { UserRepository } from "../repository/userRepository";
 import { AuthenticatedRequest } from "../middlewares/auth";
+import { ApiError } from "../middlewares/ApiError";
 
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
@@ -29,13 +30,13 @@ export class UserController {
     });
 
     static verifyAuth = catchAsyncError(async (req: Request, res: Response) => {
-        const { email, password, role } = req.body;
+        const { email, password } = req.body;
         const { user, token } = await userService.loginUser(email, password);
         res.status(200).json({ success: true, token, user });
     });
 
     static verifyAdminAuth = catchAsyncError(async (req: Request, res: Response) => {
-        const { email, password, role } = req.body;
+        const { email, password } = req.body;
         const { user, token } = await userService.loginAdmin(email, password);
         res.status(200).json({ success: true, token, user });
     });

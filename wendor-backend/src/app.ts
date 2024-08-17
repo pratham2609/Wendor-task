@@ -5,7 +5,7 @@ import { limiter } from "./middlewares/rateLimiter";
 import routes from "./routes/index.routes";
 import bodyParser from 'body-parser';
 import { sequelize } from "./config/database";
-import handleError from "./middlewares/handleErrors";
+
 
 const app: Express = express();
 
@@ -18,8 +18,7 @@ app.use(express.json({ limit: "50kb" }))
         })
     ).use(limiter)
     .use(helmet())
-    .use(bodyParser.urlencoded({ extended: true }))
-    .use(handleError);
+    .use(bodyParser.urlencoded({ extended: true }));
 
 // Welcome API
 app.get("/", (_: Request, res: Response) => {

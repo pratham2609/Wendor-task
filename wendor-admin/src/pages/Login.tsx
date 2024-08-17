@@ -35,13 +35,12 @@ export default function Login() {
                 toast.success("Logged in Successfully!");
             }
         } catch (error) {
-            console.log(error);
-            toast.error((error as Error).message)
+            toast.error(error.response.data)
         }
     };
 
     useEffect(() => {
-        document.title = "ClickMate | Login"
+        document.title = "Wendor | Login"
         if (user?.id !== "") navigate("/dashboard");
     }, [])
     return (

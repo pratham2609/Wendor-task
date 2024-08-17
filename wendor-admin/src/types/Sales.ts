@@ -1,7 +1,7 @@
 export interface Sales {
     id: string;
     totalPrice: string;
-    products: string[];
+    products: SaleProduct[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -9,4 +9,10 @@ export interface Sales {
 export interface SalesRes {
     sales: Sales[];
     totalCount: number;
+}
+
+export interface SaleProduct {
+    name: string;
+    price: string;
+    quantity: number;
 }

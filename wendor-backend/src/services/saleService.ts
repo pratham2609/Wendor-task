@@ -1,17 +1,17 @@
 import { ISaleProductRepository, ISalesRepository, SaleProductCreationAttributes, SaleProductRequest, SalesResponse } from '../types/sale';
 import { Sale, SaleProduct } from '../models/sale';
-import ErrorHandler from '../utils/errorHandler';
 import { IInventoryRepository } from '../types/inventory';
 import InventoryRepository from '../repository/inventoryRepository';
 import { sequelize } from '../config/database';
 import InventoryService from './inventoryService';
 import { SaleProductRepository } from '../repository/salesRepository';
+import { ApiError } from '../middlewares/ApiError';
 
 class SalesService {
     private salesRepository: ISalesRepository;
     private saleProductRepository: ISaleProductRepository;
     private inventoryRepository: IInventoryRepository;
-    inventoryService: InventoryService
+    inventoryService: InventoryService;
 
     constructor(salesRepository: ISalesRepository) {
         this.salesRepository = salesRepository;
@@ -22,9 +22,13 @@ class SalesService {
 
     async findSaleById(id: string): Promise<Sale | null> {
         try {
-            return await this.salesRepository.findById(id);
+            const sale = await this.salesRepository.findById(id);
+            if (!sale) {
+                throw new ApiError(404, 'Sale not found');
+            }
+            return sale;
         } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error finding sale by ID', 500);
+            throw new ApiError(500, (error as Error).message || 'Error finding sale by ID');
         }
     }
 
@@ -39,17 +43,17 @@ class SalesService {
             for (const saleProduct of saleProducts) {
                 const productDetails = await this.inventoryService.getProductDetails(saleProduct.productId);
                 if (!productDetails) {
-                    throw new ErrorHandler(`Product details not found for product ID ${saleProduct.productId}`, 404);
+                    throw new ApiError(404, `Product details not found for product ID ${saleProduct.productId}`);
                 }
                 if (productDetails.totalQuantity < saleProduct.quantity) {
-                    throw new ErrorHandler(
-                        `Insufficient inventory available for product ${productDetails.productName}: ${productDetails.totalQuantity}pcs`,
-                        400
+                    throw new ApiError(
+                        400,
+                        `Insufficient inventory available for product ${productDetails.productName}: ${productDetails.totalQuantity}pcs`
                     );
                 }
                 // Ensure product price is valid
                 if (productDetails.productPrice == null) {
-                    throw new ErrorHandler(`Invalid price for product ${productDetails.productName}`, 400);
+                    throw new ApiError(400, `Invalid price for product ${productDetails.productName}`);
                 }
 
                 totalPrice += productDetails.productPrice * saleProduct.quantity;
@@ -58,7 +62,7 @@ class SalesService {
 
             // Check if totalPrice was calculated
             if (totalPrice <= 0) {
-                throw new ErrorHandler('Total price calculation error.', 500);
+                throw new ApiError(500, 'Total price calculation error.');
             }
 
             // Step 2: Create the sale record
@@ -93,9 +97,9 @@ class SalesService {
 
                 // If there are still remaining quantities after processing all batches, throw an error
                 if (remainingQuantity > 0) {
-                    throw new ErrorHandler(
-                        `Inventory allocation failed for product ${productId}.`,
-                        500
+                    throw new ApiError(
+                        500,
+                        `Inventory allocation failed for product ${productId}.`
                     );
                 }
 
@@ -115,28 +119,18 @@ class SalesService {
         } catch (error) {
             // Rollback the transaction in case of error
             await transaction.rollback();
-            console.log(error);
-            throw new ErrorHandler((error as Error).message || 'Error creating sale', 500);
+            throw new ApiError(500, (error as Error).message || 'Error creating sale');
         }
     }
 
     async getAllSales(page?: number, pageSize?: number): Promise<SalesResponse> {
-        try {
-            return await this.salesRepository.getAllSales(page, pageSize);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error fetching all sales', 500);
-        }
+        return await this.salesRepository.getAllSales(page, pageSize);
     }
 
     async getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse> {
-        try {
-            return await this.salesRepository.getUserSales(userId, page, pageSize);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error fetching user sales', 500);
-        }
+        return await this.salesRepository.getUserSales(userId, page, pageSize);
     }
 }
-
 
 class SaleProductService {
     private saleProductRepository: ISaleProductRepository;
@@ -149,7 +143,7 @@ class SaleProductService {
         try {
             return await this.saleProductRepository.create(saleProductData);
         } catch (error) {
-            throw new ErrorHandler((error as Error).message || 'Error creating sales product', 500);
+            throw new ApiError(500, (error as Error).message || 'Error creating sales product');
         }
     }
 }

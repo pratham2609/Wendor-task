@@ -2,10 +2,10 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/database.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
-import ErrorHandler from "../utils/errorHandler.js";
 import { UserAttributes, UserCreationAttributes, UserRoles } from "../types/user.js";
 import bcryptjs from "bcryptjs";
 import { Sale } from "./sale.js";
+import { ApiError } from "../middlewares/ApiError.js";
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
     public id!: string;
@@ -75,7 +75,7 @@ User.init(
             validate: {
                 isEmailValid(value: string) {
                     if (!validator.isEmail(value)) {
-                        throw new ErrorHandler("Please provide a valid email address", 400);
+                        throw new ApiError(400, "Please provide a valid email address");
                     }
                 },
             },

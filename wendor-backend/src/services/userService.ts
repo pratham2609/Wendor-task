@@ -1,7 +1,7 @@
+import { ApiError } from "../middlewares/ApiError";
 import User from "../models/user";
 import { IUserRepository, UserCreationAttributes } from "../types/user";
-import ErrorHandler from "../utils/errorHandler.js";
-import { removePassword } from "../utils/app.utils"
+import { removePassword } from "../utils/app.utils";
 
 export class UserService {
     private userRepository: IUserRepository;
@@ -11,90 +11,72 @@ export class UserService {
     }
 
     async getUserById(id: string): Promise<Partial<User> | null> {
-        try {
-            const user = await this.userRepository.findById(id);
-            if (!user) {
-                throw new ErrorHandler("User not found", 404);
-            }
-            return removePassword(user);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || "Error fetching user by ID", 500);
+        const user = await this.userRepository.findById(id);
+        if (!user) {
+            throw new ApiError(404, "User not found");
         }
+        return removePassword(user);
     }
 
     async getUserByEmail(email: string): Promise<Partial<User> | null> {
-        try {
-            const user = await this.userRepository.findByEmail(email, "user");
-            if (!user) {
-                return null;
-            }
-            return removePassword(user);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || "Error fetching user by email", 500);
+        const user = await this.userRepository.findByEmail(email, "user");
+        if (!user) {
+            return null;
         }
+        return removePassword(user);
     }
 
     async createUser(userData: UserCreationAttributes): Promise<{ user: Partial<User>, token: string }> {
-        try {
-            const existingUser = await this.getUserByEmail(userData.email);
-            if (existingUser) {
-                throw new ErrorHandler("User already exists", 400);
-            }
-
-            const user = await this.userRepository.create(userData);
-            if (!user) {
-                throw new ErrorHandler("Error creating user", 500);
-            }
-            const token = user.getJwtToken();
-            return { user: removePassword(user), token }
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || "Error creating user", 500);
+        const existingUser = await this.getUserByEmail(userData.email);
+        if (existingUser) {
+            throw new ApiError(400, "User already exists");
         }
+
+        const user = await this.userRepository.create(userData);
+        if (!user) {
+            throw new ApiError(500, "Error creating user");
+        }
+        const token = user.getJwtToken();
+        return { user: removePassword(user), token };
     }
 
     async updateUser(id: string, userData: Partial<User>): Promise<Partial<User> | null> {
-        try {
-            const updatedUser = await this.userRepository.update(id, userData);
-            if (!updatedUser) {
-                throw new ErrorHandler("User not found", 404);
-            }
-            return removePassword(updatedUser);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || "Error updating user", 500);
+        const updatedUser = await this.userRepository.update(id, userData);
+        if (!updatedUser) {
+            throw new ApiError(404, "User not found");
         }
+        return removePassword(updatedUser);
     }
 
     async deleteUser(id: string): Promise<void> {
-        try {
-            await this.userRepository.delete(id);
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || "Error deleting user", 500);
-        }
+        await this.userRepository.delete(id);
     }
 
     async loginUser(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {
-        try {
-            const user = await this.userRepository.verifyAuth(email, password);
-            if (!user) {
-                throw new ErrorHandler("Invalid email or password", 401);
-            }
-            const token = user.getJwtToken();
-            return { user: removePassword(user), token };
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || "Error during user authentication", 500);
+        const user = await this.userRepository.findByEmail(email);
+        if (!user) {
+            throw new ApiError(404, "Invalid User");
         }
+
+        const isPasswordValid = await user.validatePassword(password);
+        if (!isPasswordValid) {
+            throw new ApiError(401, "Invalid password");
+        }
+        const token = user.getJwtToken();
+        return { user: removePassword(user), token };
     }
 
     async loginAdmin(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {
-        try {
-            const user = await this.userRepository.verifyAdminAuth(email, password);
-            if (!user) {
-                throw new ErrorHandler("Invalid email or password", 401);
-            }
-            const token = user.getJwtToken();
-            return { user: removePassword(user), token };
-        } catch (error) {
-            throw new ErrorHandler((error as Error).message || "Error during user authentication", 500);
+        const user = await this.userRepository.findByEmail(email, "admin");
+        if (!user) {
+            throw new ApiError(404, "Invalid Admin");
         }
+
+        const isPasswordValid = await user.validatePassword(password);
+        if (!isPasswordValid) {
+            throw new ApiError(401, "Invalid password");
+        }
+        const token = user.getJwtToken();
+        return { user: removePassword(user), token };
     }
 }

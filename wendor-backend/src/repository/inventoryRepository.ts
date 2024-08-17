@@ -1,9 +1,9 @@
 import { sequelize } from "../config/database";
 import Inventory from "../models/inventory";
 import Product from "../models/product";
-import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes, InventoryModified, InventoryResponse } from "../types/inventory";
-import ErrorHandler from "../utils/errorHandler";
+import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes, InventoryResponse } from "../types/inventory";
 import Company from "../models/company";
+import { ApiError } from "../middlewares/ApiError";
 
 class InventoryRepository implements IInventoryRepository {
 
@@ -180,7 +180,7 @@ class InventoryRepository implements IInventoryRepository {
     async update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<void> {
         const existingInventory = await Inventory.findByPk(id);
         if (!existingInventory) {
-            throw new ErrorHandler('Inventory not found', 401);
+            throw new ApiError(404, 'Inventory not found');
         }
         await existingInventory.update(inventoryData);
     }
@@ -190,7 +190,7 @@ class InventoryRepository implements IInventoryRepository {
         if (inventory) {
             await inventory.destroy();
         } else {
-            throw new ErrorHandler('Inventory not found', 401);
+            throw new ApiError(404, 'Inventory not found');
         }
     }
 }

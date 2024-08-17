@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Key } from "react";
+import React from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon } from "../../components/Icons";
@@ -37,8 +37,9 @@ export default function Products() {
     axiosInstance
       .get(`/products?page=${filter.page}&limit=${filter.limit}`)
       .then((res) => {
+        console.log(res)
         setProductRes({
-          products: res.data.data.map((product: Product, index: number) => ({ ...product, sno: index + 1 })),
+          products: res.data.data.products.map((product: Product, index: number) => ({ ...product, sno: index + 1 })),
           totalCount: res.data.totalCount,
         });
         setLoading(false);

@@ -6,7 +6,7 @@ import { DeleteIcon, EditIcon } from "../../components/Icons";
 import ReloadBtn from "../../components/Dashboard/ReloadBtn";
 import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
-import { Sales, SalesRes } from "../../types/Sales";
+import { SaleProduct, Sales, SalesRes } from "../../types/Sales";
 import { TableColums } from "../../types/Table";
 
 export default function Companies() {
@@ -38,7 +38,7 @@ export default function Companies() {
             .get(`/sales?page=${filter.page}&limit=${filter.limit}`)
             .then((res) => {
                 setsalesRes({
-                    sales: res.data.data.map((item: Sales, index: number) => ({ ...item, sno: index + 1 })),
+                    sales: res.data.data.sales.map((item: Sales, index: number) => ({ ...item, sno: index + 1 })),
                     totalCount: res.data.totalCount,
                 });
                 setLoading(false);
@@ -75,8 +75,8 @@ export default function Companies() {
             case "products":
                 return (
                     <div className="flex flex-col">
-                        {sale.products.map((prod: string) =>
-                            <p className="text-bold text-sm capitalize">{prod}</p>
+                        {sale.products.map((prod: SaleProduct) =>
+                            <p className="text-bold text-sm capitalize">{prod.name}</p>
                         )}
                     </div>
                 );
