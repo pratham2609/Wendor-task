@@ -3,6 +3,7 @@ import { InventoryItem } from '../types/Inventory';
 import { useInventoryContext } from '../context/InventoryContext';
 import { Spinner } from '@nextui-org/react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductCard({ product }: { product: InventoryItem }) {
     const { cart, addToCart, updateCart } = useCartContext();
@@ -47,13 +48,13 @@ export default function ProductCard({ product }: { product: InventoryItem }) {
                 <div className='w-full flex items-center justify-between'>
                     {cartItem ? (
                         <div className='flex w-full items-center justify-between gap-2'>
-                            <button
+                            <button disabled={quantityLoader}
                                 onClick={handleDecrement}
                                 className='bg-black text-white rounded-lg w-[40%] h-10 flex items-center justify-center'>
                                 -
                             </button>
                             <span className='text-xl font-medium'>{quantityLoader ? <Spinner size='md' color='danger' /> : cartItem.quantity}</span>
-                            <button
+                            <button disabled={quantityLoader}
                                 onClick={handleIncrement}
                                 className='bg-black text-white rounded-lg w-[40%] h-10 flex items-center justify-center'>
                                 +
@@ -73,15 +74,16 @@ export default function ProductCard({ product }: { product: InventoryItem }) {
 }
 
 export function SmallProductCard({ product }: { product: InventoryItem }) {
+    const navigate = useNavigate();
     return (
-        <div className='w-full flex flex-col h-full bg-white rounded-xl shadow-lg border-2'>
+        <button onClick={() => navigate("/product/" + product.productId)} className='w-full flex flex-col h-full bg-white rounded-xl shadow-lg border-2'>
             <div className='w-full h-[150px]'>
                 <img src={product.display_image_url} alt={product.productName} className='w-full h-full object-cover' />
             </div>
-            <div className='p-3'>
+            <div className='p-3 flex flex-col items-start'>
                 <h4 className='font-semibold'>{product.productName}</h4>
                 <p className='font-medium'>₹{product.productPrice}</p>
             </div>
-        </div>
+        </button>
     )
 }

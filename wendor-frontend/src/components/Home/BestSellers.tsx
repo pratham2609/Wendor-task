@@ -17,7 +17,7 @@ export default function BestSellers() {
                 )) : inventory.inventory.length > 0 ?
                     inventory.inventory.map((data: InventoryItem) => (
                         <ProductCard key={data.productId} product={data} />
-                    )) : <div className="w-full justify-center col-span-4 flex items-center">No products found</div>
+                    )) : <div className="w-full justify-center col-span-4 h-72 flex items-center text-2xl">No products found</div>
                 }
             </div>
         </div>

@@ -19,8 +19,8 @@ export default function Products() {
     }, [searchParams])
     const { inventory, loading } = useFetchInventory({ category: filter.category, company: filter.company });
     return (
-        <div className='w-full min-h-screen h-full'>
-            <div className='my-10'>
+        <div className='w-full min-h-screen h-full flex flex-col gap-10 pt-10'>
+            <div className=''>
                 <h1 className="font-bold text-4xl">
                     Products
                 </h1>

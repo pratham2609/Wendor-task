@@ -8,6 +8,7 @@ interface CartContextProps {
     updateCart: (id: string, quantity: number) => void;
     loading: boolean;
     calculateCartValue: number;
+    emptyCart: () => void;
 }
 
 interface CartContextProviderProps {
@@ -45,7 +46,9 @@ const CartContextProvider: React.FC<CartContextProviderProps> = ({ children }) =
         setCart(updatedCart as CartItem[]);
     };
 
-
+    const emptyCart = () => {
+        setCart([]);
+    }
 
     return (
         <CartContext.Provider value={{
@@ -53,7 +56,8 @@ const CartContextProvider: React.FC<CartContextProviderProps> = ({ children }) =
             addToCart,
             loading,
             updateCart,
-            calculateCartValue
+            calculateCartValue,
+            emptyCart
         }}>
             {children}
         </CartContext.Provider>

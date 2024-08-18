@@ -9,6 +9,7 @@ interface InventoryContextProps {
     loading: boolean;
     quantityLoader: boolean;
     checkProductQuantity: (productId: string, requestedQuantity: number) => Promise<boolean>;
+    update: () => void;
 }
 
 interface InventoryContextProviderProps {
@@ -18,9 +19,12 @@ interface InventoryContextProviderProps {
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 const InventoryContextProvider: React.FC<InventoryContextProviderProps> = ({ children }) => {
-    const { inventory, fetchInventory, loading } = useFetchInventory({});
+    const [reload, setReload] = useState(false);
+    const { inventory, fetchInventory, loading } = useFetchInventory({ reload: reload });
     const [quantityLoader, setQuantityLoader] = useState(false);
-
+    const update = () => {
+        setReload(!reload);
+    }
     const checkProductQuantity = async (productId: string, requestedQuantity: number): Promise<boolean> => {
         setQuantityLoader(true);
         try {
@@ -41,6 +45,7 @@ const InventoryContextProvider: React.FC<InventoryContextProviderProps> = ({ chi
             loading,
             checkProductQuantity,
             quantityLoader,
+            update
         }}>
             {children}
         </InventoryContext.Provider>

@@ -8,9 +8,10 @@ interface UseFetchInventoryParams {
     pageSize?: number;
     category?: string;
     company?: string;
+    reload?: boolean;
 }
 
-export const useFetchInventory = ({ page, pageSize, category, company }: UseFetchInventoryParams) => {
+export const useFetchInventory = ({ page, pageSize, category, company, reload }: UseFetchInventoryParams) => {
     const [inventory, setInventory] = useState<InventoryRes>({
         inventory: [],
         totalCount: 0
@@ -47,7 +48,7 @@ export const useFetchInventory = ({ page, pageSize, category, company }: UseFetc
 
     useEffect(() => {
         fetchInventory();
-    }, [])
+    }, [reload])
     return {
         inventory,
         fetchInventory,
