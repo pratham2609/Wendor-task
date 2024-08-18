@@ -1,10 +1,23 @@
 import React from 'react'
 import { useAuthContext } from '../../context/AuthContext'
 import { axiosInstance } from '../../utils/axiosInstance';
+import Fallback from '../../components/Dashboard/Fallback';
+
+interface DashboardData {
+  totalProducts: number;
+  totalUsers: number;
+  totalSales: number;
+  totalRevenue: number;
+}
 
 export default function Home() {
   const { user } = useAuthContext();
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState<DashboardData>({
+    totalProducts: 0,
+    totalUsers: 0,
+    totalSales: 0,
+    totalRevenue: 0
+  });
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
@@ -12,7 +25,7 @@ export default function Home() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await axiosInstance.get('/admin/dashboard')
+        const res = await axiosInstance.get('/dashboard')
         if (res.data?.data) {
           setData(res.data?.data);
         }
@@ -28,7 +41,7 @@ export default function Home() {
     <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-5 items-center'>
       <div className='flex items-center w-full justify-between'>
         <h2 className='urbanist font-medium text-4xl'>
-          Welcome, {user?.fullName}
+          Welcome, {user?.fullName} 👋🏻
         </h2>
       </div>
 
@@ -42,7 +55,7 @@ export default function Home() {
           </div>
           <div className='w-full flex justify-end items-center'>
             <p className='capitalize text-pink urbanist text-8xl font-bold'>
-              {/* <Fallback data={data?.products} loading={loading} /> */}
+              <Fallback data={data?.totalProducts} loading={loading} />
             </p>
           </div>
         </div>
@@ -54,7 +67,7 @@ export default function Home() {
           </div>
           <div className='w-full flex justify-end items-center'>
             <p className='capitalize text-teal urbanist text-8xl font-bold'>
-              {/* <Fallback data={data?.customers} loading={loading} /> */}
+              <Fallback data={data?.totalUsers} loading={loading} />
             </p>
           </div>
         </div>
@@ -66,7 +79,7 @@ export default function Home() {
           </div>
           <div className='w-full flex justify-end items-center'>
             <p className='capitalize text-purple urbanist text-8xl font-bold'>
-              {/* <Fallback data={data?.sales} loading={loading} /> */}
+              <Fallback data={data?.totalSales} loading={loading} />
             </p>
           </div>
         </div>
@@ -78,7 +91,7 @@ export default function Home() {
           </div>
           <div className='w-full flex justify-end items-center'>
             <p className='capitalize text-blue urbanist text-8xl font-bold'>
-              {/* <Fallback data={data?.revenue} loading={loading} /> */}
+              <Fallback data={data?.totalRevenue} loading={loading} />
             </p>
           </div>
         </div>

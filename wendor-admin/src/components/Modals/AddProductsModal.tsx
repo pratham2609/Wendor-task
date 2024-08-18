@@ -11,7 +11,7 @@ import { ImCross } from "react-icons/im";
 // import { LuUploadCloud } from "react-icons/lu";
 import toast from "react-hot-toast";
 
-export default function AddProductsModal() {
+export default function AddProductsModal({ update = () => { } }) {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [companies, setCompanies] = useState<Company[]>([]);
@@ -56,12 +56,12 @@ export default function AddProductsModal() {
 
     const handleSubmit = async () => {
         setLoading(true);
-
         try {
-            const res = await axiosInstance.post("/products", data);
-            console.log(res.data);
+            await axiosInstance.post("/products", data);
             setIsOpen(false);
             toast.success("Products added successfully");
+            setData([productCreationFields]);
+            return update();
         } catch (error) {
             console.log(error.message);
             toast.error(error.response.data);
@@ -97,14 +97,14 @@ export default function AddProductsModal() {
                             {data.map((item, index) => (
                                 <tr key={index}>
                                     <td className="border-r-1 px-2 py-3">
-                                        <input className="border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.name} onChange={(e) => {
+                                        <input required className="border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.name} onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].name = e.target.value;
                                             setData(newData);
                                         }} />
                                     </td>
                                     <td className="border-r-1 px-2 w-[17%] py-3">
-                                        <input className="border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.barcodeNo} onChange={(e) => {
+                                        <input required className="border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.barcodeNo} onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].barcodeNo = e.target.value;
                                             setData(newData);
@@ -124,7 +124,7 @@ export default function AddProductsModal() {
                                         </select>
                                     </td>
                                     <td className="border-r-1 px-2 py-3 max-w-20">
-                                        <input min={1} className=" border focus:outline-none p-1 px-2 rounded-lg w-full " type="number" value={item.price} onChange={(e) => {
+                                        <input required min={1} className=" border focus:outline-none p-1 px-2 rounded-lg w-full " type="number" value={item.price} onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].price = parseFloat(e.target.value);
                                             setData(newData);

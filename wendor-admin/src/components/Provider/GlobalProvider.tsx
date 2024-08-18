@@ -1,6 +1,5 @@
 import { Toaster } from "react-hot-toast";
 import { AuthContextProvider } from "../../context/AuthContext";
-import { ModalsContextProvider } from "../../context/ModalsContext";
 
 export default function GlobalProvider({
     children
@@ -9,10 +8,8 @@ export default function GlobalProvider({
 }) {
     return (
         <AuthContextProvider>
-            <ModalsContextProvider>
-                <Toaster />
-                {children}
-            </ModalsContextProvider>
+            <Toaster />
+            {children}
         </AuthContextProvider>
     )
 }

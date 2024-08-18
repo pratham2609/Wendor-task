@@ -5,9 +5,9 @@ import {
 } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import Loader from "../components/Loader";
-import Login from "../pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
-import HomePage from "../pages/HomePage";
+const Login = lazy(() => import("../pages/Login"));
+const HomePage = lazy(() => import("../pages/HomePage"));
 const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard"));
 const Sales = lazy(() => import("../pages/Dashboard/Sales"));
 const Inventory = lazy(() => import("../pages/Dashboard/Inventory"));

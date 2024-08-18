@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
@@ -13,6 +12,7 @@ import EditProductModal from "../../components/Modals/EditProductModal";
 import toast from "react-hot-toast";
 import { Company } from "../../types/Companies";
 import { Categories } from "../../utils/constants";
+import DeleteModal from "../../components/Modals/DeleteModal";
 
 export default function Products() {
   const columns: TableColums[] = [
@@ -52,9 +52,14 @@ export default function Products() {
     fetchCompanies();
   }, []);
 
-  const [editProductModalOpen, setEditProductModalOpen] = React.useState<{ isOpen: boolean, id: string | null }>({
+  const [editProductModalOpen, setEditProductModalOpen] = useState<{ isOpen: boolean, id: string | null }>({
     isOpen: false, id: null
   });
+  const [deleteProductModal, setDeleteProductModal] = useState({
+    isOpen: false,
+    id: ""
+  });
+
   const setPage = (val: number) => {
     setFilter({ ...filter, page: val });
   }
@@ -78,6 +83,10 @@ export default function Products() {
     try {
       await axiosInstance.delete("/products/" + id);
       toast.success("Product deleted successfully");
+      setDeleteProductModal({
+        isOpen: false,
+        id: ""
+      })
       return update();
     } catch (error) {
       console.log(error.message);
@@ -137,7 +146,8 @@ export default function Products() {
               </button>
             </Tooltip>
             <Tooltip color="danger" content="Delete product">
-              <button onClick={() => deleteProduct(product.id)} className="text-lg text-danger cursor-pointer active:opacity-50">
+              <button onClick={() => setDeleteProductModal({ isOpen: true, id: product.id })}
+                className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon />
               </button>
             </Tooltip>
@@ -178,7 +188,7 @@ export default function Products() {
               return <option key={cat} value={cat}>{cat}</option>
             })}
           </select>
-          <AddProductsModal />
+          <AddProductsModal update={update} />
         </div>
         <TableContainer
           columns={columns}
@@ -193,6 +203,10 @@ export default function Products() {
       </section>
       {editProductModalOpen.isOpen && <EditProductModal isOpen={editProductModalOpen.isOpen} setIsOpen={(val) => setEditProductModalOpen({ ...editProductModalOpen, isOpen: val })}
         id={editProductModalOpen.id} />}
+      {deleteProductModal.isOpen && <DeleteModal isOpen={deleteProductModal.isOpen} setIsOpen={(val) => setDeleteProductModal({
+        ...deleteProductModal,
+        isOpen: val
+      })} title="Delete Product" action={() => deleteProduct(deleteProductModal.id)} />}
     </>
   )
 }

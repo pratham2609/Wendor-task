@@ -28,6 +28,10 @@ export class UserRepository implements IUserRepository {
     }
 
     async getTotalUsers(): Promise<number> {
-        return await User.count();
+        return await User.count({
+            where: {
+                role: 'user',
+            },
+        });
     }
 }

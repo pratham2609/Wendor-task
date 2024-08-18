@@ -1,10 +1,11 @@
+import { RouterProvider } from 'react-router-dom'
 import './App.css'
-
+import RouterLinks from './router/Routes'
 function App() {
 
   return (
     <>
-      Wendor Frontend
+      <RouterProvider router={RouterLinks} />
     </>
   )
 }
