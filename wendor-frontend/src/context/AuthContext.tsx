@@ -19,7 +19,7 @@ interface AuthContextProviderProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
-    const initState = localStorage.getItem("admin") ? JSON.parse(localStorage.getItem("admin")!) : initialUserState;
+    const initState = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : initialUserState;
 
     const [state, dispatch] = useReducer(authReducer, initState);
     const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) =
             type: "loginUser",
             payload: user,
         });
-        localStorage.setItem("admin", JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
     };
 
     const resetUser = () => {

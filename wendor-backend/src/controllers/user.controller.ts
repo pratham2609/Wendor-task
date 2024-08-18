@@ -9,7 +9,7 @@ const userService = new UserService(userRepository);
 export class UserController {
     static createUser = catchAsyncError(async (req: Request, res: Response) => {
         const { user, token } = await userService.createUser(req.body);
-        res.status(201).json({ success: true, token, data: user });
+        res.status(201).json({ success: true, token, user: user });
     });
 
     static getUser = catchAsyncError(async (req: Request, res: Response) => {

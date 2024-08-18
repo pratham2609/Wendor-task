@@ -35,7 +35,7 @@ export default function Login() {
                 toast.success("Logged in Successfully!");
             }
         } catch (error) {
-            toast.error(error.response.data)
+            toast.error(error?.response?.data ?? "Server Error")
         }
     };
 

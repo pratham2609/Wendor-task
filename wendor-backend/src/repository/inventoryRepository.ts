@@ -84,44 +84,53 @@ class InventoryRepository implements IInventoryRepository {
         });
     }
 
-    async getAllInventories(page?: number, pageSize?: number): Promise<InventoryResponse> {
+    async getAllInventories(page?: number, pageSize?: number, category?: string, company?: string): Promise<InventoryResponse> {
         const offset = page && pageSize ? (page - 1) * pageSize : undefined;
         const limit = pageSize;
-        const inventory = await Inventory.findAll({
-            attributes: [
-                'productId',
-                [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
-                [sequelize.col('product.name'), 'productName'],
-                [sequelize.col('product.price'), 'productPrice'],
-                [sequelize.col('product.company.company_name'), 'companyName'],
-            ],
-            include: [
-                {
-                    model: Product,
-                    as: 'product',
-                    attributes: [],
-                    include: [
-                        {
-                            model: Company,
-                            attributes: [],
-                            as: 'company',
+        try {
+            const inventory = await Inventory.findAll({
+                attributes: [
+                    'productId',
+                    [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
+                    [sequelize.col('product.name'), 'productName'],
+                    [sequelize.col('product.price'), 'productPrice'],
+                    [sequelize.col('product.company.company_name'), 'companyName'],
+                    [sequelize.col('product.display_image_url'), 'display_image_url']
+                ],
+                include: [
+                    {
+                        model: Product,
+                        as: 'product',
+                        attributes: [],
+                        where: {
+                            ...(category && { category }),
+                            ...(company && { companyId: company }),
                         },
-                    ],
-                }
-            ],
-            group: ['productId', 'product.id', 'product.name', 'product.price', 'product.company.id', 'product.company.company_name'],
-            having: sequelize.literal('SUM(quantity) > 0'),
-            limit,
-            offset,
-        });
-        const count = await Inventory.count({
-            distinct: true,
-            col: 'productId',
-        });
-        return {
-            totalCount: inventory.length == 0 ? 0 : count,
-            inventory
-        };
+                        include: [
+                            {
+                                model: Company,
+                                attributes: [],
+                                as: 'company',
+                            },
+                        ],
+                    }
+                ],
+                group: ['productId', 'product.id', 'product.name', 'product.price', 'product.company.id', 'product.company.company_name'],
+                having: sequelize.literal('SUM(quantity) > 0'),
+                limit,
+                offset,
+            });
+            const count = await Inventory.count({
+                distinct: true,
+                col: 'productId',
+            });
+            return {
+                totalCount: inventory.length == 0 ? 0 : count,
+                inventory
+            };
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching inventories');
+        }
     }
 
     async getProductDetails(productId: string): Promise<any> {

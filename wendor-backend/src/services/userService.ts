@@ -53,17 +53,23 @@ export class UserService {
     }
 
     async loginUser(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {
-        const user = await this.userRepository.findByEmail(email);
-        if (!user) {
-            throw new ApiError(404, "Invalid User");
+        try {
+            const user = await this.userRepository.findByEmail(email);
+            if (!user) {
+                throw new ApiError(404, "Invalid User");
+            }
+            if (user.role === "admin") {
+                throw new ApiError(401, "Invalid User");
+            }
+            const isPasswordValid = await user.validatePassword(password);
+            if (!isPasswordValid) {
+                throw new ApiError(401, "Invalid password");
+            }
+            const token = user.getJwtToken();
+            return { user: removePassword(user), token };
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message);
         }
-
-        const isPasswordValid = await user.validatePassword(password);
-        if (!isPasswordValid) {
-            throw new ApiError(401, "Invalid password");
-        }
-        const token = user.getJwtToken();
-        return { user: removePassword(user), token };
     }
 
     async loginAdmin(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {

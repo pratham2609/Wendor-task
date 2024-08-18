@@ -8,7 +8,12 @@ export class UserRepository implements IUserRepository {
     }
 
     async findByEmail(email: string, role?: string): Promise<User | null> {
-        return await User.findOne({ where: { email, role } });
+        return await User.findOne({
+            where: {
+                email,
+                ...(role && { role }),
+            }
+        });
     }
 
     async create(user: UserCreationAttributes): Promise<User> {

@@ -29,8 +29,8 @@ class InventoryService {
         return inventory;
     }
 
-    async getAllInventories(): Promise<InventoryResponse> {
-        return await this.inventoryRepository.getAllInventories();
+    async getAllInventories(page?: number, pageSize?: number, category?: string, company?: string): Promise<InventoryResponse> {
+        return await this.inventoryRepository.getAllInventories(page, pageSize, category, company);
     }
 
     async getSingleProductQuantity(productId: string): Promise<number> {

@@ -31,8 +31,12 @@ export class InventoryController {
     });
 
     // Get all inventories
-    static getAllProductsInInventory = catchAsyncError(async (_: Request, res: Response) => {
-        const inventories = await inventoryService.getAllInventories();
+    static getAllProductsInInventory = catchAsyncError(async (req: Request, res: Response) => {
+        const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : undefined;
+        const category = req.query.category && req.query.category !== "all" ? (req.query.category as string) : undefined;
+        const company = req.query.company && req.query.company !== "all" ? (req.query.company as string) : undefined;
+        const inventories = await inventoryService.getAllInventories(page, pageSize, category, company);
         res.status(200).json({ success: true, data: inventories });
     });
 

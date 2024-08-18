@@ -1,10 +1,8 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
 
 interface ModalsContextProps {
-    addAdminModalOpen: boolean;
-    setAddAdminModalOpen: Dispatch<SetStateAction<boolean>>;
-    editAdminModalOpen: boolean;
-    setEditAdminModalOpen: Dispatch<SetStateAction<boolean>>;
+    authModalOpen: boolean;
+    setAuthModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 interface ModalsContextProviderProps {
@@ -13,15 +11,12 @@ interface ModalsContextProviderProps {
 const ModalsContext = createContext<ModalsContextProps | undefined>(undefined);
 
 const ModalsContextProvider: React.FC<ModalsContextProviderProps> = ({ children }) => {
-    const [addAdminModalOpen, setAddAdminModalOpen] = useState<boolean>(false);
-    const [editAdminModalOpen, setEditAdminModalOpen] = useState<boolean>(false);
+    const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
 
     return (
         <ModalsContext.Provider value={{
-            addAdminModalOpen,
-            setAddAdminModalOpen,
-            editAdminModalOpen,
-            setEditAdminModalOpen
+            authModalOpen,
+            setAuthModalOpen
         }}>
             {children}
         </ModalsContext.Provider>

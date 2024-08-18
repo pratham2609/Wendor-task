@@ -1,12 +1,10 @@
-import { RouterProvider } from 'react-router-dom'
 import './App.css'
-import RouterLinks from './router/Routes'
+import useScrollToTop from './hooks/scrollToTop';
+import Router from './router/Router'
 function App() {
-
+  useScrollToTop();
   return (
-    <>
-      <RouterProvider router={RouterLinks} />
-    </>
+    <Router />
   )
 }
 

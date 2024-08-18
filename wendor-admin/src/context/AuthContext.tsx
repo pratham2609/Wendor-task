@@ -29,7 +29,7 @@ const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) =
             type: "updateUser",
             payload: data,
         });
-        localStorage.setItem("user", JSON.stringify(data));
+        localStorage.setItem("admin", JSON.stringify(data));
     };
 
     const handleLogin = ({ user, token }: { user: UserState; token: string }) => {
