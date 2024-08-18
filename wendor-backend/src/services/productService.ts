@@ -2,7 +2,7 @@ import { ApiError } from "../middlewares/ApiError";
 import Product from "../models/product";
 import CompanyRepository from "../repository/companyRepository";
 import { ICompanyRepository } from "../types/company";
-import { IProductRepository, ProductCreationAttributes, ProductsResponse } from "../types/product";
+import { IProductRepository, ProductCompanies, ProductCreationAttributes, ProductsResponse } from "../types/product";
 
 interface ProductCreationRequest extends ProductCreationAttributes {
     company_name: string;
@@ -37,12 +37,15 @@ export class ProductService {
         return await this.productRepository.findByCompany(companyName, page, pageSize);
     }
 
-    async getAllProducts(page?: number, pageSize?: number): Promise<ProductsResponse> {
-        return await this.productRepository.getAllProducts(page, pageSize);
+    async getAllProducts(page?: number, pageSize?: number, category?: string, company?: string): Promise<ProductsResponse> {
+        return await this.productRepository.getAllProducts(page, pageSize, category, company);
     }
 
     async createProduct(productData: ProductCreationRequest): Promise<Product> {
         try {
+            if (!productData.company_name) {
+                throw new ApiError(400, 'Company name is required');
+            }
             let company = await this.companyRepository.findByName(productData.company_name);
             if (!company) {
                 try {
@@ -52,9 +55,43 @@ export class ProductService {
                 }
             }
             productData.companyId = company.id;
+            if (!productData.name || !productData.barcodeNo || !productData.category ||
+                !productData.companyId || !productData.display_image_url
+                || !productData.price) {
+                throw new ApiError(400, 'All fields are required');
+            }
             return await this.productRepository.create(productData);
         } catch (error) {
             throw new ApiError(500, (error as Error).message || 'Error creating product');
+        }
+    }
+
+    async bulkCreateProducts(productDataArray: ProductCreationRequest[]): Promise<Product[]> {
+        try {
+            const productsToCreate: ProductCreationAttributes[] = [];
+            for (const productData of productDataArray) {
+                if (!productData.company_name) {
+                    throw new ApiError(400, 'Company name is required for' + productData.name);
+                }
+                let company = await this.companyRepository.findByName(productData.company_name);
+                if (!company) {
+                    try {
+                        company = await this.companyRepository.create(productData.company_name);
+                    } catch (error) {
+                        throw new ApiError(500, (error as Error).message || 'Error creating company');
+                    }
+                }
+                productData.companyId = company.id;
+                if (!productData.name || !productData.barcodeNo || !productData.category || !productData.companyId
+                    || !productData.price) {
+                    throw new ApiError(400, 'All fields are required');
+                }
+                productsToCreate.push(productData);
+            }
+            return await this.productRepository.bulkCreate(productsToCreate);
+        } catch (error) {
+            console.log(error)
+            throw new ApiError(500, (error as Error).message || 'Error creating products');
         }
     }
 
@@ -80,6 +117,13 @@ export class ProductService {
             throw new ApiError(404, 'Product not found');
         }
         return product;
+    }
+    async getTotalProducts(): Promise<number> {
+        return await this.productRepository.getTotalProducts();
+    }
+
+    async getAllProductsCompanies(): Promise<ProductCompanies[]> {
+        return await this.productRepository.getAllProductsCompanies();
     }
 }
 

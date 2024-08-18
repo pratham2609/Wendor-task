@@ -67,6 +67,7 @@ SaleProduct.init(
                 model: Product,
                 key: 'id',
             },
+            onDelete: 'CASCADE'
         },
         quantity: {
             type: DataTypes.INTEGER,
@@ -81,9 +82,9 @@ SaleProduct.init(
 );
 
 
-Sale.hasMany(SaleProduct, { foreignKey: 'saleId', as: 'saleProducts' });
+Sale.hasMany(SaleProduct, { foreignKey: 'saleId', as: 'saleProducts', onDelete: 'CASCADE' });
 SaleProduct.belongsTo(Sale, { foreignKey: 'saleId' });
 SaleProduct.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
-Product.hasMany(SaleProduct, { foreignKey: 'productId', as: 'saleProducts' });
+Product.hasMany(SaleProduct, { foreignKey: 'productId', as: 'saleProducts', onDelete: 'CASCADE', });
 
 export { Sale, SaleProduct };

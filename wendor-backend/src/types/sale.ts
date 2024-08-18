@@ -7,6 +7,8 @@ export interface ISalesRepository {
     create(saleData: SaleCreationAttributes, transaction?: Transaction): Promise<Sale>;
     getAllSales(page?: number, pageSize?: number): Promise<SalesResponse>;
     getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse>;
+    getTotalSales(): Promise<number>;
+    getTotalRevenue(): Promise<number>;
 }
 
 export interface ISaleProductRepository {

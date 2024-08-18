@@ -24,12 +24,11 @@ interface TableContainerProps<T> {
 }
 
 export default function TableContainer<T>({ data, page = 1, setPage, isLoading = false, columns, id, renderCell, totalCount = 0 }: TableContainerProps<T>) {
-    const rowsPerPage = 16;
-
+    const rowsPerPage = 10;
     const pages = React.useMemo(() => {
         return totalCount > rowsPerPage ? Math.ceil(totalCount / rowsPerPage) : 0;
     }, [totalCount, rowsPerPage]);
-
+    
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
@@ -46,7 +45,7 @@ export default function TableContainer<T>({ data, page = 1, setPage, isLoading =
                             isCompact
                             showControls
                             showShadow
-                            color="warning"
+                            color="primary"
                             page={page}
                             total={pages}
                             onChange={(newPage) => setPage(newPage)}

@@ -24,4 +24,5 @@ export interface IUserRepository {
     create(user: UserCreationAttributes): Promise<User>;
     update(id: string, user: Partial<User>): Promise<User | null>;
     delete(id: string): Promise<void>;
+    getTotalUsers(): Promise<number>;
 }

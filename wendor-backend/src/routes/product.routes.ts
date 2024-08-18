@@ -12,6 +12,9 @@ router.get("/category/:category", ProductController.findByCategory);
 
 
 // -- Admin routes --
+// Route to get all products and companies
+router.get("/prod-companies", verifyAuth, verifyAdmin, ProductController.getAllProductsCompanies);
+
 // Route to get product by Id
 router.get("/:id", verifyAuth, verifyAdmin, ProductController.findById);
 

@@ -79,4 +79,8 @@ export class UserService {
         const token = user.getJwtToken();
         return { user: removePassword(user), token };
     }
+
+    async getTotalUsers(): Promise<number> {
+        return await this.userRepository.getTotalUsers();
+    }
 }

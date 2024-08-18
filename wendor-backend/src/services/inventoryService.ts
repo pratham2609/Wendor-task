@@ -51,6 +51,15 @@ class InventoryService {
         }
     }
 
+    async createBulkInventory(inventoryData: InventoryCreationAttributes[]): Promise<boolean> {
+        try {
+            await this.inventoryRepository.createBulkInventory(inventoryData);
+            return true;
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error creating inventory');
+        }
+    }
+
     async updateInventory(inventoryId: string, inventoryData: Partial<InventoryAttributes>): Promise<void> {
         try {
             const existingInventory = await this.inventoryRepository.findByInventoryId(inventoryId);

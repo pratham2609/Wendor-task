@@ -13,6 +13,7 @@ export interface IInventoryRepository {
     update(id: string, inventoryData: Partial<InventoryAttributes>): Promise<void>;
     deleteAllProductInventory(id: string): Promise<void>;
     deleteProductBatchInventory(inventoryId: string): Promise<void>;
+    createBulkInventory(inventoryData: InventoryCreationAttributes[]): Promise<boolean>;
 }
 
 export interface InventoryAttributes {

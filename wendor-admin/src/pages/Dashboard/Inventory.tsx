@@ -42,8 +42,8 @@ export default function Inventory() {
   const deleteProductInventory = async (id: string) => {
     try {
       await axiosInstance.delete(`/inventory/product/${id}`);
-      update();
       toast.success("Product Inventory Deleted!");
+      return update();
     } catch (error) {
       console.log(error.message);
       toast.error(error.response.data);
@@ -135,7 +135,7 @@ export default function Inventory() {
           </div>
         </div>
         <div className="w-full flex justify-end">
-          <AddInventoryModal />
+          <AddInventoryModal update={update} />
         </div>
         <TableContainer
           columns={columns}

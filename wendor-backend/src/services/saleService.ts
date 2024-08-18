@@ -130,6 +130,14 @@ class SalesService {
     async getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse> {
         return await this.salesRepository.getUserSales(userId, page, pageSize);
     }
+
+    async getTotalSales(): Promise<number> {
+        return await this.salesRepository.getTotalSales();
+    }
+
+    async getTotalRevenue(): Promise<number> {
+        return await this.salesRepository.getTotalRevenue();
+    }
 }
 
 class SaleProductService {

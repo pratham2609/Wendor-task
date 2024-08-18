@@ -17,11 +17,14 @@ export interface IProductRepository {
     findByNameAndCompany(product: string, companyId: string): Promise<Product | null>;
     findByCategory(category: string, page?: number, pageSize?: number): Promise<ProductsResponse>;
     findByCompany(companyId: string, page?: number, pageSize?: number): Promise<ProductsResponse>;
-    getAllProducts(page?: number, pageSize?: number): Promise<ProductsResponse>;
+    getAllProducts(page?: number, pageSize?: number, category?: string, company?: string): Promise<ProductsResponse>;
     create(product: ProductCreationAttributes): Promise<Product>;
+    bulkCreate(productDataArray: ProductCreationAttributes[]): Promise<Product[]>;
     update(id: string, product: Partial<Product>): Promise<Product>;
     delete(id: string): Promise<void>;
     findByBarcode(barcodeNo: string): Promise<Product | null>;
+    getTotalProducts(): Promise<number>;
+    getAllProductsCompanies(): Promise<ProductCompanies[]>;
 }
 
 export interface ProductAttributes {
@@ -49,4 +52,10 @@ export interface ProductRequest {
     companyId?: string;
     barcodeNo: string;
     company_name: string;
+}
+
+export interface ProductCompanies {
+    company_name: string;
+    name: string;
+    id: string
 }

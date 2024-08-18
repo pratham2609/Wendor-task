@@ -48,10 +48,16 @@ export class InventoryController {
         res.status(201).json({ success: true, data: inventory });
     });
 
+    // Create inventory bulk
+    static createBulkInventory = catchAsyncError(async (req: Request, res: Response) => {
+        await inventoryService.createBulkInventory(req.body);
+        res.status(201).json({ success: true, message: "Added Successfully!" });
+    });
+
     // Update existing inventory
     static updateInventory = catchAsyncError(async (req: Request, res: Response) => {
         await inventoryService.updateInventory(req.params.inventoryId, req.body);
-        res.status(200).json({ success: true, message: "Updated Successfully" });
+        res.status(200).json({ success: true, message: "Updated Successfully!" });
     });
 
     // Delete Product inventory

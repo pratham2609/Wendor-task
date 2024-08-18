@@ -98,6 +98,15 @@ class SalesRepository implements ISalesRepository {
         return { totalCount: count, sales: sales };
     }
 
+    async getTotalSales(): Promise<number> {
+        return await Sale.count();
+    }
+
+    async getTotalRevenue(): Promise<number> {
+        const totalRevenue = await Sale.sum('totalPrice');
+        return totalRevenue || 0;
+    }
+
 }
 
 class SaleProductRepository implements ISaleProductRepository {

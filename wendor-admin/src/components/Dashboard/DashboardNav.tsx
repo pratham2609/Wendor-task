@@ -13,7 +13,9 @@ export default function DashboardNav() {
         <div className='w-full h-full flex items-center justify-center'>
             <div className='w-full h-full flex flex-col items-center justify-between 2xl:p-10 xl:p-8 lg:p-6 p-4'>
                 <div className='w-full flex flex-col items-center gap-10'>
-                    <img src={"/wendor-logo-full.webp"} alt="Logo" className='w-44' />
+                    <div className="w-44 h-32">
+                        <img src={"/wendor-logo-full.webp"} alt="Logo" className='w-full h-full object-scale-down' />
+                    </div>
                     <nav className='w-full flex justify-center'>
                         <ul className='w-full flex flex-col items-center gap-2'>
                             {

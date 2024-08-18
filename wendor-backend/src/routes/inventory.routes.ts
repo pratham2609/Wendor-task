@@ -16,7 +16,7 @@ router.get('/product/one/quantity/:productId', verifyAuth, InventoryController.g
 // -- Admin Routes --
 
 // Route to create inventory
-router.post("/add", verifyAuth, verifyAdmin, InventoryController.createInventory);
+router.post("/add", verifyAuth, verifyAdmin, InventoryController.createBulkInventory);
 
 // Route to get inventory by product ID and batch number
 router.route('/product/:productId').get(verifyAuth, verifyAdmin, InventoryController.getInventoryByProduct)

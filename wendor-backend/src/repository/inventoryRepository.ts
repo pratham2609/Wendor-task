@@ -208,6 +208,25 @@ class InventoryRepository implements IInventoryRepository {
         }
         await inventory.destroy();
     }
+
+    async createBulkInventory(inventoryData: InventoryCreationAttributes[]): Promise<boolean> {
+        try {
+            for (const data of inventoryData) {
+                const existingInventory = await this.findProductByBatch(data.productId, data.batchNo);
+                if (existingInventory) {
+                    const quantity = existingInventory.quantity + data.quantity;
+                    await this.update(existingInventory.id, { quantity });
+                } else {
+                    await Inventory.create(data);
+                }
+            }
+
+            return true;
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error creating or updating inventory');
+        }
+    }
+
 }
 
 export default InventoryRepository;

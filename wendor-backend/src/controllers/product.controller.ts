@@ -27,29 +27,19 @@ export class ProductController {
     static getAllProducts = catchAsyncError(async (req: Request, res: Response) => {
         const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : undefined;
-        const response = await productService.getAllProducts(page, pageSize);
+        const category = req.query.category && req.query.category !== "all" ? (req.query.category as string) : undefined;
+        const company = req.query.company && req.query.company !== "all" ? (req.query.company as string) : undefined;
+        const response = await productService.getAllProducts(page, pageSize, category, company);
         res.status(200).json({ success: true, data: response });
     });
 
+    static getAllProductsCompanies = catchAsyncError(async (req: Request, res: Response) => {
+        const response = await productService.getAllProductsCompanies();
+        res.status(200).json({ success: true, data: response });
+    })
+
     static createProduct = catchAsyncError(async (req: Request, res: Response) => {
-        const {
-            name,
-            price,
-            category,
-            barcodeNo,
-            companyId,
-            image_url,
-            company_name
-        } = req.body;
-        const product = await productService.createProduct({
-            name,
-            price,
-            category,
-            barcodeNo,
-            companyId,
-            display_image_url: req.fileUrl ?? image_url,
-            company_name
-        });
+        const product = await productService.bulkCreateProducts(req.body);
         res.status(201).json({ success: true, data: product });
     });
 

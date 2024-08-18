@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon } from "../../components/Icons";
@@ -11,6 +11,8 @@ import { TableColums } from "../../types/Table";
 import AddProductsModal from "../../components/Modals/AddProductsModal";
 import EditProductModal from "../../components/Modals/EditProductModal";
 import toast from "react-hot-toast";
+import { Company } from "../../types/Companies";
+import { Categories } from "../../utils/constants";
 
 export default function Products() {
   const columns: TableColums[] = [
@@ -31,8 +33,24 @@ export default function Products() {
   });
   const [filter, setFilter] = React.useState({
     page: 1,
-    limit: 14,
+    limit: 10,
+    company: "all",
+    category: "all",
   });
+
+  const [companies, setCompanies] = useState<Company[]>([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const res = await axiosInstance.get("/company");
+        setCompanies(res.data.data.companies);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchCompanies();
+  }, []);
 
   const [editProductModalOpen, setEditProductModalOpen] = React.useState<{ isOpen: boolean, id: string | null }>({
     isOpen: false, id: null
@@ -44,17 +62,17 @@ export default function Products() {
   React.useEffect(() => {
     setLoading(true);
     axiosInstance
-      .get(`/products?page=${filter.page}&limit=${filter.limit}`)
+      .get(`/products?page=${filter.page}&limit=${filter.limit}&company=${filter.company}&category=${filter.category}`)
       .then((res) => {
         setProductRes({
           products: res.data.data.products.map((product: Product, index: number) => ({ ...product, sno: index + 1 })),
-          totalCount: res.data.totalCount,
+          totalCount: res.data.data.totalCount,
         });
         setLoading(false);
       })
       .catch((error) => console.log(error.message))
       .finally(() => setLoading(false));
-  }, [reload, filter.page]);
+  }, [reload, filter]);
 
   const deleteProduct = async (id: string) => {
     try {
@@ -141,7 +159,25 @@ export default function Products() {
             <SearchBar />
           </div>
         </div>
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end gap-3">
+          <select className="py-2 px-3 border rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
+            ...filter,
+            company: e.target.value
+          })}>
+            <option value="all">All</option>
+            {companies.map((company: Company) => {
+              return <option key={company.id} value={company.id}>{company.company_name}</option>
+            })}
+          </select>
+          <select className="py-2 px-3 border rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
+            ...filter,
+            category: e.target.value
+          })}>
+            <option value="all">All</option>
+            {Categories.map((cat: string) => {
+              return <option key={cat} value={cat}>{cat}</option>
+            })}
+          </select>
           <AddProductsModal />
         </div>
         <TableContainer
@@ -149,7 +185,7 @@ export default function Products() {
           id={"sno"}
           page={filter.page}
           setPage={setPage}
-          totalCount={productRes?.totalCount}
+          totalCount={productRes.totalCount}
           isLoading={loading}
           data={productRes.products ?? []}
           renderCell={renderCell}

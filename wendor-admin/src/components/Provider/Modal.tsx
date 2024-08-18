@@ -30,7 +30,7 @@ export default function ModalProvider({
             {btnText && (btnText === "edit" ? <button onClick={() => setIsOpen(true)} className="text-lg text-default-400 active:opacity-50">
                 <EditIcon />
             </button> : <Button className="bg-lightBlue text-white font-medium" onPress={() => setIsOpen(true)}>{btnText}</Button>)}
-            <Modal size={full ? "full" : "xl"} style={{ width: !fullScreen && "70vw", height: fullScreen ? "100vh" : full ? "90vh" : "auto", borderRadius: "20px" }} isDismissable isOpen={isOpen} onClose={() => setIsOpen(false)}>
+            <Modal size={full ? "full" : "2xl"} style={{ width: !fullScreen && "70vw", height: fullScreen ? "100vh" : full ? "90vh" : "auto", borderRadius: "20px" }} isDismissable isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ModalContent>
                     {(onClose) => (
                         <>
