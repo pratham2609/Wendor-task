@@ -32,20 +32,20 @@ export default function AddToCartBtn({ product }: { product: InventoryItem }) {
                 <div className='flex w-full items-center justify-between gap-2'>
                     <button disabled={quantityLoader}
                         onClick={handleDecrement}
-                        className='bg-black text-white rounded-lg w-[40%] h-10 flex items-center justify-center'>
+                        className='bg-black text-white rounded-md w-[40%] h-10 flex items-center justify-center'>
                         -
                     </button>
                     <span className='text-xl font-medium'>{quantityLoader ? <Spinner size='md' color='danger' /> : cartItem.quantity}</span>
                     <button disabled={quantityLoader}
                         onClick={handleIncrement}
-                        className='bg-black text-white rounded-lg w-[40%] h-10 flex items-center justify-center'>
+                        className='bg-black text-white rounded-md w-[40%] h-10 flex items-center justify-center'>
                         +
                     </button>
                 </div>
             ) : (
                 <button
                     onClick={handleAddToCart}
-                    className='bg-black text-white w-full py-2 rounded-lg'>
+                    className='bg-black text-white w-full py-2 rounded-md'>
                     Add to Cart
                 </button>
             )}

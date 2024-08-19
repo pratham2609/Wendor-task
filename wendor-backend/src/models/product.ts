@@ -11,6 +11,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
     public category!: CategoryEnum;
     public companyId!: string;  // Foreign Key
     public barcodeNo!: string
+    public display_image_url!: string
 }
 
 Product.init(
@@ -26,7 +27,7 @@ Product.init(
         },
         display_image_url: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
             defaultValue: "https://cdn.pixabay.com/photo/2013/07/13/11/53/best-seller-158885_1280.png",
         },
         price: {

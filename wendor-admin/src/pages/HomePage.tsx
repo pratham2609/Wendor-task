@@ -7,7 +7,7 @@ export default function HomePage() {
     const navigate = useNavigate();
     const { user } = useAuthContext();
     React.useEffect(() => {
-        if (user.id !== "" && user.role === "admin") navigate("/dashboard");
+        if (user && user?.id !== "") navigate("/dashboard");
         else navigate("/login");
     }, []);
     return (

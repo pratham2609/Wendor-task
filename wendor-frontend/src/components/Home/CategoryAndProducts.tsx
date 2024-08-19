@@ -4,16 +4,20 @@ import { useNavigate } from 'react-router-dom'
 export default function CategoryAndProducts() {
     const navigate = useNavigate();
     return (
-        <div className='w-full h-full'>
-            <ul className='flex w-full items-center gap-4'>
-                {Categories.slice(2, 7).map((category, index) => (
-                    <li onClick={() => navigate("/products?category=" + category)} key={index} className={'w-1/4 h-20 text-white flex items-center justify-center rounded-md font-bold cursor-pointer text-2xl ' + (
-                        index === 0 ? ' bg-pink' : index === 2 ? 'bg-gray-500' : index === 3 ? ' bg-teal' : "bg-lightBlue"
-                    )}>
-                        {category}
-                    </li>
-                ))}
-            </ul>
+        <div className='w-full h-full mb-16'>
+            <div className='w-full flex gap-5 overflow-x-hidden items-center'>
+                <p className='text-xl font-bold'>
+                    Categories: 
+                </p>
+                <ul className='flex w-full items-center overflow-x-auto gap-4 scrollbar-hide'>
+                    {Categories.map((category, index) => (
+                        <li onClick={() => navigate("/products?category=" + category)} key={index}
+                            className=' bg-zinc-200 text-black whitespace-nowrap flex items-center justify-center rounded-lg px-4 py-1 cursor-pointer text-lg '>
+                            {category}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }

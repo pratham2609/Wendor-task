@@ -10,11 +10,14 @@ import CompaniesDropdown from "../Dashboard/CompaniesDropdown";
 import { ImCross } from "react-icons/im";
 // import { LuUploadCloud } from "react-icons/lu";
 import toast from "react-hot-toast";
+import { FaCheck } from "react-icons/fa";
 
 export default function AddProductsModal({ update = () => { } }) {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [companies, setCompanies] = useState<Company[]>([]);
+    const [newCompanyIndex, setNewCompanyIndex] = useState<number | null>(null);
+    const [newCompany, setNewCompany] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchCompanies = async () => {
@@ -47,8 +50,6 @@ export default function AddProductsModal({ update = () => { } }) {
         const newData = data.filter((_, i) => i !== index);
         setData(newData);
     };
-
-    const [newCompany, setNewCompany] = useState(false);
     const addRow = () => {
         setData([...data, productCreationFields]);
         setRowCount(rowCount + 1);
@@ -69,20 +70,15 @@ export default function AddProductsModal({ update = () => { } }) {
             setLoading(false);
         }
     }
-
-    const [displayImageType, setDisplayImageType] = useState({
-        type: "",
-        index: -1
-    });
     return (
         <ModalProvider isOpen={isOpen} fullScreen={true} setIsOpen={setIsOpen} loading={loading} btnText="Add Products" action={handleSubmit} title="Add Products">
-            <div className="w-full h-full flex flex-col gap-3">
+            <div className="w-full h-full flex flex-col px-5 py-2 gap-3">
                 <div className="w-full justify-end flex">
-                    <button className="bg-pink text-white px-2 py-1 rounded-lg" onClick={addRow}>Add Row</button>
+                    <button className="bg-black text-white px-2 py-1 rounded-lg" onClick={addRow}>Add Row</button>
                 </div>
-                <div className="border-1 rounded-lg">
-                    <table className="w-full">
-                        <thead className="border-b-1">
+                <div className=" max-h-[77vh] h-full border-b-2 overflow-y-auto overflow-x-hidden">
+                    <table className="w-full border-1 ">
+                        <thead className="border-b-1 sticky top-0 bg-gray-700 z-10 text-white">
                             <tr>
                                 <th className="border-r-1 p-2">Name</th>
                                 <th className="border-r-1 p-2">Barcode No.</th>
@@ -96,7 +92,7 @@ export default function AddProductsModal({ update = () => { } }) {
                         <tbody>
                             {data.map((item, index) => (
                                 <tr key={index}>
-                                    <td className="border-r-1 px-2 py-3">
+                                    <td className="border-r-1 px-2 w-[17%] py-3">
                                         <input required className="border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.name} onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].name = e.target.value;
@@ -130,17 +126,26 @@ export default function AddProductsModal({ update = () => { } }) {
                                             setData(newData);
                                         }} />
                                     </td>
-                                    <td className="border-r-1 px-2 w-44 py-3">
-                                        {newCompany ?
+                                    <td className="border-r-1 px-2 w-[17%] py-3">
+                                        {newCompanyIndex === index ?
                                             <div className="w-full flex items-center gap-1">
-                                                <input className=" border focus:outline-none w-full p-1 px-2 rounded-lg " type="text" value={item.company_name} onChange={(e) => {
-                                                    const newData = [...data];
-                                                    newData[index].company_name = e.target.value;
-                                                    setData(newData);
+                                                <input className=" border focus:outline-none w-full p-1 px-2 rounded-lg " type="text" value={newCompany} onChange={(e) => {
+                                                    setNewCompany(e.target.value)
                                                 }} />
-                                                <ImCross className="text-danger cursor-pointer" onClick={() => setNewCompany(false)} />
+                                                <FaCheck className="cursor-pointer text-green-600" onClick={() => {
+                                                    const newData = [...data];
+                                                    newData[index].company_name = newCompany;
+                                                    setData(newData);
+                                                    setCompanies([
+                                                        ...companies,
+                                                        { company_name: newCompany, id: null, createdAt: null, updatedAt: null }
+                                                    ]);
+                                                    setNewCompany(null);
+                                                    setNewCompanyIndex(null);
+                                                }} />
+                                                <ImCross className="text-danger cursor-pointer" onClick={() => setNewCompanyIndex(null)} />
                                             </div> :
-                                            <CompaniesDropdown setNewCompany={setNewCompany} setCompany={(company: Company) => {
+                                            <CompaniesDropdown setNewCompany={() => setNewCompanyIndex(index)} setCompany={(company: Company) => {
                                                 const newData = [...data];
                                                 newData[index].company_name = company.company_name;
                                                 newData[index].companyId = company.id;
@@ -149,54 +154,13 @@ export default function AddProductsModal({ update = () => { } }) {
                                         }
                                     </td>
                                     <td className="border-r-1 px-2 w-[20%] py-3">
-                                        {displayImageType.index === index ?
-                                            (displayImageType.type === "url" && <div className="w-full h-full flex gap-1 items-center">
-                                                <input className=" border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.display_image_url} onChange={(e) => {
-                                                    const newData = [...data];
-                                                    newData[index].display_image_url = e.target.value;
-                                                    setData(newData);
-                                                }} />
-                                                <ImCross className="text-danger cursor-pointer" onClick={() => setDisplayImageType({
-                                                    type: "",
-                                                    index: -1
-                                                })} />
-                                            </div>)
-                                            : (displayImageType.index === index && displayImageType.type === "file" ?
-                                                <>hello</>
-                                                // <div className="w-full relative">
-                                                //     <label htmlFor='prodFile' className='w-full flex cursor-pointer py-5 justify-center items-center h-full'>
-                                                //         {data[index].file ? "Uploaded" :
-                                                //             <LuUploadCloud className='text-4xl text-teal' />
-                                                //         }
-                                                //         <h1>hi</h1>
-                                                //         <input required onChange={(e) => {
-                                                //             e.preventDefault();
-                                                //             const file = e.target.files[0];
-                                                //             if (file.size > 1000000) {
-                                                //                 toast.error('File size should be less than 1MB')
-                                                //                 return;
-                                                //             }
-                                                //             const newData = [...data];
-                                                //             const reader = new FileReader();
-                                                //             reader.onloadend = () => {
-                                                //                 newData[index].file = reader.result as string;
-                                                //                 setData(newData);
-                                                //             }
-                                                //         }} name='prodFile' id='prodFile' className='w-full h-full top-0 right-0 left-0 bottom-0 absolute z-10' hidden={true} type='file' accept='.png, .jpg, .jpeg, .pdf' placeholder='Upload Pan Card' />
-                                                //     </label>
-                                                // </div>
-                                                : <div className="flex items-center w-full gap-1">
-                                                    <button className="w-full text-center py-1 rounded-lg bg-black text-white" onClick={() => setDisplayImageType({
-                                                        type: "file",
-                                                        index
-                                                    })}>File</button>
-                                                    <button onClick={() => setDisplayImageType({
-                                                        type: "url",
-                                                        index
-                                                    })}
-                                                        className="w-full text-center py-1 rounded-lg bg-black text-white">URL</button>
-                                                </div>)
-                                        }
+                                        <div className="w-full h-full flex gap-1 items-center">
+                                            <input className=" border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.display_image_url} onChange={(e) => {
+                                                const newData = [...data];
+                                                newData[index].display_image_url = e.target.value;
+                                                setData(newData);
+                                            }} />
+                                        </div>
                                     </td>
                                     <td className="px-2 py-3 items-center">
                                         <div className="flex justify-center h-full ">

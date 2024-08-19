@@ -22,3 +22,5 @@ process.loadEnvFile();
 export const createResetUrl = (token: string): string => {
     return `${process.env.WEBSITE_URL}/auth/reset-password?token=${token}`;
 }
+
+export const defaultProductImage = "https://cdn.pixabay.com/photo/2013/07/13/11/53/best-seller-158885_1280.png"

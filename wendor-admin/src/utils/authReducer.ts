@@ -15,7 +15,7 @@ export const initialUserState: UserState = {
 
 export type UserAction = {
     type: 'updateUser';
-    payload: Partial<UserState>;
+    payload: UserState;
 } | {
     type: 'loginUser';
     payload: UserState;
@@ -26,10 +26,7 @@ export type UserAction = {
 const authReducer = (state: UserState, action: UserAction): UserState => {
     switch (action.type) {
         case 'updateUser':
-            return {
-                ...state,
-                ...action.payload,
-            };
+            return action.payload;
         case 'loginUser':
             return action.payload;
         case 'Reset_Data':

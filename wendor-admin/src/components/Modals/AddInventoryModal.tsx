@@ -65,7 +65,7 @@ export default function AddInventoryModal({ update }: { update: () => void }) {
         <ModalProvider isOpen={isOpen} setIsOpen={setIsOpen} full={false} loading={loading} btnText="Add Inventory" action={handleAddInventory} title="Add Inventory">
             <div className="max-h-[70vh] min-h-[40vh] h-full overflow-y-auto flex w-full flex-col gap-3">
                 <div className="w-full flex justify-end">
-                    <button onClick={addRow} className="bg-teal text-white font-medium px-3 py-1 rounded-md">Add Row</button>
+                    <button onClick={addRow} className="bg-black text-white font-medium px-3 py-1 rounded-md">Add Row</button>
                 </div>
                 <div className="w-full grid grid-cols-3 ">
                     <h1 className="font-poppins font-bold text-center">Product Name</h1>

@@ -52,8 +52,8 @@ export default function Products() {
     fetchCompanies();
   }, []);
 
-  const [editProductModalOpen, setEditProductModalOpen] = useState<{ isOpen: boolean, id: string | null }>({
-    isOpen: false, id: null
+  const [editProductModalOpen, setEditProductModalOpen] = useState<{ isOpen: boolean, product: Product | null }>({
+    isOpen: false, product: null
   });
   const [deleteProductModal, setDeleteProductModal] = useState({
     isOpen: false,
@@ -141,7 +141,7 @@ export default function Products() {
         return (
           <div className="relative flex items-center gap-2">
             <Tooltip content="Edit product">
-              <button className="focus:outline-none" onClick={() => setEditProductModalOpen({ isOpen: true, id: product.id })}>
+              <button className="focus:outline-none" onClick={() => setEditProductModalOpen({ isOpen: true, product: product })}>
                 <EditIcon />
               </button>
             </Tooltip>
@@ -201,8 +201,8 @@ export default function Products() {
           renderCell={renderCell}
         />
       </section>
-      {editProductModalOpen.isOpen && <EditProductModal isOpen={editProductModalOpen.isOpen} setIsOpen={(val) => setEditProductModalOpen({ ...editProductModalOpen, isOpen: val })}
-        id={editProductModalOpen.id} />}
+      {editProductModalOpen.isOpen && <EditProductModal update={update} isOpen={editProductModalOpen.isOpen} setIsOpen={(val) => setEditProductModalOpen({ ...editProductModalOpen, isOpen: val })}
+        product={editProductModalOpen.product} />}
       {deleteProductModal.isOpen && <DeleteModal isOpen={deleteProductModal.isOpen} setIsOpen={(val) => setDeleteProductModal({
         ...deleteProductModal,
         isOpen: val

@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
 import Loader from "../components/Global/Loader";
+import ResetPassword from "../pages/ResetPassword";
 const ProductPage = lazy(() => import("../pages/ProductPage"));
 const HomePage = lazy(() => import("../pages/HomePage"));
 const Cart = lazy(() => import("../pages/Cart"));
@@ -16,6 +17,13 @@ const Router = () => {
                 element={
                     <Suspense fallback={<Loader />}>
                         <HomePage />
+                    </Suspense>
+                }
+            />
+            <Route path="/auth/reset-password"
+                element={
+                    <Suspense fallback={<Loader />}>
+                        <ResetPassword />
                     </Suspense>
                 }
             />

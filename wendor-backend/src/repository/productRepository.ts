@@ -75,6 +75,7 @@ class ProductRepository implements IProductRepository {
                         attributes: [],
                     }
                 ],
+                order: [['createdAt', 'DESC']]
             });
 
             return { totalCount: count, products: rows };

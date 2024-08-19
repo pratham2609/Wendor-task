@@ -11,6 +11,7 @@ export default {
     extend: {
       backgroundImage: {
         'login-page': "url('/Wendor.jpg')",
+        'hero': "url('/hero.svg')"
       },
       colors: {
         blue: "#1A55E3",

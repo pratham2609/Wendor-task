@@ -95,19 +95,23 @@ export class UserService {
     }
 
 
-    async changePassword(id: string, data: { currentPassword: string, newPassword: string }): Promise<void> {
-        const user = await this.userRepository.findById(id);
-        if (!user) {
-            throw new ApiError(404, "User not found");
-        }
+    async changePassword(id: string, data: { oldPassword: string, newPassword: string }): Promise<void> {
+        try {
+            const user = await this.userRepository.findById(id);
+            if (!user) {
+                throw new ApiError(404, "User not found");
+            }
 
-        const isPasswordValid = await user.validatePassword(data.currentPassword);
-        if (!isPasswordValid) {
-            throw new ApiError(401, "Invalid password");
-        }
+            const isPasswordValid = await user.validatePassword(data.oldPassword);
+            if (!isPasswordValid) {
+                throw new ApiError(401, "Invalid password");
+            }
 
-        user.password = data.newPassword;
-        await user.save();
+            user.password = data.newPassword;
+            await user.save();
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message);
+        }
     }
 
     async sendResetPasswordMail(email: string): Promise<void> {

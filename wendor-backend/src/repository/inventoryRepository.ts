@@ -4,6 +4,7 @@ import Product from "../models/product";
 import { IInventoryRepository, InventoryAttributes, InventoryCreationAttributes, InventoryResponse } from "../types/inventory";
 import Company from "../models/company";
 import { ApiError } from "../middlewares/ApiError";
+import { Op } from "sequelize";
 
 class InventoryRepository implements IInventoryRepository {
 
@@ -244,6 +245,32 @@ class InventoryRepository implements IInventoryRepository {
             return true;
         } catch (error) {
             throw new ApiError(500, (error as Error).message || 'Error creating or updating inventory');
+        }
+    }
+
+    async searchProducts(search: string): Promise<any[]> {
+        try {
+            const inventory = await Inventory.findAll({
+                attributes: [
+                    'productId',
+                    [sequelize.col('product.name'), 'productName'],
+                ],
+                include: [
+                    {
+                        model: Product,
+                        as: 'product',
+                        attributes: [],
+                        where: {
+                            name: { [Op.iLike]: `%${search}%` }
+                        },
+                    }
+                ],
+                group: ['productId', 'product.name'],
+                having: sequelize.literal('SUM(quantity) > 0'),
+            });
+            return inventory
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching inventories');
         }
     }
 

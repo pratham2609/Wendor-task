@@ -48,7 +48,7 @@ export const useFetchInventory = ({ page, pageSize, category, company, reload }:
 
     useEffect(() => {
         fetchInventory();
-    }, [reload])
+    }, [reload, category, company])
     return {
         inventory,
         fetchInventory,

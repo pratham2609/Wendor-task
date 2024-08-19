@@ -18,7 +18,7 @@ export class UserController {
     })
 
     static updateUser = catchAsyncError(async (req: Request, res: Response) => {
-        const user = await userService.updateUser(req.user?.id!, req.body);
+        const user = await userService.updateUser(req.user?.id!, { ...req.body, avatar: req.fileUrl });
         res.status(200).json({ success: true, data: user });
     });
 

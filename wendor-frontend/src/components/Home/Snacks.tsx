@@ -8,9 +8,9 @@ export default function Snacks() {
     });
 
     return (
-        <div className='w-full h-full flex flex-col gap-5'>
+        <div className='w-full h-full flex flex-col my-10 gap-5'>
             <div className='w-full'>
-                <h1 className="font-bold text-4xl">
+                <h1 className="font-bold text-3xl">
                     Snacks
                 </h1>
             </div>

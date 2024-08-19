@@ -18,27 +18,13 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
 
     // Generate JWT token for the user
     public getJwtToken(): string {
-        const expiresIn = process.env.JWT_EXPIRES_TIME || '7d'; // Default to '7d' if not set
-        return jwt.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET!, {
-            expiresIn,
-        });
+        return jwt.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET!);
     }
 
     // Generate a password reset token
     public generatePasswordResetToken(): string {
         const resetToken = crypto.randomBytes(32).toString('hex');
         return resetToken;
-    }
-
-    // Virtual field to get the full avatar URL
-    public get avatarUrl(): string | null {
-        if (!this.avatar) return null;
-        return `${process.env.AWS_CLOUDFRONT_BASE_URL!}/${this.avatar}`;
-    }
-
-    // Prevent direct setting of avatarUrl
-    public set avatarUrl(_value: string) {
-        throw new Error("Do not try to set the `avatarUrl` value!");
     }
 
     // Hash the password before saving the user to the database
@@ -73,7 +59,7 @@ User.init(
         avatar: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: "",
+            defaultValue: "https://storage.googleapis.com/wendor/avatars/avatar.png",
         },
         email: {
             type: DataTypes.STRING,

@@ -1,7 +1,7 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { Company } from "../../types/Companies";
 
-export default function CompaniesDropdown({ text, items, setCompany, setNewCompany }: { text: string, items: Company[], setCompany: (company: Company) => void, setNewCompany: (val: boolean) => void }) {
+export default function CompaniesDropdown({ text, items, setCompany, setNewCompany }: { text: string, items: Company[], setCompany: (company: Company) => void, setNewCompany: () => void }) {
     return (
         <Dropdown>
             <DropdownTrigger>
@@ -16,7 +16,7 @@ export default function CompaniesDropdown({ text, items, setCompany, setNewCompa
                         {company.company_name}
                     </DropdownItem>
                 )) as any}
-                <DropdownItem key={"add"} className="text-blue" onClick={() => setNewCompany(true)}>Add New</DropdownItem>
+                <DropdownItem key={"add"} className="text-blue" onClick={setNewCompany}>Add New</DropdownItem>
             </DropdownMenu>
         </Dropdown>
     );

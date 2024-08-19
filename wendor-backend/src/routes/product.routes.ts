@@ -1,8 +1,6 @@
 import express from "express";
 import { ProductController } from "../controllers/product.controller";
 import { verifyAdmin, verifyAuth } from "../middlewares/auth";
-import { multerConfig } from "../config/multer";
-import { uploadProductImage } from "../middlewares/uploadFile";
 
 const router = express.Router();
 
@@ -28,7 +26,7 @@ router.route("/").get(verifyAuth, verifyAdmin, ProductController.getAllProducts)
     .post(verifyAuth, verifyAdmin, ProductController.createProduct);
 
 // Route to get product by id, update product, and delete product
-router.route("/:id").put(verifyAuth, verifyAdmin, multerConfig.single('file'), uploadProductImage, ProductController.updateProduct)
+router.route("/:id").put(verifyAuth, verifyAdmin, ProductController.updateProduct)
     .delete(verifyAuth, verifyAdmin, ProductController.deleteProduct);
 
 

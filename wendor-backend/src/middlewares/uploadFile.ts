@@ -2,10 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { bucket } from '../config/gcp';
 
 
-export const uploadProductImage = async (req: Request, res: Response, next: NextFunction) => {
-    await uploadFileToFolder(req, res, next, 'products');
-};
-
 export const uploadAvatarImage = async (req: Request, res: Response, next: NextFunction) => {
     await uploadFileToFolder(req, res, next, 'avatars');
 };
@@ -14,7 +10,6 @@ const uploadFileToFolder = async (req: Request, res: Response, next: NextFunctio
     if (!req.file) {
         return next(); // If no file, proceed without adding anything to the request
     }
-    console.log(bucket)
     const blob = bucket.file(`${folder}/${req.file.originalname}`);
     const blobStream = blob.createWriteStream({
         resumable: false,
@@ -39,6 +34,7 @@ const uploadFileToFolder = async (req: Request, res: Response, next: NextFunctio
 
             next();
         } catch (error) {
+            console.log(error)
             res.status(500).send('Failed to make file public.');
         }
     });

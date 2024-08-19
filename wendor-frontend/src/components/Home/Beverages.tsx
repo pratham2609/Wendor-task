@@ -8,9 +8,9 @@ export default function Beverages() {
   });
 
   return (
-    <div className='w-full h-full flex flex-col gap-5'>
+    <div className='w-full h-full flex my-10 flex-col gap-5'>
       <div className='w-full'>
-        <h1 className="font-bold text-4xl">
+        <h1 className="font-bold text-3xl">
           Beverages
         </h1>
       </div>

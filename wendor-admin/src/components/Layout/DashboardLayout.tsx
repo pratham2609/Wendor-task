@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../utils/axiosInstance';
 import { useAuthContext } from '../../context/AuthContext';
 import DashboardNav from '../Dashboard/DashboardNav';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-    const location = useLocation();
     const navigate = useNavigate();
     const { updateUser, user } = useAuthContext();
     React.useEffect(() => {
@@ -41,7 +40,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                 </h2>
                                 <button onClick={() => navigate(`/settings`)}
                                     className='font-bold text-white capitalize bg-blue h-8 w-8 rounded-full flex items-center justify-center'>
-                                    {user.fullName[0]}
+                                    {user?.fullName[0]}
                                 </button>
                             </div>
                         </div>

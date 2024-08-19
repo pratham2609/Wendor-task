@@ -30,3 +30,8 @@ export interface ProductCompanies {
     name: string;
     id: string
 }
+
+export interface SearchProduct {
+    productId: string;
+    productName: string;
+}

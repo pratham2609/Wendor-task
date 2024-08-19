@@ -24,7 +24,7 @@ const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) =
     const [state, dispatch] = useReducer(authReducer, initState);
     const [loading, setLoading] = useState(true);
 
-    const updateUser = (data: Partial<UserState>) => {
+    const updateUser = (data: UserState) => {
         dispatch({
             type: "updateUser",
             payload: data,

@@ -75,4 +75,14 @@ export class InventoryController {
         await inventoryService.deleteInventoryBatch(req.params.inventoryId);
         res.status(200).json({ success: true, message: 'Inventory deleted' });
     });
+
+    // Search products in inventory
+    static getSearchedProductsFromInventory = catchAsyncError(async (req: Request, res: Response) => {
+        const { name } = req.query;
+        if (!name) {
+            throw new ApiError(400, "Please provide search query");
+        }
+        const inventories = await inventoryService.searchProductsInInventory(name as string);
+        res.status(200).json({ success: true, data: inventories });
+    });
 }

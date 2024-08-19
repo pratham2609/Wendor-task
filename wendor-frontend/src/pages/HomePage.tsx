@@ -1,3 +1,4 @@
+import ContainerWrapper from '../components/Global/ContainerWrapper'
 import BestSellers from '../components/Home/BestSellers'
 import Beverages from '../components/Home/Beverages'
 import CategoryAndProducts from '../components/Home/CategoryAndProducts'
@@ -6,12 +7,14 @@ import Snacks from '../components/Home/Snacks'
 
 export default function HomePage() {
     return (
-        <main className='flex flex-col w-full h-full gap-16'>
+        <main className='flex flex-col w-full h-full '>
             <Hero />
-            <CategoryAndProducts />
-            <BestSellers />
-            <Beverages />
-            <Snacks />
+            <ContainerWrapper>
+                <CategoryAndProducts />
+                <BestSellers />
+                <Beverages />
+                <Snacks />
+            </ContainerWrapper>
         </main>
     )
 }

@@ -8,7 +8,7 @@ const ProtectedRoute = () => {
   return (
     <>
       {
-        user?.id !== "" && (user.role === "admin") ? <DashboardLayout>
+        (user && user?.id !== "") ? <DashboardLayout>
           <Outlet />
         </DashboardLayout>
           : <Navigate to="/" replace={true} />

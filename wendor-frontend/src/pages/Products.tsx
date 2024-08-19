@@ -3,6 +3,8 @@ import { useFetchInventory } from "../hooks/fetchInventoryData";
 import ProductCard from "../components/ProductCards";
 import { InventoryItem } from "../types/Inventory";
 import { useState } from "react";
+import { Categories } from "../utils/constants";
+import ContainerWrapper from "../components/Global/ContainerWrapper";
 
 
 export default function Products() {
@@ -13,26 +15,39 @@ export default function Products() {
     });
     const { inventory, loading } = useFetchInventory({ category: filter.category, company: filter.company });
     return (
-        <div className='w-full min-h-screen h-full flex flex-col gap-10 pt-10'>
-            <div className=''>
-                <h1 className="font-bold text-4xl">
-                    Products
-                </h1>
-                <h4 className="font-semibold text-3xl">
-                    {searchParams ? searchParams.get('category') && <p> Category - {searchParams.get('category')}</p>
-                        : searchParams.get('company') && <p> Category - {searchParams.get('company')}</p>
+        <ContainerWrapper>
+            <div className='w-full min-h-screen h-full flex flex-col gap-10 pt-10'>
+                <div className="w-full flex justify-between items-center">
+                    <div className=''>
+                        <h1 className="font-bold text-4xl">
+                            Products
+                        </h1>
+                        <h4 className="font-semibold text-3xl">
+                            {searchParams ? searchParams.get('category') && <p> Category - {searchParams.get('category')}</p>
+                                : searchParams.get('company') && <p> Category - {searchParams.get('company')}</p>
+                            }
+                        </h4>
+                    </div>
+                    <select value={filter.category} onChange={(e) => setFilter({
+                        ...filter,
+                        category: e.target.value,
+                    })} className="border-[1.5px] focus:outline-none border-gray-600 rounded-lg px-2 py-1">
+                        <option value={"all"}>
+                            All
+                        </option>
+                        {Categories.map((category) => (<option key={category}>{category}</option>))}
+                    </select>
+                </div>
+                <div className='w-full grid grid-cols-4 gap-5'>
+                    {loading ? Array(4).fill(1).map((_, index) => (
+                        <div key={index} className='w-full h-[450px] rounded-xl bg-gray-400 animate-pulse' />
+                    )) : inventory.inventory.length > 0 ?
+                        inventory.inventory.map((data: InventoryItem) => (
+                            <ProductCard key={data.productId} product={data} />
+                        )) : <div className="w-full justify-center col-span-4 pt-24 flex items-center">No products found</div>
                     }
-                </h4>
+                </div>
             </div>
-            <div className='w-full grid grid-cols-4 gap-5'>
-                {loading ? Array(4).fill(1).map((_, index) => (
-                    <div key={index} className='w-full h-[450px] rounded-xl bg-gray-400 animate-pulse' />
-                )) : inventory.inventory.length > 0 ?
-                    inventory.inventory.map((data: InventoryItem) => (
-                        <ProductCard key={data.productId} product={data} />
-                    )) : <div className="w-full justify-center col-span-4 pt-24 flex items-center">No products found with associated category</div>
-                }
-            </div>
-        </div >
+        </ContainerWrapper >
     )
 }

@@ -3,6 +3,7 @@ import Product from "../models/product";
 import CompanyRepository from "../repository/companyRepository";
 import { ICompanyRepository } from "../types/company";
 import { IProductRepository, ProductCompanies, ProductCreationAttributes, ProductsResponse } from "../types/product";
+import { defaultProductImage } from "../utils/app.utils";
 
 interface ProductCreationRequest extends ProductCreationAttributes {
     company_name: string;
@@ -55,6 +56,10 @@ export class ProductService {
 
     async createProduct(productData: ProductCreationRequest): Promise<Product> {
         try {
+            if (!productData.name || !productData.barcodeNo || !productData.category ||
+                !productData.companyId || !productData.price) {
+                throw new ApiError(400, 'All fields are required');
+            }
             if (!productData.company_name) {
                 throw new ApiError(400, 'Company name is required');
             }
@@ -67,11 +72,6 @@ export class ProductService {
                 }
             }
             productData.companyId = company.id;
-            if (!productData.name || !productData.barcodeNo || !productData.category ||
-                !productData.companyId || !productData.display_image_url
-                || !productData.price) {
-                throw new ApiError(400, 'All fields are required');
-            }
             return await this.productRepository.create(productData);
         } catch (error) {
             throw new ApiError(500, (error as Error).message || 'Error creating product');
@@ -82,6 +82,10 @@ export class ProductService {
         try {
             const productsToCreate: ProductCreationAttributes[] = [];
             for (const productData of productDataArray) {
+                if (!productData.name || !productData.barcodeNo || !productData.category || !productData.companyId
+                    || !productData.price) {
+                    throw new ApiError(400, 'All fields are required');
+                }
                 if (!productData.company_name) {
                     throw new ApiError(400, 'Company name is required for ' + productData.name);
                 }
@@ -93,11 +97,8 @@ export class ProductService {
                         throw new ApiError(500, (error as Error).message || 'Error creating company');
                     }
                 }
+                if (!productData.display_image_url) productData.display_image_url = defaultProductImage;
                 productData.companyId = company.id;
-                if (!productData.name || !productData.barcodeNo || !productData.category || !productData.companyId
-                    || !productData.price) {
-                    throw new ApiError(400, 'All fields are required');
-                }
                 productsToCreate.push(productData);
             }
             return await this.productRepository.bulkCreate(productsToCreate);

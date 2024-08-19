@@ -5,9 +5,9 @@ import { InventoryItem } from '../../types/Inventory';
 export default function BestSellers() {
     const { inventory, loading } = useInventoryContext();
     return (
-        <div className='w-full h-full flex flex-col gap-5'>
+        <div className='w-full h-full flex flex-col my-10 gap-5'>
             <div className='w-full'>
-                <h1 className="font-bold text-4xl">
+                <h1 className="font-bold text-3xl">
                     Best Sellers
                 </h1>
             </div>

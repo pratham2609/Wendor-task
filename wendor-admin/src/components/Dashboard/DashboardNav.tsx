@@ -38,7 +38,7 @@ export default function DashboardNav() {
                         handleLogout();
                         toast.success("Logged out seccessfully!");
                         navigate(`/login`);
-                    }} className='w-full text-white text-xl hover:bg-opacity-100 bg-opacity-80 bg-[#E74C3C] transition duration-200 ease-linear py-3 rounded-lg flex justify-center items-center gap-1'><MdLogout />Logout</button>
+                    }} className='w-full text-white text-xl hover:bg-opacity-100 bg-opacity-80 bg-black transition duration-200 ease-linear py-3 rounded-lg flex justify-center items-center gap-1'><MdLogout />Logout</button>
                 </div>
             </div>
         </div>

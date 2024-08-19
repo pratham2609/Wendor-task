@@ -4,6 +4,7 @@ import { Order } from "../types/Sales";
 import { useNavigate } from "react-router-dom";
 import { useModalContext } from "../context/ModalsContext";
 import OrderModal from "../components/Modals/OrderModal";
+import ContainerWrapper from "../components/Global/ContainerWrapper";
 
 
 export default function Orders() {
@@ -11,7 +12,7 @@ export default function Orders() {
     const { orders, loading } = useGetOrders({})
     const { orderModalOpen } = useModalContext();
     return (
-        <>
+        <ContainerWrapper>
             <div className='w-full min-h-[90vh] pt-10 flex flex-col gap-10'>
                 <div className=''>
                     <h1 className="font-bold text-4xl">
@@ -24,7 +25,7 @@ export default function Orders() {
                     )) : orders.totalCount > 0 ?
                         orders.orders.map((data: Order) => (
                             <OrderCard key={data.id} order={data} />
-                        )) : <div className="w-full justify-center col-span-4 flex flex-col items-center">
+                        )) : <div className="w-full justify-center col-span-4 gap-5 flex flex-col items-center">
                             <p className="font-semibold text-xl">
                                 No Orders placed till now🤷🏻‍♂️
                             </p>
@@ -34,6 +35,6 @@ export default function Orders() {
                 </div>
             </div>
             {orderModalOpen.isOpen && <OrderModal order={orderModalOpen.order} />}
-        </>
+        </ContainerWrapper>
     )
 }

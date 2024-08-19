@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ProductCompanies } from "../../types/Product";
+import _ from "lodash";
 
-export default function ProductDropdown({ product, items, setProduct }: { product: string, items: ProductCompanies[], setProduct: (product: ProductCompanies) => void }) {
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [search, setSearch] = useState(product);
-    const [filteredItems, setFilteredItems] = useState(items);
+export default function ProductDropdown({ items, setProduct }: { product: string, items: ProductCompanies[], setProduct: (product: ProductCompanies) => void }) {
+    const [search, setSearch] = useState("");
+    const searchBoxRef = useRef(null);
+    const [filteredItems, setFilteredItems] = useState<ProductCompanies[]>(null);
+
     function filterProducts(search: string): ProductCompanies[] {
         if (!search) {
             return items;
@@ -15,42 +17,55 @@ export default function ProductDropdown({ product, items, setProduct }: { produc
             product.name.toLowerCase().includes(lowerCaseSearch)
         );
     }
-    useEffect(() => {
-        const handleFilterProducts = (input: string) => {
+
+    const throttledFilter = useCallback(
+        _.throttle((input: string) => {
             const filtered = filterProducts(input);
             setFilteredItems(filtered);
-        };
-        handleFilterProducts(search);
-        console.log(filteredItems)
-    }, [search]);
+        }, 500),
+        []
+    );
 
+
+    const handleClickOutside = (event) => {
+        if (searchBoxRef.current && !searchBoxRef.current.contains(event.target)) {
+            setFilteredItems(null);
+        }
+    };
+
+    const handleSearchInputChange = (e) => {
+        const value = e.target.value;
+        setSearch(value);
+        throttledFilter(value);
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return (
-        <div className="w-full relative" onClick={() => setShowDropDown(false)}>
+        <div ref={searchBoxRef} className="w-full relative">
             <input
                 value={search}
                 className="w-full h-10 rounded-md px-2 focus:outline-none border"
-                onChange={(e) => {
-                    const inputValue = e.target.value;
-                    setShowDropDown(true);
-                    setSearch(inputValue);
-                    filterProducts(inputValue);
-                }}
+                onChange={handleSearchInputChange}
             />
-            <div className={"absolute border rounded-lg z-10 max-h-56 min-h-24 h-full overflow-x-hidden overflow-y-auto p-2 shadow-lg origin-top transition ease-linear bg-white min-w-full max-w-[20vw] top-full left-0 " + (showDropDown ? "scale-100" : "scale-0")}>
-                <ul>
-                    {filteredItems.length > 0 ? filteredItems.map((product: ProductCompanies) => (
-                        <li className="cursor-pointer" key={product.id} onClick={() => {
-                            setProduct(product);
-                            setSearch(product.name);
-                            setShowDropDown(false);
-                        }}>
-                            {product.name}
-                        </li>
-                    )) : (
-                        <li className="text-center">No products found</li>
-                    )}
-                </ul>
+
+            {filteredItems && <div className="absolute max-h-60 overflow-auto top-[110%] rounded-lg shadow-sm border p-3 bg-white w-full left-0">
+                {filteredItems.length > 0 ?
+                    <ul>{filteredItems.map((product: ProductCompanies) =>
+                    (<li className="cursor-pointer" key={product.id} onClick={() => {
+                        setProduct(product);
+                        setSearch(product.name);
+                        setFilteredItems(null);
+                    }}>
+                        {product.name}
+                    </li>))}
+                    </ul> : <p>No results found</p>}
             </div>
+            }
         </div>
     );
 }

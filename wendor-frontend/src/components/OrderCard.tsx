@@ -37,7 +37,7 @@ export default function OrderCard({ order }: { order: Order }) {
                 <button onClick={() => setOrderModalOpen({
                     order: order,
                     isOpen: true
-                })} className='w-full py-2 rounded-xl bg-blue bg-opacity-65 text-white font-semibold'>
+                })} className='w-full py-2 rounded-md bg-blue bg-opacity-65 text-white font-semibold'>
                     View Order
                 </button>
             </div>

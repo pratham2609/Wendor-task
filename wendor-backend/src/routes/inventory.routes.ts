@@ -11,7 +11,7 @@ const router = express.Router();
 router.get("/", InventoryController.getAllProductsInInventory)
 router.get("/product/one/:productId", InventoryController.getProductDetails);
 router.get('/product/one/quantity/:productId', verifyAuth, InventoryController.getSinleProductQuantity);
-
+router.get('/search', InventoryController.getSearchedProductsFromInventory)
 
 // -- Admin Routes --
 
