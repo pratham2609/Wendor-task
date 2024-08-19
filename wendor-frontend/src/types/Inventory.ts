@@ -3,6 +3,7 @@ export interface InventoryItem {
     productName: string;
     totalQuantity: number;
     productPrice: number;
+    productCategory?: string;
     companyName: string;
     display_image_url: string;
 }

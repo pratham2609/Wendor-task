@@ -2,21 +2,15 @@ import { useSearchParams } from "react-router-dom"
 import { useFetchInventory } from "../hooks/fetchInventoryData";
 import ProductCard from "../components/ProductCards";
 import { InventoryItem } from "../types/Inventory";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 
 export default function Products() {
-    const [filter, setFilter] = useState({
-        category: null,
-        company: null
-    });
     const [searchParams] = useSearchParams();
-    useEffect(() => {
-        setFilter({
-            category: searchParams.get('category'),
-            company: searchParams.get('company')
-        })
-    }, [searchParams])
+    const [filter, setFilter] = useState({
+        category: searchParams.get('category'),
+        company: searchParams.get('company'),
+    });
     const { inventory, loading } = useFetchInventory({ category: filter.category, company: filter.company });
     return (
         <div className='w-full min-h-screen h-full flex flex-col gap-10 pt-10'>
@@ -36,7 +30,7 @@ export default function Products() {
                 )) : inventory.inventory.length > 0 ?
                     inventory.inventory.map((data: InventoryItem) => (
                         <ProductCard key={data.productId} product={data} />
-                    )) : <div className="w-full justify-center col-span-4 flex items-center">No products found with associated category</div>
+                    )) : <div className="w-full justify-center col-span-4 pt-24 flex items-center">No products found with associated category</div>
                 }
             </div>
         </div >

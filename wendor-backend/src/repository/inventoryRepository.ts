@@ -137,18 +137,29 @@ class InventoryRepository implements IInventoryRepository {
         const inventories = await Inventory.findAll({
             where: { productId },
             attributes: [
+                'productId',
                 [sequelize.fn('SUM', sequelize.col('quantity')), 'totalQuantity'],
                 [sequelize.col('product.name'), 'productName'],
                 [sequelize.col('product.price'), 'productPrice'],
+                [sequelize.col('product.display_image_url'), 'display_image_url'],
+                [sequelize.col('product.company.company_name'), 'companyName'],
+                [sequelize.col('product.category'), 'productCategory'],
             ],
             include: [
                 {
                     model: Product,
                     as: 'product',
                     attributes: [],
+                    include: [
+                        {
+                            model: Company,
+                            attributes: [],
+                            as: 'company',
+                        },
+                    ]
                 }
             ],
-            group: ['productId', 'product.id', 'product.name', 'product.price'],
+            group: ['productId', 'product.id', 'product.category', 'product.name', 'product.price', 'product.company.id', 'product.company.company_name'],
         });
         return inventories[0].dataValues;
     }

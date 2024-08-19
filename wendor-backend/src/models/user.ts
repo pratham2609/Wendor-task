@@ -6,6 +6,7 @@ import { UserAttributes, UserCreationAttributes, UserRoles } from "../types/user
 import bcryptjs from "bcryptjs";
 import { Sale } from "./sale.js";
 import { ApiError } from "../middlewares/ApiError.js";
+import crypto from "crypto"
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
     public id!: string;
@@ -21,6 +22,12 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
         return jwt.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET!, {
             expiresIn,
         });
+    }
+
+    // Generate a password reset token
+    public generatePasswordResetToken(): string {
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        return resetToken;
     }
 
     // Virtual field to get the full avatar URL

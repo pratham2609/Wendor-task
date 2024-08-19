@@ -11,7 +11,7 @@ class SalesService {
     private salesRepository: ISalesRepository;
     private saleProductRepository: ISaleProductRepository;
     private inventoryRepository: IInventoryRepository;
-    inventoryService: InventoryService;
+    private inventoryService: InventoryService;
 
     constructor(salesRepository: ISalesRepository) {
         this.salesRepository = salesRepository;
@@ -124,19 +124,35 @@ class SalesService {
     }
 
     async getAllSales(page?: number, pageSize?: number): Promise<SalesResponse> {
-        return await this.salesRepository.getAllSales(page, pageSize);
+        try {
+            return await this.salesRepository.getAllSales(page, pageSize);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching all sales');
+        }
     }
 
     async getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse> {
-        return await this.salesRepository.getUserSales(userId, page, pageSize);
+        try {
+            return await this.salesRepository.getUserSales(userId, page, pageSize);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching user sales');
+        }
     }
 
     async getTotalSales(): Promise<number> {
-        return await this.salesRepository.getTotalSales();
+        try {
+            return await this.salesRepository.getTotalSales();
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching total sales');
+        }
     }
 
     async getTotalRevenue(): Promise<number> {
-        return await this.salesRepository.getTotalRevenue();
+        try {
+            return await this.salesRepository.getTotalRevenue();
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching total revenue');
+        }
     }
 }
 

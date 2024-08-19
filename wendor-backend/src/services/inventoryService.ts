@@ -10,31 +10,51 @@ class InventoryService {
     }
 
     async findByProductId(productId: string): Promise<Inventory[]> {
-        const inventory = await this.inventoryRepository.findByProductId(productId);
-        if (!inventory) {
-            throw new ApiError(404, 'Product Inventory not found');
+        try {
+            const inventory = await this.inventoryRepository.findByProductId(productId);
+            if (!inventory) {
+                throw new ApiError(404, 'Product Inventory not found');
+            }
+            return inventory;
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error finding inventory by product ID');
         }
-        return inventory;
     }
 
     async getProductDetails(productId: string): Promise<InventoryModified> {
-        return this.inventoryRepository.getProductDetails(productId)
+        try {
+            return await this.inventoryRepository.getProductDetails(productId);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching product details');
+        }
     }
 
     async findProductByBatch(productId: string, batchNo: string): Promise<Inventory | null> {
-        const inventory = await this.inventoryRepository.findProductByBatch(productId, batchNo);
-        if (!inventory) {
-            throw new ApiError(404, 'Product Inventory not found');
+        try {
+            const inventory = await this.inventoryRepository.findProductByBatch(productId, batchNo);
+            if (!inventory) {
+                throw new ApiError(404, 'Product Inventory not found');
+            }
+            return inventory;
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error finding product by batch');
         }
-        return inventory;
     }
 
     async getAllInventories(page?: number, pageSize?: number, category?: string, company?: string): Promise<InventoryResponse> {
-        return await this.inventoryRepository.getAllInventories(page, pageSize, category, company);
+        try {
+            return await this.inventoryRepository.getAllInventories(page, pageSize, category, company);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching all inventories');
+        }
     }
 
     async getSingleProductQuantity(productId: string): Promise<number> {
-        return await this.inventoryRepository.getProductQuantity(productId);
+        try {
+            return await this.inventoryRepository.getProductQuantity(productId);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching product quantity');
+        }
     }
 
     async addInventory(inventoryData: InventoryCreationAttributes): Promise<Inventory> {
@@ -47,7 +67,7 @@ class InventoryService {
             }
             return await this.inventoryRepository.create(inventoryData);
         } catch (error) {
-            throw new ApiError(500, (error as Error).message || 'Error creating inventory');
+            throw new ApiError(500, (error as Error).message || 'Error adding inventory');
         }
     }
 
@@ -56,7 +76,7 @@ class InventoryService {
             await this.inventoryRepository.createBulkInventory(inventoryData);
             return true;
         } catch (error) {
-            throw new ApiError(500, (error as Error).message || 'Error creating inventory');
+            throw new ApiError(500, (error as Error).message || 'Error creating bulk inventory');
         }
     }
 
@@ -76,7 +96,7 @@ class InventoryService {
         try {
             await this.inventoryRepository.deleteProductBatchInventory(inventoryId);
         } catch (error) {
-            throw new ApiError(500, (error as Error).message || 'Error deleting inventory');
+            throw new ApiError(500, (error as Error).message || 'Error deleting inventory batch');
         }
     }
 
@@ -84,10 +104,9 @@ class InventoryService {
         try {
             await this.inventoryRepository.deleteAllProductInventory(productId);
         } catch (error) {
-            throw new ApiError(500, (error as Error).message || 'Error deleting inventory');
+            throw new ApiError(500, (error as Error).message || 'Error deleting product inventory');
         }
     }
-
 }
 
 export default InventoryService;

@@ -30,15 +30,27 @@ export class ProductService {
     }
 
     async findByCategory(category: string, page?: number, pageSize?: number): Promise<ProductsResponse> {
-        return await this.productRepository.findByCategory(category, page, pageSize);
+        try {
+            return await this.productRepository.findByCategory(category, page, pageSize);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error finding products by category');
+        }
     }
 
     async findByCompany(companyName: string, page?: number, pageSize?: number): Promise<ProductsResponse> {
-        return await this.productRepository.findByCompany(companyName, page, pageSize);
+        try {
+            return await this.productRepository.findByCompany(companyName, page, pageSize);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error finding products by company');
+        }
     }
 
     async getAllProducts(page?: number, pageSize?: number, category?: string, company?: string): Promise<ProductsResponse> {
-        return await this.productRepository.getAllProducts(page, pageSize, category, company);
+        try {
+            return await this.productRepository.getAllProducts(page, pageSize, category, company);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching all products');
+        }
     }
 
     async createProduct(productData: ProductCreationRequest): Promise<Product> {
@@ -71,7 +83,7 @@ export class ProductService {
             const productsToCreate: ProductCreationAttributes[] = [];
             for (const productData of productDataArray) {
                 if (!productData.company_name) {
-                    throw new ApiError(400, 'Company name is required for' + productData.name);
+                    throw new ApiError(400, 'Company name is required for ' + productData.name);
                 }
                 let company = await this.companyRepository.findByName(productData.company_name);
                 if (!company) {
@@ -90,7 +102,6 @@ export class ProductService {
             }
             return await this.productRepository.bulkCreate(productsToCreate);
         } catch (error) {
-            console.log(error)
             throw new ApiError(500, (error as Error).message || 'Error creating products');
         }
     }
@@ -108,22 +119,39 @@ export class ProductService {
     }
 
     async deleteProduct(id: string): Promise<void> {
-        await this.productRepository.delete(id);
+        try {
+            await this.productRepository.delete(id);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error deleting product');
+        }
     }
 
     async findByBarcode(barcodeNo: string): Promise<Product> {
-        const product = await this.productRepository.findByBarcode(barcodeNo);
-        if (!product) {
-            throw new ApiError(404, 'Product not found');
+        try {
+            const product = await this.productRepository.findByBarcode(barcodeNo);
+            if (!product) {
+                throw new ApiError(404, 'Product not found');
+            }
+            return product;
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error finding product by barcode');
         }
-        return product;
     }
+
     async getTotalProducts(): Promise<number> {
-        return await this.productRepository.getTotalProducts();
+        try {
+            return await this.productRepository.getTotalProducts();
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching total product count');
+        }
     }
 
     async getAllProductsCompanies(): Promise<ProductCompanies[]> {
-        return await this.productRepository.getAllProductsCompanies();
+        try {
+            return await this.productRepository.getAllProductsCompanies();
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error fetching products and companies');
+        }
     }
 }
 

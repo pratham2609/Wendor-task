@@ -42,15 +42,17 @@ export default function Cart() {
         <div className="w-full h-screen">
             <div className="w-full flex pt-10 md:flex-row flex-col items-start lg:gap-10 gap-7">
                 <div className={"rounded-lg border h-full flex flex-col " + (cart.length > 0 ? "w-[60%]" : "w-full pb-10")}>
-                    <div className="w-full flex md:p-5 p-3 items-center gap-4">
-                        <MdCollectionsBookmark size={24} className="text-pink" />
-                        <div>
-                            <h4 className="text-sm">Order details</h4>
-                        </div>
-                    </div>
                     <div className="w-full h-full overflow-y-auto grid grid-cols-1 gap-10 md:p-5 p-3">
-                        {cart.length > 0 ? cart.map((item) => (<SingleCartItem item={item} key={item.productId} />))
-                            : <div className="flex flex-col w-full items-center gap-2">
+                        {cart.length > 0 ? <>
+                            <div className="w-full items-center flex gap-4">
+                                <MdCollectionsBookmark size={24} className="text-pink" />
+                                <div>
+                                    <h4 className="text-sm">Order details</h4>
+                                </div>
+                            </div>
+                            {cart.map((item) => (<SingleCartItem item={item} key={item.productId} />))}
+                        </>
+                            : <div className="flex flex-col w-full py-10 items-center gap-2">
                                 <p className="text-center font-semibold w-full text-xl">Cart is Empty 🤫</p>
                                 <button onClick={() => navigate("/products")} className="w-max py-2 px-4 bg-blue bg-opacity-65 text-white font-semibold rounded-xl">See All products</button>
                             </div>

@@ -25,7 +25,7 @@ router.get("/company/:companyId", verifyAuth, verifyAdmin, ProductController.fin
 
 // Route to get products list and create product
 router.route("/").get(verifyAuth, verifyAdmin, ProductController.getAllProducts)
-    .post(verifyAuth, verifyAdmin, multerConfig.single('file'), uploadProductImage, ProductController.createProduct);
+    .post(verifyAuth, verifyAdmin, ProductController.createProduct);
 
 // Route to get product by id, update product, and delete product
 router.route("/:id").put(verifyAuth, verifyAdmin, multerConfig.single('file'), uploadProductImage, ProductController.updateProduct)

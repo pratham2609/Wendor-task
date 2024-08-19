@@ -54,6 +54,6 @@ export const Categories = [
     'Dairy',
     'Baked',
     'Frozen',
-    'Medicines',
-    'Daily use'
+    'Drinks',
+    'Sweets'
 ];

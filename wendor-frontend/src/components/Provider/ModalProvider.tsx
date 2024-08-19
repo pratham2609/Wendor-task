@@ -9,6 +9,8 @@ interface ModalProviderProps {
     loading?: boolean;
     isOpen: boolean;
     setIsOpen: (val: boolean) => void;
+    hideCloseButton?: boolean;
+    big?: boolean;
 }
 export default function ModalProvider({
     children,
@@ -16,10 +18,12 @@ export default function ModalProvider({
     title,
     loading,
     isOpen,
-    setIsOpen
+    setIsOpen,
+    hideCloseButton = false,
+    big = false
 }: ModalProviderProps) {
     return (
-        <Modal size={"lg"} isDismissable isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Modal size={big ? "xl" : "lg"} hideCloseButton={hideCloseButton} isDismissable isOpen={isOpen} onClose={() => setIsOpen(false)}>
             <ModalContent>
                 {(onClose) => (
                     <>

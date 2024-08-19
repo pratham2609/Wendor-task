@@ -1,18 +1,18 @@
-export interface Sales {
+export interface Order {
     id: string;
     totalPrice: string;
-    products: SaleProduct[];
+    products: OrderProduct[];
     createdAt: Date;
     updatedAt: Date;
 }
 
-export interface SalesRes {
-    sales: Sales[];
+export interface OrdersRes {
+    orders: Order[];
     totalCount: number;
 }
 
-export interface SaleProduct {
+export interface OrderProduct {
     name: string;
-    price: string;
+    price: number;
     quantity: number;
 }

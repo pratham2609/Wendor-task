@@ -38,4 +38,19 @@ export class UserController {
         const { user, token } = await userService.loginAdmin(email, password);
         res.status(200).json({ success: true, token, user });
     });
+
+    static changePassword = catchAsyncError(async (req: Request, res: Response) => {
+        await userService.changePassword(req.user?.id!, req.body);
+        res.status(200).json({ success: true, message: "Password changed" });
+    });
+
+    static sendResetPasswordMail = catchAsyncError(async (req: Request, res: Response) => {
+        await userService.sendResetPasswordMail(req.body.email);
+        res.status(200).json({ success: true, message: "Reset password mail sent" });
+    })
+
+    static resetForgotPassword = catchAsyncError(async (req: Request, res: Response) => {
+        await userService.resetForgotPassword(req.body.token, req.body.password);
+        res.status(200).json({ success: true, message: "Password reset successfully" });
+    });
 }

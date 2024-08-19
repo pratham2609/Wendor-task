@@ -14,7 +14,14 @@ router.post("/register", UserController.createUser);
 // Route to authenticate a user (login)
 router.post("/login", UserController.verifyAuth);
 
+router.post("/forgot-password", UserController.sendResetPasswordMail);
+
+router.post("/reset-password", UserController.resetForgotPassword)
+
 // Route to authenticate an admin
 router.post("/admin", UserController.verifyAdminAuth);
+
+router.route("/password")
+    .put(verifyAuth, UserController.changePassword);
 
 export default router;
