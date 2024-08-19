@@ -1,7 +1,7 @@
 interface InputProps {
     type?: string;
     placeholder: string;
-    value: string;
+    value: string | number;
     name: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     className?: string;

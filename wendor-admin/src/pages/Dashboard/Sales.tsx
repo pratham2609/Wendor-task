@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
-import ReloadBtn from "../../components/Dashboard/ReloadBtn";
-import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { SaleProduct, Sales, SalesRes } from "../../types/Sales";
 import { TableColums } from "../../types/Table";
+import { IoReload } from "react-icons/io5";
 
 export default function Companies() {
     const columns: TableColums[] = [
@@ -31,7 +30,7 @@ export default function Companies() {
     React.useEffect(() => {
         setLoading(true);
         axiosInstance
-            .get(`/sales?page=${filter.page}&limit=${filter.limit}`)
+            .get(`/sales/all?page=${filter.page}&limit=${filter.limit}`)
             .then((res) => {
                 setsalesRes({
                     sales: res.data.data.sales.map((item: Sales, index: number) => ({ ...item, sno: index + 1 })),
@@ -86,10 +85,7 @@ export default function Companies() {
                 <h2 className='urbanist font-medium text-4xl'>
                     Sales
                 </h2>
-                <div className="flex items-center gap-4 h-full">
-                    <ReloadBtn action={update} />
-                    <SearchBar />
-                </div>
+                <button className="px-4 py-1.5 font-medium rounded-lg flex items-center gap-2 bg-black text-white" onClick={update} ><IoReload />Reload</button>
             </div>
             <TableContainer
                 columns={columns}

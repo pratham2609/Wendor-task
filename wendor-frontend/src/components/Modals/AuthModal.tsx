@@ -5,6 +5,7 @@ import { useModalContext } from '../../context/ModalsContext';
 import Input from '../Global/Input';
 import { axiosInstance } from '../../utils/axiosInstance';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 export default function AuthModal() {
     const { handleLogin } = useAuthContext();
@@ -76,7 +77,8 @@ export default function AuthModal() {
                     {error.password && <p className='text-danger text-base font-medium'>{error.password}</p>}
                 </div>
             </div>
-            <div className='w-full flex justify-end poppins text-sm'>
+            <div className='w-full flex justify-between poppins text-sm'>
+                {authState === "login" && <Link to={"/forgot-password"}>Forgot Password?</Link>}
                 {authState === "login" ? <p>Don't have an account? <button className='font-semibold underline' onClick={() => setAuthState("signup")}>Signup</button></p> :
                     <p>Already have an account? <button className='font-semibold underline' onClick={() => setAuthState("login")}>Login</button></p>
                 }

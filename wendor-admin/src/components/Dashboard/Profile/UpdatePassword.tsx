@@ -121,7 +121,7 @@ const UpdatePassword: React.FC = () => {
                 </div>
                 <div className='flex w-full flex-col gap-1'>
                     <label htmlFor='confirmPassword'>Confirm Password</label>
-                    <div className='flex border-[1.5px] border-black/50 w-full px-2 py-1 items-center items-center rounded-md relative'>
+                    <div className='flex border-[1.5px] border-black/50 w-full px-2 py-1 items-center rounded-md relative'>
                         <Input
                             value={formData.confirmPassword}
                             className='!border-0  w-full focus:outline-none'

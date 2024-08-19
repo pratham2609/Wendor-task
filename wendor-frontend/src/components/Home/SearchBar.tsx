@@ -46,7 +46,7 @@ export default function SearchBar() {
         <div ref={searchBoxRef} className='flex relative items-center border w-1/2 px-3 gap-3 bg-white rounded-lg'>
             <FaSearch />
             <input placeholder='Search for products' value={searchQuery}
-                onChange={handleSearchInputChange} className='py-2 w-full focus:outline-none' />
+                onChange={handleSearchInputChange} className='xl:py-2 py-1.5 lg:text-base text-sm w-full focus:outline-none' />
             {searchedProducts && <div className="absolute max-h-60 overflow-auto top-[110%] rounded-lg shadow-xl p-3 bg-white w-full left-0">
                 {searchedProducts.length > 0 ?
                     <ul>{searchedProducts.map((item, index) => (<li key={index}>

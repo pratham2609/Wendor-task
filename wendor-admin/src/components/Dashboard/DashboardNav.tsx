@@ -1,6 +1,6 @@
 import { MdLogout } from "react-icons/md";
 import { AuthContext } from '../../context/AuthContext'
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { dashboardNavs } from "../../utils/constants";
@@ -8,7 +8,6 @@ import { dashboardNavs } from "../../utils/constants";
 export default function DashboardNav() {
     const { handleLogout } = useContext(AuthContext);
     const location = useLocation();
-    const navigate = useNavigate()
     return (
         <div className='w-full h-full flex items-center justify-center'>
             <div className='w-full h-full flex flex-col items-center justify-between 2xl:p-10 xl:p-8 lg:p-6 p-4'>
@@ -37,8 +36,10 @@ export default function DashboardNav() {
                     <button onClick={() => {
                         handleLogout();
                         toast.success("Logged out seccessfully!");
-                        navigate(`/login`);
-                    }} className='w-full text-white text-xl hover:bg-opacity-100 bg-opacity-80 bg-black transition duration-200 ease-linear py-3 rounded-lg flex justify-center items-center gap-1'><MdLogout />Logout</button>
+                    }} className='w-full text-white text-xl hover:bg-opacity-100 bg-opacity-80 bg-black transition 
+                    duration-200 ease-linear py-3 rounded-lg flex justify-center items-center gap-1'>
+                        <MdLogout />Logout
+                    </button>
                 </div>
             </div>
         </div>

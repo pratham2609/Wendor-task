@@ -6,15 +6,15 @@ import { Link, NavLink } from 'react-router-dom';
 
 export default function Footer() {
     return (
-        <footer className='w-screen h-full mt-20 border-t-[1px]'>
-            <div className='max-w-screen-xl xl:px-0 lg:px-12 md:px-10 px-6 flex flex-col gap-10 justify-center items-center h-full w-full mx-auto pt-20 pb-10'>
-                <div className='w-full flex items-start'>
+        <footer className='w-screen h-full xl:mt-20 lg:mt-16 mt-12 border-t-[1px]'>
+            <div className='max-w-screen-xl xl:px-0 lg:px-12 md:px-10 px-6 flex flex-col gap-10 justify-center items-center h-full w-full mx-auto xl:pt-20 lg:pt-16 pt-12 lg:pb-10 pb-8'>
+                <div className='w-full flex md:flew-row md:gap-0 gap-6 items-start'>
                     {/* Logo */}
-                    <div className='h-full flex w-[40%] items-start gap-5 flex-col'>
+                    <div className='h-full flex md:w-[40%] w-2/3 items-start gap-5 flex-col'>
                         <img src={"/wendor-logo.png"} alt='Logo' className='w-1/4 object-scale-down' />
-                        <p className='text-medium'>A vision and mission to provide the best experience.</p>
+                        <p className='font-medium xl:text-base text-sm'>A vision and mission to provide the best experience.</p>
                     </div>
-                    <div className='w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-0 gap-10'>
+                    <div className='w-full grid md:grid-cols-3 lg:gap-0 md:gap-10 gap-6'>
 
                         {/* Company */}
                         <div className='flex flex-col gap-3'>
@@ -22,10 +22,10 @@ export default function Footer() {
                                 Company
                             </h4>
                             <div className='flex flex-col'>
-                                <NavLink to={"/"} className='lg:text-base text-sm'>About Us</NavLink>
-                                <NavLink to={"/"} className='lg:text-base text-sm'>Products</NavLink>
-                                <NavLink to={"/"} className='lg:text-base text-sm'>Blogs</NavLink>
-                                <NavLink to={"/"} className='lg:text-base text-sm'>Contact Us</NavLink>
+                                <NavLink to={"/"} className='lg:text-base text-sm '>About Us</NavLink>
+                                <NavLink to={"/"} className='lg:text-base text-sm '>Products</NavLink>
+                                <NavLink to={"/"} className='lg:text-base text-sm '>Blogs</NavLink>
+                                <NavLink to={"/"} className='lg:text-base text-sm '>Contact Us</NavLink>
                             </div>
                         </div>
 
@@ -36,14 +36,14 @@ export default function Footer() {
                                     Inquiries
                                 </h4>
                                 <div className="flex flex-col w-full">
-                                    <a href={"tel:+917710554497"} className='lg:text-base text-sm w-[70%] dm_sans'>(+91) 85718-09816</a>
-                                    <a href={"mailto:clickmatelifecare2023@gmail.com"} className='lg:text-base whitespace-nowrap text-sm w-[70%]'>example@gmail.com</a>
+                                    <a href={"tel:+917710554497"} className='lg:text-base whitespace-nowrap text-sm  w-[70%] dm_sans'>(+91) 85718-09816</a>
+                                    <a href={"mailto:clickmatelifecare2023@gmail.com"} className='lg:text-base whitespace-nowrap text-sm  w-[70%]'>example@gmail.com</a>
                                 </div>
                             </div>
                         </div>
 
                         {/* Newsletter */}
-                        <div className="flex flex-col gap-3 w-full items-center">
+                        <div className="flex flex-col gap-3 w-full md:items-center">
                             <div className="flex flex-col gap-2">
                                 <h4 className='font-semibold lg:text-lg text-base'>
                                     Follow Us
@@ -59,7 +59,7 @@ export default function Footer() {
 
                 <div className="bg-black bg-opacity-30 h-px w-full" />
 
-                <div className='w-full flex text-sm items-center justify-center'>
+                <div className='w-full flex lg:text-sm  items-center justify-center'>
                     <p>
                         Copyright © 2024 All Rights Reserved.
                     </p>

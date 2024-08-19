@@ -15,4 +15,5 @@ export interface OrderProduct {
     name: string;
     price: number;
     quantity: number;
+    display_image_url: string;
 }

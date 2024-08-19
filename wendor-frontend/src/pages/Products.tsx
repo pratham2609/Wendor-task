@@ -19,7 +19,7 @@ export default function Products() {
             <div className='w-full min-h-screen h-full flex flex-col gap-10 pt-10'>
                 <div className="w-full flex justify-between items-center">
                     <div className=''>
-                        <h1 className="font-bold text-4xl">
+                        <h1 className="font-bold xl:text-4xl lg:text-[32px] text-[28px]">
                             Products
                         </h1>
                         <h4 className="font-semibold text-3xl">

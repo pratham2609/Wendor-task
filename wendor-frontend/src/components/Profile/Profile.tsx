@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useAuthContext } from '../../../context/AuthContext';
 import { HiMiniPencilSquare } from "react-icons/hi2";
-import { axiosInstance } from '../../../utils/axiosInstance';
 import toast from 'react-hot-toast';
-import EditAvatarModal from '../../Modals/EditAvatarModal';
+import { useAuthContext } from '../../context/AuthContext';
+import { axiosInstance } from '../../utils/axiosInstance';
+import EditAvatarModal from '../Modals/EditAvatarModal';
 
 
 export default function ProfileView() {

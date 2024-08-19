@@ -40,6 +40,7 @@ class SalesRepository implements ISalesRepository {
             ],
             limit,
             offset,
+            order: [['createdAt', 'DESC']]
         });
         const sales = rows.map(sale => {
             return {
@@ -60,7 +61,7 @@ class SalesRepository implements ISalesRepository {
     async getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse> {
         const offset = page && pageSize ? (page - 1) * pageSize : undefined;
         const limit = pageSize;
-        const { count, rows } = await Sale.findAndCountAll({
+        const { rows } = await Sale.findAndCountAll({
             where: { userId },
             attributes: [
                 'id',
@@ -75,14 +76,14 @@ class SalesRepository implements ISalesRepository {
                         {
                             model: Product,
                             as: 'product',
-                            attributes: ['name', 'price']
+                            attributes: ['name', 'price', 'display_image_url']
                         }
                     ]
                 }
             ],
             limit,
             offset,
-            order: [['createdAt','DESC']]
+            order: [['createdAt', 'DESC']]
         });
 
         const sales = rows.map(sale => ({
@@ -93,7 +94,8 @@ class SalesRepository implements ISalesRepository {
             products: sale.saleProducts.map(saleProduct => ({
                 name: saleProduct.product.name,
                 quantity: saleProduct.quantity,
-                price: saleProduct.product.price
+                price: saleProduct.product.price,
+                display_image_url: saleProduct.product.display_image_url
             }))
         }));
         return { totalCount: sales.length, sales: sales };

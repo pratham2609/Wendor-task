@@ -10,13 +10,13 @@ export default function Snacks() {
     return (
         <div className='w-full h-full flex flex-col my-10 gap-5'>
             <div className='w-full'>
-                <h1 className="font-bold text-3xl">
+                <h1 className="font-bold xl:text-3xl lg:text-[26px] text-2xl">
                     Snacks
                 </h1>
             </div>
-            <div className='w-full grid grid-cols-5 gap-5'>
+            <div className='w-full grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-5'>
                 {loading ? Array(5).fill(1).map((_, index) => (
-                    <div key={index} className='w-full h-[200px] bg-gray-400 rounded-xl animate-pulse' />
+                    <div key={index} className='w-full xl:h-[200px] lg:h-[180px] h-[160px] bg-gray-400 rounded-xl animate-pulse' />
                 )) : inventory.inventory.length > 0 ?
                     inventory.inventory.map((data: InventoryItem) => (
                         <SmallProductCard key={data.productId} product={data} />

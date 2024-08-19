@@ -3,13 +3,12 @@ import React from "react";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon } from "../../components/Icons";
-import ReloadBtn from "../../components/Dashboard/ReloadBtn";
-import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { Company, CompanyRes } from "../../types/Companies";
 import { TableColums } from "../../types/Table";
 import CompanyOperationsModal from "../../components/Modals/CompanyOperationsModal";
 import toast from "react-hot-toast";
+import { IoReload } from "react-icons/io5";
 
 export default function Companies() {
   const columns: TableColums[] = [
@@ -108,10 +107,7 @@ export default function Companies() {
         <h2 className='urbanist font-medium text-4xl'>
           Companies
         </h2>
-        <div className="flex items-center gap-4 h-full">
-          <ReloadBtn action={update} />
-          <SearchBar />
-        </div>
+        <button className="px-4 py-1.5 font-medium rounded-lg flex items-center gap-2 bg-black text-white" onClick={update} ><IoReload />Reload</button>
       </div>
       <div className="w-full flex justify-end">
         <CompanyOperationsModal update={update} />

@@ -73,7 +73,6 @@ class InventoryService {
 
     async createBulkInventory(inventoryData: InventoryAttributes[]): Promise<boolean> {
         try {
-            console.log(inventoryData)
             // Validation check
             inventoryData.forEach(item => {
                 if (!item.productId || !item.batchNo || item.quantity == null) {
@@ -114,6 +113,14 @@ class InventoryService {
             await this.inventoryRepository.deleteAllProductInventory(productId);
         } catch (error) {
             throw new ApiError(500, (error as Error).message || 'Error deleting product inventory');
+        }
+    }
+
+    async searchProductsInInventory(name: string): Promise<any[]> {
+        try {
+            return await this.inventoryRepository.searchProducts(name);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message || 'Error searching products');
         }
     }
 }

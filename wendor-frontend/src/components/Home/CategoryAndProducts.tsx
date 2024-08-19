@@ -6,13 +6,13 @@ export default function CategoryAndProducts() {
     return (
         <div className='w-full h-full mb-16'>
             <div className='w-full flex gap-5 overflow-x-hidden items-center'>
-                <p className='text-xl font-bold'>
+                <p className='xl:text-xl md:text-lg text-base font-bold'>
                     Categories: 
                 </p>
                 <ul className='flex w-full items-center overflow-x-auto gap-4 scrollbar-hide'>
                     {Categories.map((category, index) => (
                         <li onClick={() => navigate("/products?category=" + category)} key={index}
-                            className=' bg-zinc-200 text-black whitespace-nowrap flex items-center justify-center rounded-lg px-4 py-1 cursor-pointer text-lg '>
+                            className=' bg-zinc-200 text-black whitespace-nowrap flex items-center justify-center rounded-lg px-4 py-1 cursor-pointer xl:text-lg md:text-base text-sm '>
                             {category}
                         </li>
                     ))}

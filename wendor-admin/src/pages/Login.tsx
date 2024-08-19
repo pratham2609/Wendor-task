@@ -4,7 +4,7 @@ import Input from "../components/Input";
 import { axiosInstance } from "../utils/axiosInstance";
 import { useAuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const { handleLogin, user } = useAuthContext();
@@ -58,6 +58,7 @@ export default function Login() {
                         </div>
                         <button className="w-full text-xl font-medium bg-teal hover:bg-opacity-100 bg-opacity-70 transition py-2 text-white rounded-md ">Login</button>
                     </form>
+                    <Link to={"https://wendor.prathamdev.site/forgot-password"} target="_blank">Forgot Password?</Link>
                 </div>
                 <div className="w-full h-full bg-black/40 absolute" />
             </div>

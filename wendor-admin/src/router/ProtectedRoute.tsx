@@ -6,14 +6,10 @@ import DashboardLayout from "../components/Layout/DashboardLayout";
 const ProtectedRoute = () => {
   const { user } = useAuthContext();
   return (
-    <>
-      {
-        (user && user?.id !== "") ? <DashboardLayout>
-          <Outlet />
-        </DashboardLayout>
-          : <Navigate to="/" replace={true} />
-      }
-    </>
+    (user && user?.id !== "") ? <DashboardLayout>
+      <Outlet />
+    </DashboardLayout>
+      : <Navigate to="/login" replace={true} />
   )
 }
 export default ProtectedRoute;

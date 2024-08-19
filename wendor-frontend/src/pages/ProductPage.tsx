@@ -10,7 +10,7 @@ import { SmallProductCard } from "../components/ProductCards";
 export default function ProductPage() {
     const { id } = useParams<{ id: string }>();
     const { product, loading } = useGetProductById(id);
-    const { inventory, loading: inventoryLoader } = useFetchInventory({ pageSize: 8, category: product?.productCategory });
+    const { inventory } = useFetchInventory({ pageSize: 8, category: product?.productCategory });
     return (
         <ContainerWrapper>
             <div className='w-full min-h-[90vh] h-[80vh] pt-10'>
@@ -19,7 +19,7 @@ export default function ProductPage() {
                 </div> :
                     <div className="w-full flex flex-col gap-20">
                         <div className='w-full h-full flex flex-col gap-10'>
-                            <h1 className="font-bold capitalize text-4xl">
+                            <h1 className="font-bold xl:text-4xl lg:text-[32px] text-[28px] capitalize">
                                 {product?.productName}
                             </h1>
                             <div className="w-full flex justify-center">
@@ -43,8 +43,8 @@ export default function ProductPage() {
                         </div>
                         {inventory.inventory.length > 0 &&
                             <div className='w-full h-full flex flex-col gap-10'>
-                                <h1 className="font-semibold text-3xl">
-                                    More products related to {product?.productCategory}
+                                <h1 className="font-semibold text-2xl">
+                                    More products related to {product?.productCategory} Category
                                 </h1>
                                 <div className="w-full grid grid-cols-5">
                                     {inventory.inventory.map((data: InventoryItem) => (

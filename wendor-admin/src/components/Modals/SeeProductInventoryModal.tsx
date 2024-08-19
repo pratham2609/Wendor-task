@@ -7,9 +7,6 @@ import { DeleteIcon, EditIcon } from "../Icons";
 import toast from "react-hot-toast";
 
 export default function SeeProductInventoryModal({ id, isOpen, setIsOpen }: { id: string, isOpen: boolean, setIsOpen: (val: boolean) => void }) {
-    const handleAddProducts = () => {
-        console.log("Add Products");
-    }
     const [prodData, setProdData] = useState<SingleProductInventory[] | null>(null);
     const [totalQuantity, setTotalQuantity] = useState(0);
     const [update, setUpdate] = useState(false);
@@ -61,7 +58,7 @@ export default function SeeProductInventoryModal({ id, isOpen, setIsOpen }: { id
         }
     }
     return (
-        <ModalProvider isOpen={isOpen} setIsOpen={setIsOpen} action={handleAddProducts} title="Product Inventory">
+        <ModalProvider isOpen={isOpen} setIsOpen={setIsOpen} action={() => setIsOpen(false)} title="Product Inventory">
             {prodData && prodData.length > 0 ? <div className="w-full px-6 h-full flex flex-col poppins">
                 <div>
                     <h1 className="text-2xl font-medium whitespace-nowrap">{prodData[0].productName}</h1>

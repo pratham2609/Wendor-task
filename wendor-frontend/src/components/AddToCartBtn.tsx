@@ -27,25 +27,25 @@ export default function AddToCartBtn({ product }: { product: InventoryItem }) {
         addToCart(product);
     };
     return (
-        <div>
+        <div className="w-full xl:h-10 lg:h-9 h-8">
             {cartItem ? (
-                <div className='flex w-full items-center justify-between gap-2'>
+                <div className='flex w-full items-center justify-between h-full gap-2'>
                     <button disabled={quantityLoader}
                         onClick={handleDecrement}
-                        className='bg-black text-white rounded-md w-[40%] h-10 flex items-center justify-center'>
+                        className='bg-black text-white rounded-lg w-[40%] h-full flex items-center justify-center'>
                         -
                     </button>
-                    <span className='text-xl font-medium'>{quantityLoader ? <Spinner size='md' color='danger' /> : cartItem.quantity}</span>
+                    <span className='xl:text-xl lg:text-lg text-base font-medium'>{quantityLoader ? <Spinner size='md' color='danger' /> : cartItem.quantity}</span>
                     <button disabled={quantityLoader}
                         onClick={handleIncrement}
-                        className='bg-black text-white rounded-md w-[40%] h-10 flex items-center justify-center'>
+                        className='bg-black text-white rounded-lg w-[40%] h-full flex items-center justify-center'>
                         +
                     </button>
                 </div>
             ) : (
                 <button
                     onClick={handleAddToCart}
-                    className='bg-black text-white w-full py-2 rounded-md'>
+                    className='bg-black text-white h-full w-full xl:text-base text-sm py-2 rounded-lg'>
                     Add to Cart
                 </button>
             )}

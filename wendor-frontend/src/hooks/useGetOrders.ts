@@ -22,7 +22,7 @@ export const useGetOrders = ({ page, pageSize, reload }: UseGetOrdersParams) => 
         try {
             const params = new URLSearchParams({
                 page: (page ?? 1).toString(),
-                pageSize: (pageSize ?? 20).toString(),
+                pageSize: (pageSize ?? 10).toString(),
             });
 
             const res = await axiosInstance.get(`/sales?${params.toString()}`);
