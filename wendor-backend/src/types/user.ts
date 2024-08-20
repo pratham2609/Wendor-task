@@ -20,7 +20,7 @@ export interface UserCreationAttributes extends Optional<UserAttributes, "id" | 
 
 export interface IUserRepository {
     findById(id: string): Promise<User | null>;
-    findByEmail(email: string, role?: string): Promise<User | null>;
+    findByEmail(email: string): Promise<User | null>;
     create(user: UserCreationAttributes): Promise<User>;
     update(id: string, user: Partial<User>): Promise<User | null>;
     delete(id: string): Promise<void>;

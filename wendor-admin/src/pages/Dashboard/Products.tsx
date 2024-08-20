@@ -170,7 +170,7 @@ export default function Products() {
           </div>
         </div>
         <div className="w-full flex justify-end gap-3">
-          <select className="py-2 px-3 border rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
+          <select className="py-2 px-3 border max-h-[40vh] overflow-y-auto rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
             ...filter,
             company: e.target.value
           })}>
@@ -179,7 +179,7 @@ export default function Products() {
               return <option key={company.id} value={company.id}>{company.company_name}</option>
             })}
           </select>
-          <select className="py-2 px-3 border rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
+          <select className="py-2 max-h-[40vh] overflow-y-auto px-3 border rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
             ...filter,
             category: e.target.value
           })}>
@@ -191,6 +191,7 @@ export default function Products() {
           <AddProductsModal update={update} />
         </div>
         <TableContainer
+          pageSize={9}
           columns={columns}
           id={"sno"}
           page={filter.page}

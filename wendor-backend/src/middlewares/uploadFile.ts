@@ -10,7 +10,7 @@ const uploadFileToFolder = async (req: Request, res: Response, next: NextFunctio
     if (!req.file) {
         return next(); // If no file, proceed without adding anything to the request
     }
-    const blob = bucket.file(`${folder}/${req.file.originalname}`);
+    const blob = bucket.file(`${folder}/${req.user?.fullName}-${req.file.originalname}`);
     const blobStream = blob.createWriteStream({
         resumable: false,
         gzip: true,

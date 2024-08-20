@@ -23,14 +23,22 @@ export class UserService {
     }
 
     async getUserByEmail(email: string): Promise<Partial<User> | null> {
-        const user = await this.userRepository.findByEmail(email, "user");
-        if (!user) {
-            return null;
+        try {
+            const user = await this.userRepository.findByEmail(email);
+            if (!user) {
+                return null;
+            }
+            return removePassword(user);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message);
         }
-        return removePassword(user);
     }
 
     async createUser(userData: UserCreationAttributes): Promise<{ user: Partial<User>, token: string }> {
+        if (!userData.email || !userData.fullName || !userData.password) {
+            throw new ApiError(400, "All fields are required");
+        }
+
         const existingUser = await this.getUserByEmail(userData.email);
         if (existingUser) {
             throw new ApiError(400, "User already exists");
@@ -45,11 +53,15 @@ export class UserService {
     }
 
     async updateUser(id: string, userData: Partial<User>): Promise<Partial<User> | null> {
-        const updatedUser = await this.userRepository.update(id, userData);
-        if (!updatedUser) {
-            throw new ApiError(404, "User not found");
+        try {
+            const updatedUser = await this.userRepository.update(id, userData);
+            if (!updatedUser) {
+                throw new ApiError(404, "User not found");
+            }
+            return removePassword(updatedUser);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message);
         }
-        return removePassword(updatedUser);
     }
 
     async deleteUser(id: string): Promise<void> {
@@ -77,17 +89,21 @@ export class UserService {
     }
 
     async loginAdmin(email: string, password: string): Promise<{ user: Partial<User>, token: string }> {
-        const user = await this.userRepository.findByEmail(email, "admin");
-        if (!user) {
-            throw new ApiError(404, "Invalid Admin");
-        }
+        try {
+            const user = await this.userRepository.findByEmail(email);
+            if (!user) {
+                throw new ApiError(404, "Invalid Admin");
+            }
 
-        const isPasswordValid = await user.validatePassword(password);
-        if (!isPasswordValid) {
-            throw new ApiError(401, "Invalid password");
+            const isPasswordValid = await user.validatePassword(password);
+            if (!isPasswordValid) {
+                throw new ApiError(401, "Invalid password");
+            }
+            const token = user.getJwtToken();
+            return { user: removePassword(user), token };
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message);
         }
-        const token = user.getJwtToken();
-        return { user: removePassword(user), token };
     }
 
     async getTotalUsers(): Promise<number> {

@@ -9,14 +9,14 @@ export default function CompaniesDropdown({ text, items, setCompany, setNewCompa
                     {text}
                 </Button>
             </DropdownTrigger>
-            <DropdownMenu aria-label="Choose companies">
+            <DropdownMenu className="max-h-[40vh] overflow-y-auto" aria-label="Choose companies">
                 <DropdownItem key={"select"}>Select</DropdownItem>
+                <DropdownItem key={"add"} className="text-blue" onClick={setNewCompany}>Add New</DropdownItem>
                 {items.map((company: Company) => (
                     <DropdownItem key={company.id} onClick={() => setCompany(company)}>
                         {company.company_name}
                     </DropdownItem>
                 )) as any}
-                <DropdownItem key={"add"} className="text-blue" onClick={setNewCompany}>Add New</DropdownItem>
             </DropdownMenu>
         </Dropdown>
     );

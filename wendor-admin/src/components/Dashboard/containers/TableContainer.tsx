@@ -19,21 +19,22 @@ interface TableContainerProps<T> {
     isLoading?: boolean;
     columns: TableColums[];
     id: string;
+    pageSize?: number;
     renderCell: (item: T, columnKey: keyof T | string) => JSX.Element;
     totalCount?: number;
 }
 
-export default function TableContainer<T>({ data, page = 1, setPage, isLoading = false, columns, id, renderCell, totalCount = 0 }: TableContainerProps<T>) {
-    const rowsPerPage = 10;
+export default function TableContainer<T>({ data, page = 1, setPage, pageSize = 14, isLoading = false, columns, id, renderCell, totalCount = 0 }: TableContainerProps<T>) {
+    const rowsPerPage = pageSize;
     const pages = React.useMemo(() => {
         return totalCount > rowsPerPage ? Math.ceil(totalCount / rowsPerPage) : 0;
     }, [totalCount, rowsPerPage]);
-    
+
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
         return data.slice(start, end);
-    }, [page, data]);
+    }, [page, data, rowsPerPage]);
 
     const loadingState = isLoading ? "loading" : "idle";
     return (

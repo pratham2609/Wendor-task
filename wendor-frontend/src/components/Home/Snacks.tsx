@@ -4,7 +4,8 @@ import { useFetchInventory } from '../../hooks/fetchInventoryData';
 
 export default function Snacks() {
     const { inventory, loading } = useFetchInventory({
-        category: 'Snacks'
+        category: 'Snacks',
+        pageSize: 5
     });
 
     return (

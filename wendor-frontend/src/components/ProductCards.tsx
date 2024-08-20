@@ -5,7 +5,7 @@ export default function ProductCard({ product }: { product: InventoryItem }) {
     return (
         <div className='w-full bg-white rounded-xl shadow-lg border-2'>
             <div className='w-full xl:h-[250px] lg:h-[220px] h-[180px] '>
-                <img src={product.display_image_url} alt={product.productName} className='w-full h-full object-cover' />
+                <img src={product.display_image_url} alt={product.productName} className='w-full h-full object-contain' />
             </div>
             <div className='w-full xl:p-3 lg:p-2.5 p-2 flex xl:gap-3 gap-2 flex-col'>
                 <div className='flex flex-col gap-1 capitalize'>

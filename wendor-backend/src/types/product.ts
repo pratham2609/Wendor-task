@@ -9,7 +9,8 @@ export enum CategoryEnum {
     DAIRY = 'Dairy',
     BAKED = 'Baked',
     FROZEN = 'Frozen',
-    Medicines = 'Medicines'
+    DRINKS = 'Drinks',
+    SWEETS = 'Sweets',
 };
 
 export interface IProductRepository {

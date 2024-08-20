@@ -51,7 +51,7 @@ export default function Companies() {
       .then((res) => {
         setCompanyRes({
           companies: res.data.data.companies.map((item: Company, index: number) => ({ ...item, sno: index + 1 })),
-          totalCount: res.data.totalCount,
+          totalCount: res.data.data.totalCount,
         });
         setLoading(false);
       })

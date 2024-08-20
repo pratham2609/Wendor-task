@@ -53,7 +53,7 @@ export default function ProductDropdown({ items, setProduct }: { product: string
                 onChange={handleSearchInputChange}
             />
 
-            {filteredItems && <div className="absolute max-h-60 overflow-auto top-[110%] rounded-lg shadow-sm border p-3 bg-white w-full left-0">
+            {filteredItems && <div className="absolute max-h-60 z-10 overflow-auto top-[110%] rounded-lg shadow-sm border p-3 bg-white w-full left-0">
                 {filteredItems.length > 0 ?
                     <ul>{filteredItems.map((product: ProductCompanies) =>
                     (<li className="cursor-pointer" key={product.id} onClick={() => {

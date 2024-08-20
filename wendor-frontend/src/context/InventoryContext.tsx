@@ -5,7 +5,6 @@ import { useFetchInventory } from "../hooks/fetchInventoryData";
 
 interface InventoryContextProps {
     inventory: InventoryRes;
-    fetchInventory: ({ page, pageSize, category, company }: { page?: number, pageSize?: number, category?: string, company?: string }) => Promise<void>;
     loading: boolean;
     quantityLoader: boolean;
     checkProductQuantity: (productId: string, requestedQuantity: number) => Promise<boolean>;
@@ -20,7 +19,7 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(undefi
 
 const InventoryContextProvider: React.FC<InventoryContextProviderProps> = ({ children }) => {
     const [reload, setReload] = useState(false);
-    const { inventory, fetchInventory, loading } = useFetchInventory({ reload: reload });
+    const { inventory, loading } = useFetchInventory({ reload: reload });
     const [quantityLoader, setQuantityLoader] = useState(false);
     const update = () => {
         setReload(!reload);
@@ -41,7 +40,6 @@ const InventoryContextProvider: React.FC<InventoryContextProviderProps> = ({ chi
     return (
         <InventoryContext.Provider value={{
             inventory,
-            fetchInventory,
             loading,
             checkProductQuantity,
             quantityLoader,

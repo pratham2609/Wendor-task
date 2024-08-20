@@ -51,7 +51,6 @@ User.init(
         fullName: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: "User",
             validate: {
                 len: [2, 100],
             },
@@ -77,7 +76,7 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                len: [6, 100], // Password must be at least 6 characters long
+                len: [8, 100], // Password must be at least 8 characters long
             },
         },
         role: {

@@ -15,7 +15,7 @@ export default function BestSellers() {
                 {loading ? Array(4).fill(1).map((_, index) => (
                     <div key={index} className='w-full xl:h-[450px] lg:h-[400px] h-[380px] rounded-xl bg-gray-400 animate-pulse' />
                 )) : inventory.inventory.length > 0 ?
-                    inventory.inventory.map((data: InventoryItem) => (
+                    inventory.inventory.slice(0,8).map((data: InventoryItem) => (
                         <ProductCard key={data.productId} product={data} />
                     )) : <div className="w-full justify-center col-span-4 h-72 flex items-center text-2xl">No products found</div>
                 }
