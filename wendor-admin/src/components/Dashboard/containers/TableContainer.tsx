@@ -46,7 +46,7 @@ export default function TableContainer<T>({ data, page = 1, setPage, pageSize = 
                             isCompact
                             showControls
                             showShadow
-                            color="primary"
+                            color="danger"
                             page={page}
                             total={pages}
                             onChange={(newPage) => setPage(newPage)}

@@ -8,7 +8,7 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useInventoryContext } from "../context/InventoryContext";
 import { axiosInstance } from "../utils/axiosInstance";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ContainerWrapper from "../components/Global/ContainerWrapper";
 import { BsPatchCheckFill } from "react-icons/bs";
 
@@ -60,6 +60,10 @@ export default function Cart() {
             setAuthModalOpen(true);
         }
     };
+
+    useEffect(() => {
+        document.title = "Wendor Shop | Cart"
+    }, [])
 
     return (
         <ContainerWrapper>

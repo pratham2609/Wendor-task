@@ -59,13 +59,14 @@ export default function AuthModal() {
     return (
         <ModalProvider title={"Wendor " + authState} isOpen={authModalOpen} setIsOpen={setAuthModalOpen} action={handleSubmit}>
             <div className='flex flex-col poppins gap-3'>
-                {authState === "signup" && <Input placeholder='Enter full name' name='fullName' value={formData.fullName} onChange={handleChange} />}
-                <div className='flex gap-1 flex-col'>
-                    <Input required={true} placeholder='Enter your email' type='email' name='email' value={formData.email} onChange={handleChange} />
-                    {error.email && <p className='text-danger text-base font-medium'>{error.email}</p>}
-                </div>
-                <div className='flex gap-1 flex-col'>
-                    <Input required={true} type='password' placeholder='Enter password' name='password' value={formData.password} onChange={(e) => {
+                <div className="flex flex-col border border-gray-300 rounded-lg w-full">
+                    {authState === "signup" && <>
+                        <Input className='!border-none' placeholder='Enter full name' name='fullName' value={formData.fullName} onChange={handleChange} />
+                        <div className="w-full h-px bg-gray-300" />
+                    </>}
+                    <Input name="email" className='!border-none' placeholder="Enter your email" value={formData.email} onChange={handleChange} />
+                    <div className="w-full h-px bg-gray-300" />
+                    <Input name="password" className='!border-none' placeholder="Enter your password" value={formData.password} type="password" onChange={(e) => {
                         if (error.password && formData.password.length >= 6) {
                             setError({
                                 ...error,
@@ -74,8 +75,9 @@ export default function AuthModal() {
                         }
                         handleChange(e)
                     }} />
-                    {error.password && <p className='text-danger text-base font-medium'>{error.password}</p>}
                 </div>
+                {error.email && <p className='text-danger text-base font-medium'>{error.email}</p>}
+                {error.password && <p className='text-danger text-base font-medium'>{error.password}</p>}
             </div>
             <div className='w-full flex justify-between poppins text-sm'>
                 {authState === "login" && <Link to={"/auth/forgot-password"}>Forgot Password?</Link>}

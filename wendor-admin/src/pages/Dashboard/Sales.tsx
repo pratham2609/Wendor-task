@@ -5,6 +5,7 @@ import TableContainer from "../../components/Dashboard/containers/TableContainer
 import { SaleProduct, Sales, SalesRes } from "../../types/Sales";
 import { TableColums } from "../../types/Table";
 import { IoReload } from "react-icons/io5";
+import ReloadBtn from "../../components/Dashboard/ReloadBtn";
 
 export default function Companies() {
     const columns: TableColums[] = [
@@ -85,7 +86,7 @@ export default function Companies() {
                 <h2 className='urbanist font-medium text-4xl'>
                     Sales
                 </h2>
-                <button className="px-4 py-1.5 font-medium rounded-lg flex items-center gap-2 bg-black text-white" onClick={update} ><IoReload />Reload</button>
+                <ReloadBtn action={update} />
             </div>
             <TableContainer
                 columns={columns}

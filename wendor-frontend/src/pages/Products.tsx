@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom"
 import { useFetchInventory } from "../hooks/fetchInventoryData";
 import ProductCard from "../components/ProductCards";
 import { InventoryItem } from "../types/Inventory";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Categories } from "../utils/constants";
 import ContainerWrapper from "../components/Global/ContainerWrapper";
 
@@ -13,10 +13,13 @@ export default function Products() {
         category: searchParams.get('category'),
         company: searchParams.get('company'),
     });
-    const { inventory, loading } = useFetchInventory({ category: filter.category, company: filter.company, pageSize: 30 });
+    const { inventory, loading } = useFetchInventory({ category: filter.category, company: filter.company, pageSize: 40 });
+    useEffect(() => {
+        document.title = "Wendor Shop | Products"
+    }, [])
     return (
         <ContainerWrapper>
-            <div className='w-full min-h-screen h-full flex flex-col gap-10 pt-10'>
+            <div className='w-full min-h-screen h-full flex flex-col xl:gap-10 md:gap-8 gap-6 lg:pt-10 md:pt-8 pt-0'>
                 <div className="w-full flex justify-between items-center">
                     <div className=''>
                         <h1 className="font-bold xl:text-4xl lg:text-[32px] text-[28px]">

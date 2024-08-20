@@ -6,6 +6,7 @@ import { axiosInstance } from '../utils/axiosInstance';
 import { useSearchParams } from 'react-router-dom';
 import { useModalContext } from '../context/ModalsContext';
 import ContainerWrapper from '../components/Global/ContainerWrapper';
+import security from "../assets/secure.avif"
 
 export default function ResetPassword() {
     const [loading, setLoading] = React.useState(false);
@@ -58,35 +59,44 @@ export default function ResetPassword() {
 
     return (
         <ContainerWrapper>
-            <div className='w-full h-[90vh] pt-10 flex flex-col gap-10'>
+
+            <div className='w-full min-h-[80vh] h-full flex flex-col xl:gap-10 md:gap-8 gap-6 lg:pt-10 md:pt-8 pt-0'>
                 {reset ? <div className="w-full flex flex-col gap-5">
                     <div className='flex flex-col gap-3 items-center'>
-                        <h2 className=' text-4xl font-semibold'>Password has been Reset!</h2>
-                        <button onClick={() => setAuthModalOpen(true)} className=' text-2xl text-center bg-black text-white px-4 py-2 rounded-lg'>Login to continue</button>
+                        <h2 className=' xl:text-4xl lg:text-3xl text-2xl font-semibold'>Password has been Reset!</h2>
+                        <button onClick={() => setAuthModalOpen(true)} className=' xl:text-2xl md:text-xl text-base text-center bg-black text-white px-4 py-2 rounded-lg'>Login to continue</button>
                     </div>
                 </div> :
                     <>
                         <div className=''>
-                            <h1 className="font-bold text-4xl">
+                            <h1 className="font-bold xl:text-4xl lg:text-[32px] md:text-[28px] text-2xl">
                                 Reset Password
                             </h1>
                         </div>
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-1/3 justify-center pt-10 mx-auto">
-                            <div className="flex flex-col border border-gray-300 rounded-lg w-full">
-                                <div className='w-full flex justify-between items-center px-3'>
-                                    <Input name="password" className='!bg-transparent !px-0 !border-0' placeholder="Enter new password" value={formData.password} type={show.password ? "text" : "password"} onChange={handleChange} />
-                                    {show.password ? <IoMdUnlock onClick={() => setShow((prev) => ({ ...prev, password: false }))} className="text-2xl cursor-pointer" />
-                                        : <IoMdLock onClick={() => setShow((prev) => ({ ...prev, password: true }))} className="text-2xl cursor-pointer" />}
-                                </div>
-                                <div className="w-full h-px bg-gray-300" />
-                                <div className='w-full flex justify-between items-center px-3'>
-                                    <Input name="confirmPassword" className='!bg-transparent !px-0 !border-0' placeholder="Confirm password" value={formData.confirmPassword} type={show.confirmPassword ? "text" : "password"} onChange={handleChange} />
-                                    {show.confirmPassword ? <IoMdUnlock onClick={() => setShow((prev) => ({ ...prev, confirmPassword: false }))} className="text-2xl cursor-pointer" />
-                                        : <IoMdLock onClick={() => setShow((prev) => ({ ...prev, confirmPassword: true }))} className="text-2xl cursor-pointer" />}
-                                </div>
+                        <div className='w-full h-full grid grid-cols-2'>
+                            <div className='w-full h-full flex items-center'>
+                                <img src={security} alt='Update Password' className='w-full object-scale-down h-full' />
                             </div>
-                            <button disabled={loading} className="w-full text-xl font-medium bg-teal hover:bg-opacity-100 bg-opacity-70 transition py-2 text-white rounded-lg ">Reset</button>
-                        </form>
+                            <div className='w-full h-full flex flex-col items-center justify-center'>
+                                <h3 className='xl:text-3xl lg:text-2xl text-xl font-medium'>Reset your password</h3>
+                                <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-2/3 justify-center pt-10 mx-auto">
+                                    <div className="flex flex-col border border-gray-300 rounded-lg w-full">
+                                        <div className='w-full flex justify-between items-center px-3'>
+                                            <Input name="password" className='!bg-transparent !px-0 !border-0' placeholder="Enter new password" value={formData.password} type={show.password ? "text" : "password"} onChange={handleChange} />
+                                            {show.password ? <IoMdUnlock onClick={() => setShow((prev) => ({ ...prev, password: false }))} className="text-2xl cursor-pointer" />
+                                                : <IoMdLock onClick={() => setShow((prev) => ({ ...prev, password: true }))} className="text-2xl cursor-pointer" />}
+                                        </div>
+                                        <div className="w-full h-px bg-gray-300" />
+                                        <div className='w-full flex justify-between items-center px-3'>
+                                            <Input name="confirmPassword" className='!bg-transparent !px-0 !border-0' placeholder="Confirm password" value={formData.confirmPassword} type={show.confirmPassword ? "text" : "password"} onChange={handleChange} />
+                                            {show.confirmPassword ? <IoMdUnlock onClick={() => setShow((prev) => ({ ...prev, confirmPassword: false }))} className="text-2xl cursor-pointer" />
+                                                : <IoMdLock onClick={() => setShow((prev) => ({ ...prev, confirmPassword: true }))} className="text-2xl cursor-pointer" />}
+                                        </div>
+                                    </div>
+                                    <button disabled={loading} className="w-full text-xl font-medium bg-black hover:bg-opacity-100 bg-opacity-70 transition py-2 text-white rounded-lg ">Reset</button>
+                                </form>
+                            </div>
+                        </div>
                     </>
                 }
             </div>

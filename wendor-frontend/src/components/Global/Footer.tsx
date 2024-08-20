@@ -59,7 +59,7 @@ export default function Footer() {
 
                 <div className="bg-black bg-opacity-30 h-px w-full" />
 
-                <div className='w-full flex lg:text-sm  items-center justify-center'>
+                <div className='w-full flex lg:text-sm text-xs items-center justify-center'>
                     <p>
                         Copyright © 2024 All Rights Reserved.
                     </p>

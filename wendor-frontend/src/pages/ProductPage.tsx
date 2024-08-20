@@ -13,18 +13,18 @@ export default function ProductPage() {
     const { inventory } = useFetchInventory({ pageSize: 8, category: product?.productCategory });
     return (
         <ContainerWrapper>
-            <div className='w-full min-h-[90vh] h-[80vh] pt-10'>
+            <div className='w-full min-h-[80vh] h-full lg:pt-10 md:pt-8 pt-0'>
                 {loading ? <div className="w-full flex items-center justify-center h-full">
                     <Spinner color="danger" size="lg" />
                 </div> :
                     <div className="w-full flex flex-col gap-20">
                         <div className='w-full h-full flex flex-col gap-10'>
-                            <h1 className="font-bold xl:text-4xl lg:text-[32px] text-[28px] capitalize">
+                            <h1 className="font-bold xl:text-4xl lg:text-[32px] md:text-[28px] text-2xl capitalize">
                                 {product?.productName}
                             </h1>
                             <div className="w-full flex justify-center">
                                 <div className="w-max flex h-full items-center gap-20 border rounded-xl pr-10 overflow-hidden">
-                                    <div className="w-[200px] h-[300px]">
+                                    <div className="w-[200px] xl:h-[300px]">
                                         <img src={product?.display_image_url} className="w-full h-full object-scale-down" />
                                     </div>
                                     <div className="h-full justify-center gap-10 flex flex-col">
@@ -42,11 +42,11 @@ export default function ProductPage() {
                             </div>
                         </div>
                         {inventory.inventory.length > 0 &&
-                            <div className='w-full h-full flex flex-col gap-10'>
+                            <div className='w-full h-full flex flex-col xl:gap-10 lg:gap-8 gap-5'>
                                 <h1 className="font-semibold text-2xl">
                                     More products related to {product?.productCategory} Category
                                 </h1>
-                                <div className="w-full grid grid-cols-5">
+                                <div className="w-full grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
                                     {inventory.inventory.map((data: InventoryItem) => (
                                         <SmallProductCard key={data.productId} product={data} />
                                     ))}

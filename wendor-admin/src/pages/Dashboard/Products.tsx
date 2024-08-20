@@ -164,10 +164,7 @@ export default function Products() {
           <h2 className='urbanist font-medium text-4xl'>
             Products
           </h2>
-          <div className="flex items-center gap-4 h-full">
-            <ReloadBtn action={update} />
-            <SearchBar />
-          </div>
+          <ReloadBtn action={update} />
         </div>
         <div className="w-full flex justify-end gap-3">
           <select className="py-2 px-3 border max-h-[40vh] overflow-y-auto rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({

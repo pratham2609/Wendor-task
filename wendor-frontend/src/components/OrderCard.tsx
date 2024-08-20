@@ -9,7 +9,7 @@ export default function OrderCard({ order }: { order: Order }) {
                     <h2 className='xl:text-xl lg:text-lg text-base font-semibold'>
                         Order Summary
                     </h2>
-                    <p className='font-medium lg:text-base md:text-sm text-xs'>
+                    <p className='font-medium lg:text-base text-sm'>
                         Placed on: {new Date(order.createdAt).toDateString()}
                     </p>
                 </div>
@@ -31,12 +31,12 @@ export default function OrderCard({ order }: { order: Order }) {
                         {order.products.map((product, index) => {
                             return <>
                                 <div key={product.name} className='w-full flex items-center font-medium justify-between xl:h-24 lg:h-[88px] h-20'>
-                                    <div className='flex gap-2 h-full'>
+                                    <div className='flex gap-2 h-full w-[70%]'>
                                         <div className='xl:w-24 lg:w-[88px] w-20 h-full rounded-lg border overflow-hidden'>
                                             <img src={product.display_image_url} alt='Product Image' className='w-full h-full' />
                                         </div>
-                                        <div className='flex items-start flex-col justify-between h-full'>
-                                            <p className="xl:text-2xl lg:text-xl md:text-lg text-base truncate font-medium">
+                                        <div className='flex items-start flex-col justify-between flex-1 w-full h-full'>
+                                            <p className="xl:text-xl lg:text-lg text-base w-[80%] truncate font-medium">
                                                 {product.name}
                                             </p>
                                             <p className="xl:text-xl lg:text-lg md:text-base text-sm">
@@ -48,7 +48,7 @@ export default function OrderCard({ order }: { order: Order }) {
                                         <p className="lg:text-lg md:text-base text-sm">
                                             Purchased - {product.quantity}
                                         </p>
-                                        <p className="xl:text-xl lg:text-lg text-base">
+                                        <p className="xl:text-xl lg:text-lg md:text-base text-sm">
                                             Total - ₹{product.price * product.quantity}
                                         </p>
                                     </div>

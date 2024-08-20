@@ -19,7 +19,7 @@ export default function DashboardNav() {
                         <ul className='w-full flex flex-col items-center gap-2'>
                             {
                                 dashboardNavs.map((nav, i) => (
-                                    <li key={i} className={'xl:rounded-[20px] rounded-2xl font-semibold 2xl:text-xl xl:text-base md:text-sm text-xs w-full 2xl:pl-8 xl:pl-6 px-5 xl:py-4 lg:py-3 py-2  '
+                                    <li key={i} className={'rounded-xl font-semibold 2xl:text-xl xl:text-base md:text-sm text-xs w-full 2xl:pl-8 xl:pl-6 px-5 xl:py-4 lg:py-3 py-2  '
                                         + (nav.url == location.pathname || (location.pathname.includes("settings") && nav.url.includes("settings")) ?
                                             "bg-pink text-white" : " bg-transparent text-black")}>
                                         <a href={nav.url} className='flex items-center justify-start w-full gap-4'>

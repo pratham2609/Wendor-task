@@ -3,19 +3,23 @@ import OrderCard from "../components/OrderCard";
 import { Order } from "../types/Sales";
 import { useNavigate } from "react-router-dom";
 import ContainerWrapper from "../components/Global/ContainerWrapper";
+import { useEffect } from "react";
 
 
 export default function Orders() {
     const navigate = useNavigate();
-    const { orders, loading } = useGetOrders({})
+    const { orders, loading } = useGetOrders({});
+    useEffect(() => {
+        document.title = "Wendor Shop | Orders"
+    }, [])
     return (
         <ContainerWrapper>
-            <div className='w-full min-h-[90vh] pt-10 flex flex-col gap-10'>
+            <div className='w-full min-h-[90vh] flex flex-col xl:gap-10 md:gap-8 gap-6 lg:pt-10 md:pt-8 pt-0'>
                 <div className='flex justify-between w-full items-center'>
-                    <h1 className="font-bold xl:text-4xl lg:text-[32px] text-[28px]">
+                    <h1 className="font-bold xl:text-4xl lg:text-[32px] md:text-[28px] text-2xl">
                         Orders
                     </h1>
-                    {orders.totalCount > 0 && <p className="mr-10 xl:text-xl lg:text-lg text-base text-black/70 font-medium">Your latest {orders.totalCount} orders</p>}
+                    {orders.totalCount > 0 && <p className="md:mr-10 xl:text-xl lg:text-lg text-base text-black/70 font-medium">Your latest {orders.totalCount} orders</p>}
                 </div>
                 <div className="xl:w-1/2 md:w-2/3 w-full h-full flex flex-col gap-10 mx-auto">
                     {loading ?

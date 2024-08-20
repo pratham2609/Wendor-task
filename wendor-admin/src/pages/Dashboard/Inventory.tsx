@@ -129,10 +129,7 @@ export default function Inventory() {
           <h2 className='urbanist font-medium text-4xl'>
             Inventory
           </h2>
-          <div className="flex items-center gap-4 h-full">
-            <ReloadBtn action={update} />
-            <SearchBar />
-          </div>
+          <ReloadBtn action={update} />
         </div>
         <div className="w-full flex justify-end">
           <AddInventoryModal update={update} />

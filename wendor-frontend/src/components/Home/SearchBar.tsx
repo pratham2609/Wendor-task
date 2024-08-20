@@ -43,7 +43,7 @@ export default function SearchBar() {
         };
     }, []);
     return (
-        <div ref={searchBoxRef} className='flex relative items-center border w-1/2 px-3 gap-3 bg-white rounded-lg'>
+        <div ref={searchBoxRef} className='flex relative items-center border md:w-1/2 w-2/3 px-3 gap-3 bg-white rounded-lg'>
             <FaSearch />
             <input placeholder='Search for products' value={searchQuery}
                 onChange={handleSearchInputChange} className='xl:py-2 py-1.5 lg:text-base text-sm w-full focus:outline-none' />

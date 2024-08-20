@@ -33,19 +33,34 @@ export default function EditProductModal({ update, product, isOpen, setIsOpen }:
     }
     return (
         <ModalProvider isOpen={isOpen} setIsOpen={setIsOpen} loading={loading} full={false} action={handleEditProduct} title="Edit Product">
-            <div className="w-2/3 mx-auto flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                    <Input className="!border-zinc-200 border !rounded-md" name="name" onChange={handleOnChange} value={editingValue?.name} placeholder="Enter product name" />
-                    <Input className="!border-zinc-200 border !rounded-md" name="barcodeNo" onChange={handleOnChange} value={editingValue?.barcodeNo} placeholder="Enter product Barcode" />
-                    <Input className="!border-zinc-200 border !rounded-md" type="number" name="price" onChange={handleOnChange} value={editingValue?.price} placeholder="Enter product Price" />
-                    <Input className="!border-zinc-200 border !rounded-md" type="number" name="price" onChange={handleOnChange} value={editingValue?.display_image_url} placeholder="Enter Image URL" />
-                    <select className="px-2 py-3 focus:outline-none border-zinc-200 border rounded-md" name="category" value={editingValue.category} onChange={handleOnChange}>
-                        {Categories.map((category: string) => (
-                            <option key={category} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </select>
+            <div className="w-full mx-auto flex flex-col gap-4">
+                <div className="flex flex-col gap-2 w-[80%] mx-auto">
+                    <div className="w-full flex items-center justify-between ">
+                        <p className="w-[30%]">Name:</p>
+                        <Input className="!border-zinc-200 border w-full !rounded-md" name="name" onChange={handleOnChange} value={editingValue?.name} placeholder="Enter product name" />
+                    </div>
+                    <div className="w-full flex items-center justify-between ">
+                        <p className="w-[30%]">Barcode No:</p>
+                        <Input className="!border-zinc-200 border w-full !rounded-md" name="barcodeNo" onChange={handleOnChange} value={editingValue?.barcodeNo} placeholder="Enter product Barcode" />
+                    </div>
+                    <div className="w-full flex items-center justify-between ">
+                        <p className="w-[30%]">Price:</p>
+                        <Input className="!border-zinc-200 border w-full !rounded-md" type="number" name="price" onChange={handleOnChange} value={editingValue?.price} placeholder="Enter product Price" />
+                    </div>
+                    <div className="w-full flex items-center justify-between ">
+                        <p className="w-[30%]">Image URL:</p>
+                        <Input className="!border-zinc-200 border w-full !rounded-md" type="string" name="display_image_url" onChange={handleOnChange} value={editingValue?.display_image_url} placeholder="Enter Image URL" />
+                    </div>
+                    <div className="w-full flex items-center justify-between ">
+                        <p className="w-[30%]">Category:</p>
+                        <select className="px-2 py-3 w-full focus:outline-none border-zinc-200 border rounded-md" name="category" value={editingValue.category} onChange={handleOnChange}>
+                            {Categories.map((category: string) => (
+                                <option key={category} value={category}>
+                                    {category}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             </div>
         </ModalProvider>

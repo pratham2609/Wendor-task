@@ -10,7 +10,7 @@ const router = express.Router();
 // Route to get all products in inventory
 router.get("/", InventoryController.getAllProductsInInventory)
 router.get("/product/one/:productId", InventoryController.getProductDetails);
-router.get('/product/one/quantity/:productId', verifyAuth, InventoryController.getSinleProductQuantity);
+router.get('/product/one/quantity/:productId', InventoryController.getSinleProductQuantity);
 router.get('/search', InventoryController.getSearchedProductsFromInventory)
 
 // -- Admin Routes --
@@ -22,7 +22,7 @@ router.post("/add", verifyAuth, verifyAdmin, InventoryController.createBulkInven
 router.route('/product/:productId').get(verifyAuth, verifyAdmin, InventoryController.getInventoryByProduct)
     .delete(verifyAuth, verifyAdmin, InventoryController.deleteProductInventory);
 
-    router.get("/product/:productId/:batchNo", verifyAuth, verifyAdmin, InventoryController.getInventoryByProductAndBatch)
+router.get("/product/:productId/:batchNo", verifyAuth, verifyAdmin, InventoryController.getInventoryByProductAndBatch)
 
 // Route to update and delete inventory
 

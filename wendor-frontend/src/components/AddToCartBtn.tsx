@@ -45,7 +45,7 @@ export default function AddToCartBtn({ product }: { product: InventoryItem }) {
             ) : (
                 <button
                     onClick={handleAddToCart}
-                    className='bg-black text-white h-full w-full xl:text-base text-sm py-2 rounded-lg'>
+                    className='bg-black text-white h-full w-full xl:text-base lg:text-sm text-xs md:py-2 py-1.5 rounded-lg'>
                     Add to Cart
                 </button>
             )}

@@ -15,7 +15,7 @@ export default function Beverages() {
           Beverages
         </h1>
       </div>
-      <div className='w-full grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-5'>
+      <div className='w-full grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5'>
         {loading ? Array(5).fill(1).map((_, index) => (
           <div key={index} className='w-full xl:h-[200px] lg:h-[180px] h-[160px] rounded-xl bg-gray-400 animate-pulse' />
         )) : inventory.inventory.length > 0 ?
