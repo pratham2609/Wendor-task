@@ -1,12 +1,27 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import ContainerWrapper from "../components/Global/ContainerWrapper";
 import ProfileView from "../components/Profile/Profile";
 import UpdatePassword from "../components/Profile/UpdatePassword";
+import { useAuthContext } from "../context/AuthContext";
+import { axiosInstance } from "../utils/axiosInstance";
 
 
 export default function Profile() {
     const [view, setView] = useState("profile");
+    const { updateUser } = useAuthContext();
     useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axiosInstance.get("/user");
+                if (res.data.success) {
+                    updateUser(res.data.data);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchUser();
         document.title = "Wendor Shop | Products"
     }, [])
     return (

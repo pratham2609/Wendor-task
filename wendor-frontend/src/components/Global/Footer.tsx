@@ -1,5 +1,3 @@
-'use client'
-import React from 'react'
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { Link, NavLink } from 'react-router-dom';
@@ -36,8 +34,8 @@ export default function Footer() {
                                     Inquiries
                                 </h4>
                                 <div className="flex flex-col w-full">
-                                    <a href={"tel:+917710554497"} className='lg:text-base whitespace-nowrap text-sm  w-[70%] dm_sans'>(+91) 85718-09816</a>
-                                    <a href={"mailto:clickmatelifecare2023@gmail.com"} className='lg:text-base whitespace-nowrap text-sm  w-[70%]'>example@gmail.com</a>
+                                    <a href={"tel:+918571809816"} className='lg:text-base whitespace-nowrap text-sm  w-[70%] dm_sans'>(+91) 85718-09816</a>
+                                    <a href={"mailto:pratham.mehta0826@gmail.com"} className='lg:text-base whitespace-nowrap text-sm  w-[70%]'>pratham.mehta0826@gmail.com</a>
                                 </div>
                             </div>
                         </div>

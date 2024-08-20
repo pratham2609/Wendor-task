@@ -6,7 +6,6 @@ class Inventory extends Model<InventoryAttributes, InventoryCreationAttributes> 
     public id!: string;
     public productId!: string;
     public quantity!: number;
-    public location?: string; // Optional location
     public batchNo!: string;
 }
 
@@ -28,10 +27,6 @@ Inventory.init(
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        },
-        location: {
-            type: DataTypes.STRING,
-            allowNull: true,
         },
         batchNo: {
             type: DataTypes.STRING,

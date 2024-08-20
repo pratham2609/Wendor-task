@@ -21,7 +21,6 @@ export interface InventoryAttributes {
     id: string;
     productId: string;
     quantity: number;
-    location?: string; // Optional location
     batchNo: string;
 }
 
