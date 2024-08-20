@@ -83,7 +83,7 @@ export default function Companies() {
     return (
         <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-10 items-center'>
             <div className='flex items-center w-full justify-between'>
-                <h2 className='urbanist font-medium text-4xl'>
+                <h2 className='urbanist font-medium xl:text-4xl lg:text-3xl text-2xl'>
                     Sales
                 </h2>
                 <ReloadBtn action={update} />

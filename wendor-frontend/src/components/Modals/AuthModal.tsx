@@ -80,7 +80,7 @@ export default function AuthModal() {
                 {error.password && <p className='text-danger text-base font-medium'>{error.password}</p>}
             </div>
             <div className='w-full flex justify-between poppins text-sm'>
-                {authState === "login" && <Link to={"/auth/forgot-password"}>Forgot Password?</Link>}
+                {authState === "login" && <Link to={"/auth/forgot-password"} onClick={() => setAuthModalOpen(false)}>Forgot Password?</Link>}
                 {authState === "login" ? <p>Don't have an account? <button className='font-semibold underline' onClick={() => setAuthState("signup")}>Signup</button></p> :
                     <p>Already have an account? <button className='font-semibold underline' onClick={() => setAuthState("login")}>Login</button></p>
                 }

@@ -67,8 +67,11 @@ export default function Cart() {
 
     return (
         <ContainerWrapper>
-            <div className="w-full min-h-[85vh] overflow-hidden">
-                <div className="w-full flex pt-10 md:flex-row flex-col items-start lg:gap-10 gap-7">
+            <div className="w-full min-h-[85vh] flex flex-col gap-6 lg:pt-10 md:pt-8 pt-0 overflow-hidden">
+                <h1 className="font-bold xl:text-4xl lg:text-[32px] text-[28px]">
+                    Cart
+                </h1>
+                <div className="w-full flex md:flex-row flex-col items-start lg:gap-10 gap-7">
                     {success ? (
                         <div className="rounded-lg border w-full h-[30vh] flex flex-col gap-5 items-center justify-center">
                             <div className="flex flex-col w-full items-center gap-7">

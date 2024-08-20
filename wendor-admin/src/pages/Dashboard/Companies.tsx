@@ -105,7 +105,7 @@ export default function Companies() {
   return (
     <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-5 items-center'>
       <div className='flex items-center w-full justify-between'>
-        <h2 className='urbanist font-medium text-4xl'>
+        <h2 className='urbanist font-medium xl:text-4xl lg:text-3xl text-2xl'>
           Companies
         </h2>
         <ReloadBtn action={update} />
@@ -113,16 +113,18 @@ export default function Companies() {
       <div className="w-full flex justify-end">
         <CompanyOperationsModal update={update} />
       </div>
-      <TableContainer
-        columns={columns}
-        id={"sno"}
-        page={filter.page}
-        setPage={setPage}
-        totalCount={companyRes?.totalCount}
-        isLoading={loading}
-        data={companyRes.companies ?? []}
-        renderCell={renderCell}
-      />
+      <div className="h-[90%] w-full">
+        <TableContainer
+          columns={columns}
+          id={"sno"}
+          page={filter.page}
+          setPage={setPage}
+          totalCount={companyRes?.totalCount}
+          isLoading={loading}
+          data={companyRes.companies ?? []}
+          renderCell={renderCell}
+        />
+      </div>
     </section>
   )
 }

@@ -38,7 +38,7 @@ export default function TableContainer<T>({ data, page = 1, setPage, pageSize = 
 
     const loadingState = isLoading ? "loading" : "idle";
     return (
-        <Table aria-label="Table component" style={{ backgroundColor: "#FFFFFF", color: "#000000" }}
+        <Table isHeaderSticky={true} className="h-full" aria-label="Table component" style={{ backgroundColor: "#FFFFFF", color: "#000000" }}
             bottomContent={
                 pages > 0 ? (
                     <div className="flex w-full justify-center">
@@ -55,7 +55,7 @@ export default function TableContainer<T>({ data, page = 1, setPage, pageSize = 
                 ) : null
             }
         >
-            <TableHeader columns={columns} style={{ backgroundColor: "#F4F4F5" }}>
+            <TableHeader className="sticky top-0" columns={columns} style={{ backgroundColor: "#F4F4F5" }}>
                 {(column) => (
                     <TableColumn
                         style={{ backgroundColor: "#F4F4F5" }}

@@ -35,7 +35,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         {/* Content Header */}
                         <div className='w-full h-[8%] flex items-center border-b-[1px] border-[#B5B5B5] p-5 px-7'>
                             <div className='w-full flex items-center justify-between'>
-                                <h2 className='text-2xl font-medium capitalize'>
+                                <h2 className='xl:text-2xl lg:text-xl md:text-lg text-base font-medium capitalize'>
                                     {new Date().toDateString()}
                                 </h2>
                                 <button onClick={() => navigate(`/settings`)}

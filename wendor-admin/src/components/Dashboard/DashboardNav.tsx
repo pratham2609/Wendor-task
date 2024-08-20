@@ -36,8 +36,8 @@ export default function DashboardNav() {
                     <button onClick={() => {
                         handleLogout();
                         toast.success("Logged out seccessfully!");
-                    }} className='w-full text-white text-xl hover:bg-opacity-100 bg-opacity-80 bg-black transition 
-                    duration-200 ease-linear py-3 rounded-lg flex justify-center items-center gap-1'>
+                    }} className='w-full text-white xl:text-xl lg:text-lg text-base hover:bg-opacity-100 bg-opacity-80 bg-black transition 
+                    duration-200 ease-linear xl:py-3 lg:py-2.5 rounded-lg flex justify-center items-center gap-1'>
                         <MdLogout />Logout
                     </button>
                 </div>
