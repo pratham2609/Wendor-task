@@ -5,6 +5,8 @@ import catchAsyncErrors from "./catchAsyncError";
 import User from "../models/user";
 import { UserRoles } from "../types/user";
 import { ApiError } from "./ApiError";
+import dotenv from "dotenv";
+dotenv.config();
 
 interface DecodedToken {
     id: string;
@@ -18,16 +20,18 @@ export const verifyAuth = catchAsyncErrors(async (req: Request, _: Response, nex
         req.headers.authorization.startsWith("Bearer")
     ) {
         const token = req.headers.authorization.split("Bearer ")[1];
+        if (!token) {
+            throw new ApiError(401, "Login first to access this resource");
+        }
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
         const user = await User.findByPk(decoded.id);
         if (!user) {
-            return next(new ApiError(404, "User not found"));
+            throw new ApiError(403, "User not found");
         }
         req.user = user;
-
         next();
     } else {
-        return next(new ApiError(401, "Login first to access this resource"));
+        throw new ApiError(401, "Login first to access this resource");
     }
 });
 
@@ -35,7 +39,7 @@ export const verifyAuth = catchAsyncErrors(async (req: Request, _: Response, nex
 // Middleware to authorize roles
 export const verifyAdmin = (req: Request, _: Response, next: NextFunction) => {
     if (req.user!.role !== UserRoles.ADMIN) {
-        return next(new ApiError(401, "Admin access required"));
+        throw new ApiError(401, "Admin access required");
     }
     next();
 };

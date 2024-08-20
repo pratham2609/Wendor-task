@@ -8,7 +8,7 @@ export default function Footer() {
     return (
         <footer className='w-screen h-full xl:mt-20 lg:mt-16 mt-12 border-t-[1px]'>
             <div className='max-w-screen-xl xl:px-0 lg:px-12 md:px-10 px-6 flex flex-col gap-10 justify-center items-center h-full w-full mx-auto xl:pt-20 lg:pt-16 pt-12 lg:pb-10 pb-8'>
-                <div className='w-full flex md:flew-row md:gap-0 gap-6 items-start'>
+                <div className='w-full flex md:flex-row flex-col flex-nowrap md:gap-0 gap-6 items-start'>
                     {/* Logo */}
                     <div className='h-full flex md:w-[40%] w-2/3 items-start gap-5 flex-col'>
                         <img src={"/wendor-logo.png"} alt='Logo' className='w-1/4 object-scale-down' />

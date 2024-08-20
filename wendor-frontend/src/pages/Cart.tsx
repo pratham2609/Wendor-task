@@ -23,7 +23,7 @@ export default function Cart() {
     const [, setDummyState] = useState(0); // Dummy state to force re-render
 
     // Use useRef to hold the timer value without triggering re-renders
-    const timerRef = useRef(5);
+    const timerRef = useRef(3);
 
     const forceUpdate = useCallback(() => setDummyState((prev) => prev + 1), []);
 
@@ -63,24 +63,22 @@ export default function Cart() {
 
     return (
         <ContainerWrapper>
-            <div className="w-full h-screen">
+            <div className="w-full min-h-[85vh] overflow-hidden">
                 <div className="w-full flex pt-10 md:flex-row flex-col items-start lg:gap-10 gap-7">
                     {success ? (
                         <div className="rounded-lg border w-full h-[30vh] flex flex-col gap-5 items-center justify-center">
                             <div className="flex flex-col w-full items-center gap-7">
                                 <BsPatchCheckFill className="text-green-500 success text-7xl" />
+                                <h1>Order Placed successfully!</h1>
                                 <Link to="/products" className="font-medium underline hover:text-blue">
                                     Redirecting you to Products page in {timerRef.current}s
                                 </Link>
                             </div>
-                            <button onClick={() => navigate("/orders")} className="text-white bg-black px-4 py-2 rounded-lg">
-                                View all orders
-                            </button>
                         </div>
                     ) : (
                         <>
-                            <div className={"rounded-lg border h-full flex flex-col " + (cart.length > 0 ? "w-[60%]" : "w-full pb-10")}>
-                                <div className="w-full h-full overflow-y-auto grid grid-cols-1 gap-10 md:p-5 p-3">
+                            <div className={"rounded-lg border h-full flex flex-col " + (cart.length > 0 ? "md:w-[60%] w-full" : "w-full pb-10")}>
+                                <div className="w-full h-full grid grid-cols-1 gap-10 md:p-5 p-3">
                                     {cart.length > 0 ? (
                                         <>
                                             <div className="w-full items-center flex gap-4">
@@ -89,9 +87,14 @@ export default function Cart() {
                                                     <h4 className="text-sm">Order details</h4>
                                                 </div>
                                             </div>
-                                            {cart.map((item) => (
-                                                <SingleCartItem item={item} key={item.productId} />
-                                            ))}
+                                            <div className="flex max-h-max overflow-y-auto flex-col gap-5">
+                                                {cart.map((item, index) => (
+                                                    <>
+                                                        <SingleCartItem item={item} key={item.productId} />
+                                                        {index !== cart.length - 1 && <div className="w-full h-px bg-zinc-300 mt-2" />}
+                                                    </>
+                                                ))}
+                                            </div>
                                         </>
                                     ) : (
                                         <div className="flex flex-col w-full py-10 items-center gap-2">
@@ -104,14 +107,14 @@ export default function Cart() {
                                 </div>
                             </div>
                             {cart.length > 0 && (
-                                <div className="rounded-lg border w-[40%] h-full flex flex-col">
+                                <div className="rounded-lg border md:w-[40%] w-full h-full flex flex-col">
                                     <div className="w-full flex flex-col border-b gap-3 md:p-5 p-3">
-                                        <h1 className="font-semibold text-xl">Order Summary</h1>
+                                        <h1 className="font-semibold xl:text-xl text-lg">Order Summary</h1>
                                         {user?.email && (
                                             <div className="flex w-full items-center justify-between">
                                                 <div>
                                                     <h4>Order to</h4>
-                                                    <h2 className="text-2xl font-medium">{user?.fullName}</h2>
+                                                    <h2 className="xl:text-2xl lg:text-xl text-lg font-medium">{user?.fullName}</h2>
                                                 </div>
                                             </div>
                                         )}
@@ -120,30 +123,30 @@ export default function Cart() {
                                         <h1 className="font-semibold text-xl">Bill</h1>
                                         <div className="flex flex-col w-full gap-2">
                                             <div className="w-full flex items-center justify-between">
-                                                <p className="text-lg font-medium">Total Amount</p>
-                                                <p className="text-lg font-medium">₹{calculateCartValue}</p>
+                                                <p className="xl:text-lg md:text-base text-sm font-medium">Total Amount</p>
+                                                <p className="xl:text-lg md:text-base text-sm font-medium">₹{calculateCartValue}</p>
                                             </div>
                                             <div className="w-full flex items-center justify-between">
-                                                <p className="text-lg font-medium">Tax</p>
-                                                <p className="text-lg font-medium">₹0</p>
+                                                <p className="xl:text-lg md:text-base text-sm font-medium">Tax</p>
+                                                <p className="xl:text-lg md:text-base text-sm font-medium">₹0</p>
                                             </div>
                                             <div className="w-full flex items-center justify-between">
-                                                <p className="text-lg font-medium">Discount</p>
-                                                <p className="text-lg font-medium">₹0</p>
+                                                <p className="xl:text-lg md:text-base text-sm font-medium">Discount</p>
+                                                <p className="xl:text-lg md:text-base text-sm font-medium">₹0</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="w-full flex border-b items-center md:p-5 p-3 justify-between ">
-                                        <p className="text-lg font-medium">Total Payable Amount</p>
+                                        <p className="xl:text-lg md:text-base text-sm font-medium">Total Payable Amount</p>
                                         <p className="text-2xl font-semibold">₹{calculateCartValue}</p>
                                     </div>
                                     <div className="md:p-5 p-3 w-full flex-col gap-4 flex">
                                         {user?.email && user?.email !== "" ? (
-                                            <button onClick={placeOrder} disabled={loading} className="w-full rounded-lg py-2 bg-pink font-medium text-white">
+                                            <button onClick={placeOrder} disabled={loading} className="w-full rounded-lg py-2 bg-black font-medium text-white">
                                                 Place Order
                                             </button>
                                         ) : (
-                                            <button onClick={() => setAuthModalOpen(true)} className="w-full rounded-lg py-2 bg-pink font-medium text-white">
+                                            <button onClick={() => setAuthModalOpen(true)} className="w-full rounded-lg py-2 bg-black font-medium text-white">
                                                 Login to place order
                                             </button>
                                         )}
@@ -183,14 +186,14 @@ export function SingleCartItem({ item }: { item: CartItem }) {
                 </div>
                 <div className="flex flex-col h-full justify-between">
                     <div>
-                        <h3 className="text-lg font-semibold">{item?.productName}</h3>
+                        <h3 className="xl:text-lg md:text-base text-sm font-semibold">{item?.productName}</h3>
                         <p className="text-gray-600">{item?.companyName}</p>
                     </div>
-                    <p className="text-lg font-medium">{item?.quantity} Pcs</p>
+                    <p className="xl:text-lg md:text-base text-sm font-medium">{item?.quantity} Pcs</p>
                 </div>
             </div>
             <div className="flex flex-col h-full justify-between">
-                <p className="text-lg font-medium">
+                <p className="xl:text-lg md:text-base text-sm font-medium">
                     Total Price: <span className="text-2xl">₹{item?.quantity * item?.productPrice}</span>
                 </p>
                 <div className="place-self-end space-x-[1px]">

@@ -43,9 +43,8 @@ export default function Navbar() {
                         <div className='font-bold text-black'><IoIosCart size={30} /></div>
                         {cart.length > 0 && <span className='absolute -top-2 -right-2 bg-red-500 text-white rounded-full animate-bounce h-7 w-7 flex items-center justify-center'>{cart.length}</span>}
                     </button>
-                    {user && user.role == "user" ? <ProfileDropdown /> : <button onClick={() => { }}>
+                    {user && user.role == "user" ? <ProfileDropdown /> :
                         <button onClick={() => setAuthModalOpen(true)} className='border-2 border-black rounded-full 2xl:text-xl xl:text-lg lg:text-base text-sm text-nowrap font-bold lg:px-4 px-2 py-1 items-center gap-1'>Log In</button>
-                    </button>
                     }
                 </div>
             </div>

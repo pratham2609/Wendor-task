@@ -39,7 +39,7 @@ export default function EditAvatarModal({ isOpen, setIsOpen }: { isOpen: boolean
         try {
             const formdata = new FormData();
             formdata.append("file", avatar?.file);
-            const res = await axiosInstance.put('/user', formdata,
+            const res = await axiosInstance.patch('/user/avatar', formdata,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',

@@ -1,8 +1,9 @@
 import app from './app';
 import { connectDB } from './config/database';
+import dotenv from "dotenv";
 
 // Load environment variables
-process.loadEnvFile();
+dotenv.config();
 
 const PORT = process.env.PORT || 8080;
 

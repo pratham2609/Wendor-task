@@ -13,7 +13,7 @@ export default function Products() {
         category: searchParams.get('category'),
         company: searchParams.get('company'),
     });
-    const { inventory, loading } = useFetchInventory({ category: filter.category, company: filter.company });
+    const { inventory, loading } = useFetchInventory({ category: filter.category, company: filter.company, pageSize: 30 });
     return (
         <ContainerWrapper>
             <div className='w-full min-h-screen h-full flex flex-col gap-10 pt-10'>
@@ -38,7 +38,7 @@ export default function Products() {
                         {Categories.map((category) => (<option key={category}>{category}</option>))}
                     </select>
                 </div>
-                <div className='w-full grid grid-cols-4 gap-5'>
+                <div className='w-full grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5'>
                     {loading ? Array(4).fill(1).map((_, index) => (
                         <div key={index} className='w-full h-[450px] rounded-xl bg-gray-400 animate-pulse' />
                     )) : inventory.inventory.length > 0 ?

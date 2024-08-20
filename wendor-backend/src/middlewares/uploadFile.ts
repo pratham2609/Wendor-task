@@ -1,16 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { bucket } from '../config/gcp';
+import { ApiError } from './ApiError';
 
 
 export const uploadAvatarImage = async (req: Request, res: Response, next: NextFunction) => {
-    await uploadFileToFolder(req, res, next, 'avatars');
-};
-
-const uploadFileToFolder = async (req: Request, res: Response, next: NextFunction, folder: string) => {
     if (!req.file) {
-        return next(); // If no file, proceed without adding anything to the request
+        throw new ApiError(400, 'Please upload a file');
     }
-    const blob = bucket.file(`${folder}/${req.user?.fullName}-${req.file.originalname}`);
+    const blob = bucket.file(`avatars/${req.user?.fullName}-${req.file.originalname}`);
     const blobStream = blob.createWriteStream({
         resumable: false,
         gzip: true,
@@ -25,9 +22,6 @@ const uploadFileToFolder = async (req: Request, res: Response, next: NextFunctio
 
     blobStream.on('finish', async () => {
         try {
-            // Make the file public
-            // await blob.makePublic();
-
             // Construct the public URL and attach it to the request object
             const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
             req.fileUrl = publicUrl; // Attach the URL to the request object

@@ -43,6 +43,25 @@ const Router = () => {
                     </Suspense>
                 }
             />
+            <Route
+                path="/products"
+                element={
+                    <Suspense fallback={<Loader />}>
+                        <Products />
+                    </Suspense>
+                }
+            />
+            <Route
+                path="/product/:id"
+                element={
+                    <Suspense fallback={<Loader />}>
+                        <ProductPage />
+                    </Suspense>
+                }
+            />
+
+
+
             <Route element={<ProtectedRoute />}>
                 <Route
                     path="/orders"
@@ -57,22 +76,6 @@ const Router = () => {
                     element={
                         <Suspense fallback={<Loader />}>
                             <Profile />
-                        </Suspense>
-                    }
-                />
-                <Route
-                    path="/products"
-                    element={
-                        <Suspense fallback={<Loader />}>
-                            <Products />
-                        </Suspense>
-                    }
-                />
-                <Route
-                    path="/product/:id"
-                    element={
-                        <Suspense fallback={<Loader />}>
-                            <ProductPage />
                         </Suspense>
                     }
                 />

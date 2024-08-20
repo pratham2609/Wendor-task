@@ -41,6 +41,10 @@ class SalesService {
             const productQuantities: { [productId: string]: number } = {};
 
             for (const saleProduct of saleProducts) {
+                if (!saleProduct.productId || !saleProduct.quantity) {
+                    // transaction.rollback();
+                    throw new ApiError(400, 'Product ID and quantity are required for each product');
+                }
                 const productDetails = await this.inventoryService.getProductDetails(saleProduct.productId);
                 if (!productDetails) {
                     throw new ApiError(404, `Product details not found for product ID ${saleProduct.productId}`);

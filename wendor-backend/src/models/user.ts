@@ -7,6 +7,9 @@ import bcryptjs from "bcryptjs";
 import { Sale } from "./sale.js";
 import { ApiError } from "../middlewares/ApiError.js";
 import crypto from "crypto"
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
     public id!: string;

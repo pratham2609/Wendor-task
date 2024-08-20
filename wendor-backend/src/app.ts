@@ -13,7 +13,7 @@ const app: Express = express();
 app.use(express.json({ limit: "50kb" }))
     .use(
         cors({
-            origin: ["http://localhost:5173", "http://localhost:5174"],
+            origin: ["http://localhost:5173", "http://localhost:5174", "https://wendor.prathamdev.site", "https://wendor-admin.prathamdev.site"],
             credentials: true,
         })
     ).use(limiter)

@@ -82,8 +82,7 @@ export class ProductService {
         try {
             const productsToCreate: ProductCreationAttributes[] = [];
             for (const productData of productDataArray) {
-                if (!productData.name || !productData.barcodeNo || !productData.category || !productData.companyId
-                    || !productData.price) {
+                if (!productData.name || !productData.barcodeNo || !productData.category || !productData.price) {
                     throw new ApiError(400, 'All fields are required');
                 }
                 if (!productData.company_name) {

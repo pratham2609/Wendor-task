@@ -64,6 +64,21 @@ export class UserService {
         }
     }
 
+    async updateAvatar(id: string, avatar: string): Promise<Partial<User> | null> {
+        try {
+            if (!avatar) {
+                throw new ApiError(400, "Avatar is required");
+            }
+            const updatedUser = await this.userRepository.update(id, { avatar });
+            if (!updatedUser) {
+                throw new ApiError(404, "User not found");
+            }
+            return removePassword(updatedUser);
+        } catch (error) {
+            throw new ApiError(500, (error as Error).message);
+        }
+    }
+
     async deleteUser(id: string): Promise<void> {
         await this.userRepository.delete(id);
     }

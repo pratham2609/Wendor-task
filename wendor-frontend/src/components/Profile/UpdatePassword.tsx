@@ -147,7 +147,7 @@ const UpdatePassword: React.FC = () => {
                                 />
                             )}
                             {formData.confirmPassword !== formData.newPassword && formData.newPassword !== "" && formData.confirmPassword !== "" && (
-                                <span className='absolute bottom-0 left-1 text-sm text-red-500'>
+                                <span className='absolute bottom-0 left-4 text-sm text-red-500'>
                                     Passwords do not match
                                 </span>
                             )}

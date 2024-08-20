@@ -1,6 +1,7 @@
 import nodemailer, { Transporter } from 'nodemailer';
+import dotenv from "dotenv";
 
-process.loadEnvFile();
+dotenv.config();
 
 class Mailer {
     private transporter: Transporter;

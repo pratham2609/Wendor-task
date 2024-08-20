@@ -47,7 +47,7 @@ export default function Login() {
         <main className="w-screen h-screen poppins">
             <div className="h-full w-full flex items-center justify-center bg-login-page bg-no-repeat relative bg-cover">
                 <div className="bg-white z-10 w-1/3 flex flex-col gap-10 px-5 py-20 justify-center items-center rounded-xl shadow-md border">
-                    <h1 className="font-bold text-3xl">
+                    <h1 className="font-bold 2xl:text-3xl lg:text-2xl text-xl">
                         Welcome! Login to Continue
                     </h1>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-[85%] mx-auto">
@@ -58,7 +58,7 @@ export default function Login() {
                         </div>
                         <button className="w-full text-xl font-medium bg-teal hover:bg-opacity-100 bg-opacity-70 transition py-2 text-white rounded-md ">Login</button>
                     </form>
-                    <Link to={"https://wendor.prathamdev.site/forgot-password"} target="_blank">Forgot Password?</Link>
+                    <Link to={"https://wendor.prathamdev.site/auth/forgot-password"} target="_blank" className="-mt-5">Forgot Password?</Link>
                 </div>
                 <div className="w-full h-full bg-black/40 absolute" />
             </div>

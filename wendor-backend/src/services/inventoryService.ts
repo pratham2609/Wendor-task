@@ -75,9 +75,9 @@ class InventoryService {
         try {
             // Validation check
             inventoryData.forEach(item => {
-                if (!item.productId || !item.batchNo || item.quantity == null) {
+                if (!item.productId || !item.quantity == null) {
                     // @ts-ignore
-                    throw new ApiError(400, `Missing required fields for ${item.name}, batchNo: ${item.batchNo || 'N/A'}, quantity: ${item.quantity == null ? 'N/A' : item.quantity}`);
+                    throw new ApiError(400, "All fields are required for every product");
                 }
             });
 

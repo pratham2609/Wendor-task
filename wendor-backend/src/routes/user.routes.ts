@@ -7,8 +7,11 @@ import { uploadAvatarImage } from "../middlewares/uploadFile";
 const router = express.Router();
 
 // Route to get, update and delete user
-router.route("/").get(verifyAuth, UserController.getUser).put(verifyAuth, multerConfig.single("file"), uploadAvatarImage, UserController.updateUser)
+router.route("/").get(verifyAuth, UserController.getUser).put(verifyAuth, UserController.updateUser)
     .delete(verifyAuth, UserController.deleteUser);
+
+// Route to update user avatar image
+router.patch("/avatar", verifyAuth, multerConfig.single("file"), uploadAvatarImage, UserController.updateAvatar)
 
 // Route to create a new user
 router.post("/register", UserController.createUser);

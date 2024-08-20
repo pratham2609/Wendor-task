@@ -8,12 +8,6 @@ export const axiosInstance = axios.create({
     withCredentials: true,
 });
 
-export const logoutApi = axios.create({
-    baseURL: baseURL,
-    withCredentials: true,
-});
-
-
 
 // Request interceptor for Bearer Auth
 axiosInstance.interceptors.request.use(
@@ -27,5 +21,19 @@ axiosInstance.interceptors.request.use(
     },
     (error) => {
         Promise.reject(error);
+    }
+);
+
+
+axiosInstance.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    async (error) => {
+        if (error?.response?.status === 401 || error?.response?.status === 403) {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+        }
+        return Promise.reject(error);
     }
 );
