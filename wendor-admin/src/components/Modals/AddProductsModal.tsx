@@ -72,13 +72,13 @@ export default function AddProductsModal({ update = () => { } }) {
     }
     return (
         <ModalProvider isOpen={isOpen} fullScreen={true} setIsOpen={setIsOpen} loading={loading} btnText="Add Products" action={handleSubmit} title="Add Products">
-            <div className="w-full h-full flex flex-col px-5 py-2 gap-3">
+            <div className="w-full h-full flex flex-col xl:px-5 lg:px-3 px-1 xl:py-2 py-1 gap-3">
                 <div className="w-full justify-end flex">
-                    <button className="bg-black text-white px-2 py-1 rounded-lg" onClick={addRow}>Add Row</button>
+                    <button className="bg-black text-white xl:text-base text-sm px-2 py-1 rounded-lg" onClick={addRow}>Add Row</button>
                 </div>
-                <div className=" max-h-[77vh] h-full border-b-2 overflow-y-auto overflow-x-hidden">
+                <div className=" xl:max-h-[77vh] w-full h-full border-b-2 overflow-y-auto overflow-x-auto">
                     <table className="w-full border-1 ">
-                        <thead className="border-b-1 sticky top-0 bg-gray-700 z-10 text-white">
+                        <thead className="border-b-1 sticky xl:text-base lg:text-sm text-xs top-0 bg-gray-700 z-10 text-white">
                             <tr>
                                 <th className="border-r-1 p-2">Name</th>
                                 <th className="border-r-1 p-2">Barcode No.</th>
@@ -89,24 +89,24 @@ export default function AddProductsModal({ update = () => { } }) {
                                 <th className="border-r-1 p-2">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="xl:text-base lg:text-sm text-xs">
                             {data.map((item, index) => (
                                 <tr key={index}>
-                                    <td className="border-r-1 px-2 w-[17%] py-3">
+                                    <td className="border-r-1 lg:w-[17%] xl:px-2 px-1 xl:py-3 lg:py-2 py-1.5">
                                         <input required className="border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.name} onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].name = e.target.value;
                                             setData(newData);
                                         }} />
                                     </td>
-                                    <td className="border-r-1 px-2 w-[17%] py-3">
+                                    <td className="border-r-1 lg:w-[17%] xl:px-2 px-1 xl:py-3 lg:py-2 py-1.5">
                                         <input required className="border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.barcodeNo} onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].barcodeNo = e.target.value;
                                             setData(newData);
                                         }} />
                                     </td>
-                                    <td className="border-r-1 w-min px-2 py-3">
+                                    <td className="border-r-1 lg:w-min xl:px-2 px-1 xl:py-3 lg:py-2 py-1.5">
                                         <select onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].category = e.target.value;
@@ -119,14 +119,14 @@ export default function AddProductsModal({ update = () => { } }) {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className="border-r-1 px-2 py-3 max-w-20">
+                                    <td className="border-r-1 xl:px-2 px-1 xl:py-3 lg:py-2 py-1.5 lg:max-w-20">
                                         <input required min={1} className=" border focus:outline-none p-1 px-2 rounded-lg w-full " type="number" value={item.price} onChange={(e) => {
                                             const newData = [...data];
                                             newData[index].price = parseFloat(e.target.value);
                                             setData(newData);
                                         }} />
                                     </td>
-                                    <td className="border-r-1 px-2 w-[17%] py-3">
+                                    <td className="border-r-1 lg:w-[17%] xl:px-2 px-1 xl:py-3 lg:py-2 py-1.5">
                                         {newCompanyIndex === index ?
                                             <div className="w-full flex items-center gap-1">
                                                 <input className=" border focus:outline-none w-full p-1 px-2 rounded-lg " type="text" value={newCompany} onChange={(e) => {
@@ -153,7 +153,7 @@ export default function AddProductsModal({ update = () => { } }) {
                                             }} text={item.company_name ?? "Select"} items={companies} />
                                         }
                                     </td>
-                                    <td className="border-r-1 px-2 w-[20%] py-3">
+                                    <td className="border-r-1 lg:w-[20%] xl:px-2 px-1 xl:py-3 lg:py-2 py-1.5">
                                         <div className="w-full h-full flex gap-1 items-center">
                                             <input className=" border w-full focus:outline-none p-1 px-2 rounded-lg" type="text" value={item.display_image_url} onChange={(e) => {
                                                 const newData = [...data];
@@ -162,10 +162,10 @@ export default function AddProductsModal({ update = () => { } }) {
                                             }} />
                                         </div>
                                     </td>
-                                    <td className="px-2 py-3 items-center">
+                                    <td className="xl:px-2 px-1 xl:py-3 lg:py-2 py-1.5 items-center">
                                         <div className="flex justify-center h-full ">
                                             <Tooltip isDisabled={index === 0} content="Delete row">
-                                                <button disabled={index === 0} className="text-danger text-xl" onClick={() => deleteRow(index)}><DeleteIcon /></button>
+                                                <button disabled={index === 0} className="text-danger xl:text-xl lg:text-lg text-base" onClick={() => deleteRow(index)}><DeleteIcon /></button>
                                             </Tooltip>
                                         </div>
                                     </td>

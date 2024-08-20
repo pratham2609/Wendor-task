@@ -204,10 +204,10 @@ export function SingleCartItem({ item }: { item: CartItem }) {
                     Total Price: <span className="text-2xl">₹{item?.quantity * item?.productPrice}</span>
                 </p>
                 <div className="place-self-end space-x-[1px]">
-                    <button onClick={handleDecrement} disabled={quantityLoader} className="px-5 py-2 bg-black text-white rounded-l-md">
+                    <button onClick={handleDecrement} disabled={quantityLoader === item.productId} className="px-5 py-2 bg-black text-white rounded-l-md">
                         <FaMinus />
                     </button>
-                    <button onClick={handleIncrement} disabled={quantityLoader} className="px-5 py-2 bg-black text-white rounded-r-md">
+                    <button onClick={handleIncrement} disabled={quantityLoader === item.productId} className="px-5 py-2 bg-black text-white rounded-r-md">
                         <FaPlus />
                     </button>
                 </div>

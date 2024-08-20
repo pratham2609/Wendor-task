@@ -46,51 +46,51 @@ export default function Home() {
       </div>
 
       {/* Cards */}
-      <div className='grid h-[50%] gap-5 w-full grid-cols-2'>
-        <div className='bg-pink rounded-2xl bg-opacity-10 p-5 flex flex-col justify-between'>
+      <div className='grid md:h-[50%] h-[40%] lg:gap-5 gap-3 w-full grid-cols-2'>
+        <div className='bg-pink rounded-2xl bg-opacity-10 md:p-5 p-3 flex flex-col justify-between'>
           <div className='w-full flex justify-start items-center'>
-            <p className='capitalize text-pink urbanist text-3xl'>
+            <p className='capitalize text-pink urbanist xl:text-3xl lg:text-2xl md:text-xl text-lg'>
               No. Of Products
             </p>
           </div>
           <div className='w-full flex justify-end items-center'>
-            <p className='capitalize text-pink urbanist text-8xl font-bold'>
+            <p className='capitalize text-pink urbanist xl:text-8xl lg:text-7xl md:text-6xl text-4xl font-bold'>
               <Fallback data={data?.totalProducts} loading={loading} />
             </p>
           </div>
         </div>
-        <div className='bg-teal rounded-2xl bg-opacity-10 p-5 flex flex-col justify-between'>
+        <div className='bg-teal rounded-2xl bg-opacity-10 md:p-5 p-3 flex flex-col justify-between'>
           <div className='w-full flex justify-start items-center'>
-            <p className='capitalize text-teal urbanist text-3xl'>
+            <p className='capitalize text-teal urbanist xl:text-3xl lg:text-2xl md:text-xl text-lg'>
               No. Of Customers
             </p>
           </div>
           <div className='w-full flex justify-end items-center'>
-            <p className='capitalize text-teal urbanist text-8xl font-bold'>
+            <p className='capitalize text-teal urbanist xl:text-8xl lg:text-7xl md:text-6xl text-4xl font-bold'>
               <Fallback data={data?.totalUsers} loading={loading} />
             </p>
           </div>
         </div>
-        <div className='bg-purple rounded-2xl bg-opacity-10 p-5 flex flex-col justify-between'>
+        <div className='bg-purple rounded-2xl bg-opacity-10 md:p-5 p-3 flex flex-col justify-between'>
           <div className='w-full flex justify-start items-center'>
-            <p className='capitalize text-purple urbanist text-3xl'>
+            <p className='capitalize text-purple urbanist xl:text-3xl lg:text-2xl md:text-xl text-lg'>
               Total Sales done
             </p>
           </div>
           <div className='w-full flex justify-end items-center'>
-            <p className='capitalize text-purple urbanist text-8xl font-bold'>
+            <p className='capitalize text-purple urbanist xl:text-8xl lg:text-7xl md:text-6xl text-4xl font-bold'>
               <Fallback data={data?.totalSales} loading={loading} />
             </p>
           </div>
         </div>
-        <div className='bg-blue rounded-2xl bg-opacity-10 p-5 flex flex-col justify-between'>
+        <div className='bg-blue rounded-2xl bg-opacity-10 md:p-5 p-3 flex flex-col justify-between'>
           <div className='w-full flex justify-start items-center'>
-            <p className='capitalize text-blue urbanist text-3xl'>
+            <p className='capitalize text-blue urbanist xl:text-3xl lg:text-2xl md:text-xl text-lg'>
               Total Revenue generated
             </p>
           </div>
           <div className='w-full flex justify-end items-center'>
-            <p className='capitalize text-blue urbanist text-8xl font-bold'>
+            <p className='capitalize text-blue urbanist xl:text-8xl lg:text-7xl md:text-6xl text-4xl font-bold'>
               <Fallback data={data?.totalRevenue} loading={loading} />
             </p>
           </div>

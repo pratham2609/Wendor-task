@@ -11,7 +11,7 @@ export default function DashboardNav() {
     return (
         <div className='w-full h-full flex items-center justify-center'>
             <div className='w-full h-full flex flex-col items-center justify-between 2xl:p-10 xl:p-8 lg:p-6 p-4'>
-                <div className='w-full flex flex-col items-center gap-10'>
+                <div className='w-full flex flex-col items-center lg:gap-10 gap-5'>
                     <div className="w-44 h-32">
                         <img src={"/wendor-logo-full.webp"} alt="Logo" className='w-full h-full object-scale-down' />
                     </div>
@@ -19,7 +19,7 @@ export default function DashboardNav() {
                         <ul className='w-full flex flex-col items-center gap-2'>
                             {
                                 dashboardNavs.map((nav, i) => (
-                                    <li key={i} className={'rounded-xl font-semibold 2xl:text-xl xl:text-base md:text-sm text-xs w-full 2xl:pl-8 xl:pl-6 px-5 xl:py-4 lg:py-3 py-2  '
+                                    <li key={i} className={'rounded-xl font-semibold 2xl:text-xl xl:text-base lg:text-sm text-base w-full 2xl:pl-8 xl:pl-6 px-5 xl:py-4 lg:py-3 py-4  '
                                         + (nav.url == location.pathname || (location.pathname.includes("settings") && nav.url.includes("settings")) ?
                                             "bg-pink text-white" : " bg-transparent text-black")}>
                                         <a href={nav.url} className='flex items-center justify-start w-full gap-4'>
@@ -37,7 +37,7 @@ export default function DashboardNav() {
                         handleLogout();
                         toast.success("Logged out seccessfully!");
                     }} className='w-full text-white xl:text-xl lg:text-lg text-base hover:bg-opacity-100 bg-opacity-80 bg-black transition 
-                    duration-200 ease-linear xl:py-3 lg:py-2.5 rounded-lg flex justify-center items-center gap-1'>
+                    duration-200 ease-linear xl:py-3 py-2.5 rounded-lg flex justify-center items-center gap-1'>
                         <MdLogout />Logout
                     </button>
                 </div>

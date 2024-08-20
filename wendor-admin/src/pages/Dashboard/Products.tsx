@@ -3,7 +3,6 @@ import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon } from "../../components/Icons";
 import ReloadBtn from "../../components/Dashboard/ReloadBtn";
-import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { Product, ProductRes } from "../../types/Product";
 import { TableColums } from "../../types/Table";
@@ -167,19 +166,29 @@ export default function Products() {
           <ReloadBtn action={update} />
         </div>
         <div className="w-full flex justify-end gap-3">
-          <select className="py-2 px-3 border max-h-[40vh] overflow-y-auto rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
-            ...filter,
-            company: e.target.value
-          })}>
+          <select className="xl:py-2 lg:py-1.5 py-1 xl:px-3 lg:px-2 px-1.5 border rounded-lg focus:outline-none 
+          xl:w-40 lg:w-32 w-28 xl:text-base lg:text-sm text-xs"
+            onChange={(e) => {
+              setFilter({
+                ...filter,
+                company: e.target.value
+              })
+              setPage(1);
+            }}>
             <option value="all">All</option>
             {companies.map((company: Company) => {
               return <option key={company.id} value={company.id}>{company.company_name}</option>
             })}
           </select>
-          <select className="py-2 max-h-[40vh] overflow-y-auto px-3 border rounded-lg focus:outline-none w-40" onChange={(e) => setFilter({
-            ...filter,
-            category: e.target.value
-          })}>
+          <select className="xl:py-2 lg:py-1.5 py-1 xl:px-3 lg:px-2 px-1.5 border rounded-lg focus:outline-none 
+          xl:w-40 lg:w-32 w-28 xl:text-base lg:text-sm text-xs"
+            onChange={(e) => {
+              setFilter({
+                ...filter,
+                category: e.target.value
+              })
+              setPage(1);
+            }}>
             <option value="all">All</option>
             {Categories.map((cat: string) => {
               return <option key={cat} value={cat}>{cat}</option>

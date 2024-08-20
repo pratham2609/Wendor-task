@@ -25,12 +25,12 @@ export default function Settings() {
   return (
     <section className='w-full h-full pb-5 xl:px-7 px-5 2xl:pt-7 xl:pt-6 pt-5 flex flex-col gap-5 items-center'>
       <div className='flex items-center w-full justify-between'>
-        <h2 className='urbanist font-medium text-4xl'>
+        <h2 className='urbanist font-medium xl:text-4xl lg:text-3xl text-2xl'>
           Profile Settings
         </h2>
-        <div className="flex items-center gap-4 h-full">
-          <button onClick={() => setView("profile")} className={`font-medium px-4 rounded-md py-1.5 text-lg ${view === "profile" ? "text-pink" : ""}`}>Profile</button>
-          <button onClick={() => setView("password")} className={`font-medium px-4 py-1.5 rounded-md text-lg ${view === "password" ? "text-pink" : ""}`}>Security</button>
+        <div className="flex items-center xl:gap-4 lg:gap-3 gap-1 h-full">
+          <button onClick={() => setView("profile")} className={`font-medium xl:px-4 lg:px-3 md:px-2 px-1 rounded-md py-1.5 xl:text-lg md:text-base text-sm ${view === "profile" ? "text-pink" : ""}`}>Profile</button>
+          <button onClick={() => setView("password")} className={`font-medium xl:px-4 lg:px-3 md:px-2 px-1 py-1.5 rounded-md xl:text-lg md:text-base text-sm ${view === "password" ? "text-pink" : ""}`}>Security</button>
         </div>
       </div>
       {view === "profile" ? <ProfileView /> : <UpdatePassword />}

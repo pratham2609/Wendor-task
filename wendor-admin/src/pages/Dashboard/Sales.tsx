@@ -4,7 +4,6 @@ import { axiosInstance } from "../../utils/axiosInstance";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { SaleProduct, Sales, SalesRes } from "../../types/Sales";
 import { TableColums } from "../../types/Table";
-import { IoReload } from "react-icons/io5";
 import ReloadBtn from "../../components/Dashboard/ReloadBtn";
 
 export default function Companies() {

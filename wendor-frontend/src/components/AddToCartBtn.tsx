@@ -30,13 +30,13 @@ export default function AddToCartBtn({ product }: { product: InventoryItem }) {
         <div className="w-full xl:h-10 lg:h-9 h-8">
             {cartItem ? (
                 <div className='flex w-full items-center justify-between h-full gap-2'>
-                    <button disabled={quantityLoader}
+                    <button disabled={quantityLoader === product.productId}
                         onClick={handleDecrement}
                         className='bg-black text-white rounded-lg w-[40%] h-full flex items-center justify-center'>
                         -
                     </button>
-                    <span className='xl:text-xl lg:text-lg text-base font-medium'>{quantityLoader ? <Spinner size='md' color='danger' /> : cartItem.quantity}</span>
-                    <button disabled={quantityLoader}
+                    <span className='xl:text-xl lg:text-lg text-base font-medium'>{quantityLoader === product.productId ? <Spinner size='md' color='danger' /> : cartItem.quantity}</span>
+                    <button disabled={quantityLoader === product.productId}
                         onClick={handleIncrement}
                         className='bg-black text-white rounded-lg w-[40%] h-full flex items-center justify-center'>
                         +

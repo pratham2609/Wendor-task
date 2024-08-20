@@ -4,7 +4,6 @@ import { axiosInstance } from "../../utils/axiosInstance";
 import { Tooltip } from "@nextui-org/react";
 import { DeleteIcon, EditIcon } from "../../components/Icons";
 import ReloadBtn from "../../components/Dashboard/ReloadBtn";
-import SearchBar from "../../components/Dashboard/SearchBar";
 import TableContainer from "../../components/Dashboard/containers/TableContainer";
 import { InventoryItem, InventoryRes } from "../../types/Inventory";
 import { TableColums } from "../../types/Table";

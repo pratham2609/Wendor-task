@@ -6,7 +6,7 @@ import { useFetchInventory } from "../hooks/fetchInventoryData";
 interface InventoryContextProps {
     inventory: InventoryRes;
     loading: boolean;
-    quantityLoader: boolean;
+    quantityLoader: string | null;
     checkProductQuantity: (productId: string, requestedQuantity: number) => Promise<boolean>;
     update: () => void;
 }
@@ -20,12 +20,12 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(undefi
 const InventoryContextProvider: React.FC<InventoryContextProviderProps> = ({ children }) => {
     const [reload, setReload] = useState(false);
     const { inventory, loading } = useFetchInventory({ reload: reload });
-    const [quantityLoader, setQuantityLoader] = useState(false);
+    const [quantityLoader, setQuantityLoader] = useState<string | null>(null);
     const update = () => {
         setReload(!reload);
     }
     const checkProductQuantity = async (productId: string, requestedQuantity: number): Promise<boolean> => {
-        setQuantityLoader(true);
+        setQuantityLoader(productId);
         try {
             const res = await axiosInstance.get(`/inventory/product/one/quantity/${productId}`);
             return res.data.data >= requestedQuantity;
@@ -33,7 +33,7 @@ const InventoryContextProvider: React.FC<InventoryContextProviderProps> = ({ chi
             console.error(error);
             return false;
         } finally {
-            setQuantityLoader(false);
+            setQuantityLoader(null);
         }
     };
 

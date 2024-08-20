@@ -68,13 +68,13 @@ const UpdatePassword: React.FC = () => {
     };
 
     return (
-        <div className='w-full h-full place-items-center grid grid-cols-2'>
-            <div className='w-full h-full flex items-center'>
+        <div className='w-full h-full place-items-center md:grid md:grid-cols-2'>
+            <div className='w-full  h-full md:flex hidden items-center'>
                 <img src={security} alt='Update Password' />
             </div>
             <div className='w-full h-full rounded-lg flex flex-col gap-5 items-center justify-center'>
                 <h3 className='text-xl font-medium'>Update Password</h3>
-                <form onSubmit={submitHandler} className='flex flex-col gap-5 w-[70%] mx-auto'>
+                <form onSubmit={submitHandler} className='flex flex-col gap-5 lg:w-[70%] md:w-[85%] w-full mx-auto'>
                     <div className="flex flex-col border border-gray-300 rounded-lg w-full">
                         <div className='w-full flex justify-between items-center px-3'>
                             <Input name="oldPassword" className='!bg-transparent !px-0 w-full !border-0' placeholder="Enter current password" value={formData.oldPassword} type={showPassword.oldPassword ? "text" : "password"} onChange={handleInputChange} />

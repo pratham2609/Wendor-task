@@ -60,7 +60,7 @@ export default function ResetPassword() {
     return (
         <ContainerWrapper>
 
-            <div className='w-full min-h-[80vh] h-full flex flex-col xl:gap-10 md:gap-8 gap-6 lg:pt-10 md:pt-8 pt-0'>
+            <div className='w-full h-[80vh] overflow-hidden flex flex-col xl:gap-10 md:gap-8 gap-6 lg:pt-10 md:pt-8 pt-0'>
                 {reset ? <div className="w-full flex flex-col gap-5">
                     <div className='flex flex-col gap-3 items-center'>
                         <h2 className=' xl:text-4xl lg:text-3xl text-2xl font-semibold'>Password has been Reset!</h2>
@@ -73,13 +73,13 @@ export default function ResetPassword() {
                                 Reset Password
                             </h1>
                         </div>
-                        <div className='w-full h-full grid grid-cols-2'>
-                            <div className='w-full h-full flex items-center'>
+                        <div className='w-full h-full md:grid md:grid-cols-2 flex items-center'>
+                            <div className='w-full h-full md:flex hidden items-center'>
                                 <img src={security} alt='Update Password' className='w-full object-scale-down h-full' />
                             </div>
                             <div className='w-full h-full flex flex-col items-center justify-center'>
                                 <h3 className='xl:text-3xl lg:text-2xl text-xl font-medium'>Reset your password</h3>
-                                <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-2/3 justify-center pt-10 mx-auto">
+                                <form onSubmit={handleSubmit} className="flex flex-col gap-10 lg:w-2/3 md:w-[90%] w-full justify-center pt-10 mx-auto">
                                     <div className="flex flex-col border border-gray-300 rounded-lg w-full">
                                         <div className='w-full flex justify-between items-center px-3'>
                                             <Input name="password" className='!bg-transparent !px-0 !border-0' placeholder="Enter new password" value={formData.password} type={show.password ? "text" : "password"} onChange={handleChange} />

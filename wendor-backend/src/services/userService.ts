@@ -109,6 +109,9 @@ export class UserService {
             if (!user) {
                 throw new ApiError(404, "Invalid Admin");
             }
+            if (user.role !== "admin") {
+                throw new ApiError(401, "Invalid Admin");
+            }
 
             const isPasswordValid = await user.validatePassword(password);
             if (!isPasswordValid) {

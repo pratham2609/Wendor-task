@@ -8,7 +8,6 @@ import { Company, CompanyRes } from "../../types/Companies";
 import { TableColums } from "../../types/Table";
 import CompanyOperationsModal from "../../components/Modals/CompanyOperationsModal";
 import toast from "react-hot-toast";
-import { IoReload } from "react-icons/io5";
 import ReloadBtn from "../../components/Dashboard/ReloadBtn";
 
 export default function Companies() {

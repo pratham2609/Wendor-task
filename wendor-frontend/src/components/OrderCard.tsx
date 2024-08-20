@@ -36,7 +36,7 @@ export default function OrderCard({ order }: { order: Order }) {
                                             <img src={product.display_image_url} alt='Product Image' className='w-full h-full' />
                                         </div>
                                         <div className='flex items-start flex-col justify-between flex-1 w-full h-full'>
-                                            <p className="xl:text-xl lg:text-lg text-base w-[80%] truncate font-medium">
+                                            <p className="xl:text-xl lg:text-lg text-base md:w-[80%] w-36 truncate font-medium">
                                                 {product.name}
                                             </p>
                                             <p className="xl:text-xl lg:text-lg md:text-base text-sm">
