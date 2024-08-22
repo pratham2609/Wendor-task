@@ -76,8 +76,8 @@ export default function AddProductsModal({ update = () => { } }) {
                 <div className="w-full justify-end flex">
                     <button className="bg-black text-white xl:text-base text-sm px-2 py-1 rounded-lg" onClick={addRow}>Add Row</button>
                 </div>
-                <div className=" xl:max-h-[77vh] w-full h-full border-b-2 overflow-y-auto overflow-x-auto">
-                    <table className="w-full border-1 ">
+                <div className="max-h-[77vh] w-full h-full border-b-2 overflow-y-auto">
+                    <table className="border-1 lg:w-full md:w-[120vw] w-[150vw] max-h-full">
                         <thead className="border-b-1 sticky xl:text-base lg:text-sm text-xs top-0 bg-gray-700 z-10 text-white">
                             <tr>
                                 <th className="border-r-1 p-2">Name</th>

@@ -46,7 +46,7 @@ export default function Login() {
     return (
         <main className="w-screen h-screen poppins">
             <div className="h-full w-full flex items-center justify-center bg-login-page bg-no-repeat relative bg-cover">
-                <div className="bg-white z-10 w-1/3 flex flex-col gap-10 px-5 py-20 justify-center items-center rounded-xl shadow-md border">
+                <div className="bg-white z-10 xl:w-1/3 md:w-1/2 w-[90%] flex flex-col gap-10 lg:px-5 px-3 py-20 justify-center items-center rounded-xl shadow-md border">
                     <h1 className="font-bold 2xl:text-3xl lg:text-2xl text-xl">
                         Welcome! Login to Continue
                     </h1>

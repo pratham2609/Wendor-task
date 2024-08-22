@@ -136,6 +136,7 @@ export default function Inventory() {
         <TableContainer
           columns={columns}
           id={"sno"}
+          pageSize={11}
           page={filter.page}
           setPage={setPage}
           totalCount={inventoryRes.totalCount}

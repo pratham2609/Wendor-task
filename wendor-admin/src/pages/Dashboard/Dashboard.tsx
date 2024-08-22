@@ -46,7 +46,7 @@ export default function Home() {
       </div>
 
       {/* Cards */}
-      <div className='grid md:h-[50%] h-[40%] lg:gap-5 gap-3 w-full grid-cols-2'>
+      <div className='grid md:h-[50%] h-[40%] lg:gap-5 gap-3 w-full md:grid-cols-2 grid-cols-1'>
         <div className='bg-pink rounded-2xl bg-opacity-10 md:p-5 p-3 flex flex-col justify-between'>
           <div className='w-full flex justify-start items-center'>
             <p className='capitalize text-pink urbanist xl:text-3xl lg:text-2xl md:text-xl text-lg'>

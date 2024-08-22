@@ -21,7 +21,7 @@ export default function Companies() {
     });
     const [filter, setFilter] = React.useState({
         page: 1,
-        limit: 14,
+        limit: 5,
     })
     const setPage = (val: number) => {
         setFilter({ ...filter, page: val });
@@ -34,7 +34,7 @@ export default function Companies() {
             .then((res) => {
                 setsalesRes({
                     sales: res.data.data.sales.map((item: Sales, index: number) => ({ ...item, sno: index + 1 })),
-                    totalCount: res.data.totalCount,
+                    totalCount: res.data.data.totalCount,
                 });
                 setLoading(false);
             })
@@ -90,6 +90,7 @@ export default function Companies() {
             <TableContainer
                 columns={columns}
                 id={"sno"}
+                pageSize={filter.limit}
                 page={filter.page}
                 setPage={setPage}
                 totalCount={salesRes?.totalCount}

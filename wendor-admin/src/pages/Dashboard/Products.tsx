@@ -32,7 +32,7 @@ export default function Products() {
   });
   const [filter, setFilter] = React.useState({
     page: 1,
-    limit: 10,
+    limit: 9,
     company: "all",
     category: "all",
   });
@@ -197,7 +197,7 @@ export default function Products() {
           <AddProductsModal update={update} />
         </div>
         <TableContainer
-          pageSize={9}
+          pageSize={filter.limit}
           columns={columns}
           id={"sno"}
           page={filter.page}
