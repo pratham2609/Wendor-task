@@ -85,7 +85,24 @@ export default function Companies() {
                 <h2 className='urbanist font-medium xl:text-4xl lg:text-3xl text-2xl'>
                     Sales
                 </h2>
-                <ReloadBtn action={update} />
+                <div className="flex items-center gap-2">
+                    <ReloadBtn action={update} />
+                    <select className="border" onChange={(e) => setFilter({
+                        ...filter,
+                        limit: parseInt(e.target.value)
+                    }
+                    )} value={filter.limit} >
+                        <option value={5}>
+                            5
+                        </option>
+                        <option value={10}>
+                            10
+                        </option>
+                        <option value={20}>
+                            20
+                        </option>
+                    </select>
+                </div>
             </div>
             <TableContainer
                 columns={columns}

@@ -55,7 +55,7 @@ class SalesRepository implements ISalesRepository {
                 }))
             };
         });
-        return { totalCount: count, sales: sales };
+        return { totalCount: sales.length, sales: sales };
     }
 
     async getUserSales(userId: string, page?: number, pageSize?: number): Promise<SalesResponse> {
